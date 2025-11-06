@@ -28,6 +28,8 @@ class NotificationResource extends Resource
     
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+
     public static function form(Schema $schema): Schema
     {
         return $schema->components([]);

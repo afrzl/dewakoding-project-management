@@ -45,6 +45,8 @@ class ProjectResource extends Resource
     protected static string | \UnitEnum | null $navigationGroup = 'Project Management';
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+
     public static function form(Schema $schema): Schema
     {
         return $schema

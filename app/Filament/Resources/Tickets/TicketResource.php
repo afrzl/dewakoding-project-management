@@ -44,6 +44,8 @@ class TicketResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();

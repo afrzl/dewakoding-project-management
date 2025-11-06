@@ -26,6 +26,8 @@ class TicketCommentResource extends Resource
 
     protected static bool $shouldRegisterNavigation = false;
 
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+
     public static function form(Schema $schema): Schema
     {
         return $schema

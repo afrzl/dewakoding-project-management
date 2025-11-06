@@ -37,6 +37,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationLabel = 'Users';
 
+    protected static ?string $tenantOwnershipRelationshipName = 'teams';
+
     public static function form(Schema $schema): Schema
     {
         return $schema

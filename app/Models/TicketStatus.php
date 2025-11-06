@@ -12,6 +12,7 @@ class TicketStatus extends Model
     use HasFactory;
 
     protected $fillable = [
+        'team_id',
         'project_id',
         'name',
         'sort_order',
@@ -26,6 +27,11 @@ class TicketStatus extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 
     public function tickets(): HasMany

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class TicketComment extends Model
 {
     protected $fillable = [
+        'team_id',
         'ticket_id',
         'user_id',
         'comment',
@@ -30,6 +31,11 @@ class TicketComment extends Model
     public function ticket(): BelongsTo
     {
         return $this->belongsTo(Ticket::class);
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 
     public function user(): BelongsTo

@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use Filament\Pages\Dashboard;
+use BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant;
 use App\Filament\Pages\Auth\Login;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -33,6 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(Login::class)
             ->registration()
+            ->tenant(\App\Models\Team::class, ownershipRelationship: 'teams')
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -55,8 +57,13 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->scopeToTenant(true)
+                    ->tenantRelationshipName('teams'),
             ])
+            ->tenantMiddleware([
+                SyncShieldTenant::class,
+            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ])

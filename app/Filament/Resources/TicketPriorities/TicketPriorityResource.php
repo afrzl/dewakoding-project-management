@@ -36,6 +36,8 @@ class TicketPriorityResource extends Resource
 
     protected static string | \UnitEnum | null $navigationGroup = 'Settings';
 
+    protected static ?string $tenantOwnershipRelationshipName = 'team';
+
     public static function form(Schema $schema): Schema
     {
         return $schema

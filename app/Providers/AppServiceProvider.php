@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Filament\Resources\TicketResource\Pages\EditCommentModal;
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
@@ -26,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        app(\Spatie\Permission\PermissionRegistrar::class)
+            ->setPermissionClass(Permission::class)
+            ->setRoleClass(Role::class);
+
         Livewire::component('edit-comment-modal', EditCommentModal::class);
         FilamentShield::buildPermissionKeyUsing(
             function (string $entity, string $affix, string $subject, string $case, string $separator) {

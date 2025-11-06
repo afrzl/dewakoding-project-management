@@ -14,6 +14,7 @@ class Ticket extends Model
     use HasFactory;
 
     protected $fillable = [
+        'team_id',
         'project_id',
         'ticket_status_id',
         'priority_id',
@@ -94,6 +95,11 @@ class Ticket extends Model
     public function epic(): BelongsTo
     {
         return $this->belongsTo(Epic::class);
+    }
+
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 
     public function priority(): BelongsTo

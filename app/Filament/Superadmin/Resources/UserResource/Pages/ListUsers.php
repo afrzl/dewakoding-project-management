@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Superadmin\Resources\Teams\Pages;
+namespace App\Filament\Superadmin\Resources\UserResource\Pages;
 
-use App\Filament\Superadmin\Resources\Teams\TeamResource;
+use App\Filament\Superadmin\Resources\UserResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
-class ListTeams extends ListRecords
+class ListUsers extends ListRecords
 {
-    protected static string $resource = TeamResource::class;
+    protected static string $resource = UserResource::class;
 
     protected function getHeaderActions(): array
     {

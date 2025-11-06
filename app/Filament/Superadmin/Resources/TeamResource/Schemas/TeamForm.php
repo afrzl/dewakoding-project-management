@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Superadmin\Resources\Teams\Schemas;
+namespace App\Filament\Superadmin\Resources\TeamResource\Schemas;
 
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;

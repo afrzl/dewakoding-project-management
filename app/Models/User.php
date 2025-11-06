@@ -101,10 +101,15 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         return $this->unreadNotifications()->count();
     }
 
+    public function isSuperAdmin(): bool
+    {
+        return $this->team_id === null && $this->hasRole('super_admin');
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === 'superadmin') {
-            return $this->hasRole('super_admin');
+            return $this->isSuperAdmin();
         }
 
         return true;

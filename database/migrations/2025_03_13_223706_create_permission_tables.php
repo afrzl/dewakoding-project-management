@@ -83,11 +83,12 @@ return new class extends Migration
                 ->on($tableNames['roles'])
                 ->onDelete('cascade');
             if ($teams) {
-                $table->unsignedBigInteger($columnNames['team_foreign_key']);
+                $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
                 $table->index($columnNames['team_foreign_key'], 'model_has_roles_team_foreign_key_index');
 
-                $table->primary([$columnNames['team_foreign_key'], $pivotRole, $columnNames['model_morph_key'], 'model_type'],
-                    'model_has_roles_role_model_type_primary');
+                // Use unique index instead of primary key to allow nullable team_id
+                $table->unique([$columnNames['team_foreign_key'], $pivotRole, $columnNames['model_morph_key'], 'model_type'],
+                    'model_has_roles_role_model_type_unique');
             } else {
                 $table->primary([$pivotRole, $columnNames['model_morph_key'], 'model_type'],
                     'model_has_roles_role_model_type_primary');

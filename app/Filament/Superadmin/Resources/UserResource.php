@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Superadmin\Resources\Users;
+namespace App\Filament\Superadmin\Resources;
 
-use App\Filament\Superadmin\Resources\Users\Pages\CreateUser;
-use App\Filament\Superadmin\Resources\Users\Pages\EditUser;
-use App\Filament\Superadmin\Resources\Users\Pages\ListUsers;
-use App\Filament\Superadmin\Resources\Users\Pages\ViewUser;
-use App\Filament\Superadmin\Resources\Users\Schemas\UserForm;
-use App\Filament\Superadmin\Resources\Users\Schemas\UserInfolist;
-use App\Filament\Superadmin\Resources\Users\Tables\UsersTable;
+use App\Filament\Superadmin\Resources\UserResource\Pages\CreateUser;
+use App\Filament\Superadmin\Resources\UserResource\Pages\EditUser;
+use App\Filament\Superadmin\Resources\UserResource\Pages\ListUsers;
+use App\Filament\Superadmin\Resources\UserResource\Pages\ViewUser;
+use App\Filament\Superadmin\Resources\UserResource\Schemas\UserForm;
+use App\Filament\Superadmin\Resources\UserResource\Schemas\UserInfolist;
+use App\Filament\Superadmin\Resources\UserResource\Tables\UsersTable;
 use App\Models\User;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -27,6 +27,34 @@ class UserResource extends Resource
     protected static ?string $navigationLabel = 'Users';
 
     protected static ?string $pluralLabel = 'Users';
+    
+    protected static ?int $navigationSort = 1;
+    
+    // Disable policy authorization for superadmin panel
+    public static function canViewAny(): bool
+    {
+        return true;
+    }
+    
+    public static function canCreate(): bool
+    {
+        return true;
+    }
+    
+    public static function canEdit($record): bool
+    {
+        return true;
+    }
+    
+    public static function canDelete($record): bool
+    {
+        return true;
+    }
+    
+    public static function canDeleteAny(): bool
+    {
+        return true;
+    }
 
     public static function form(Schema $schema): Schema
     {

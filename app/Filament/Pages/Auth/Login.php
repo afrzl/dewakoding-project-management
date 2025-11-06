@@ -10,11 +10,13 @@ class Login extends BaseLogin
 {
     public function mount(): void
     {
+        // redirect()->route('filament.admin.auth.login');
+        // return;
         parent::mount();
-        
+
         FilamentView::registerRenderHook(
             PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
-            fn (): string => view('filament.components.google-login-button')->render(),
+            fn(): string => view('filament.components.google-login-button')->render(),
         );
     }
 }

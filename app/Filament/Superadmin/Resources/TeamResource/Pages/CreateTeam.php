@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Superadmin\Resources\Teams\Pages;
+namespace App\Filament\Superadmin\Resources\TeamResource\Pages;
 
-use App\Filament\Superadmin\Resources\Teams\TeamResource;
+use App\Filament\Superadmin\Resources\TeamResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateTeam extends CreateRecord

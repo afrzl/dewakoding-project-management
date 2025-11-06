@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Filament\Superadmin\Resources\Users\Tables;
+namespace App\Filament\Superadmin\Resources\TeamResource\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class UsersTable
+class TeamsTable
 {
     public static function configure(Table $table): Table
     {
@@ -19,18 +18,19 @@ class UsersTable
                     ->searchable()
                     ->sortable(),
                     
-                TextColumn::make('email')
-                    ->label('Email address')
+                TextColumn::make('slug')
                     ->searchable()
                     ->sortable(),
                     
-                TextColumn::make('roles.name')
-                    ->badge()
-                    ->searchable(),
+                TextColumn::make('members_count')
+                    ->counts('members')
+                    ->label('Members')
+                    ->sortable(),
                     
-                TextColumn::make('teams.name')
-                    ->badge()
-                    ->searchable(),
+                TextColumn::make('projects_count')
+                    ->counts('projects')
+                    ->label('Projects')
+                    ->sortable(),
                     
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -46,7 +46,6 @@ class UsersTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

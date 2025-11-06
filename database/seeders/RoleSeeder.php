@@ -42,10 +42,15 @@ class RoleSeeder extends Seeder
             }
         }
 
-        // Buat role super_admin, admin, member dengan team_id
+        // Buat role super_admin GLOBAL (tanpa team_id) untuk superadmin panel
+        $superAdminGlobal = Role::firstOrCreate(
+            ['name' => 'super_admin', 'guard_name' => 'web', 'team_id' => null]
+        );
+        $superAdminGlobal->syncPermissions($permissions);
+
+        // Buat role super_admin, admin, member dengan team_id untuk default team
         $superAdmin = Role::firstOrCreate(
-            ['name' => 'super_admin', 'guard_name' => 'web'],
-            ['team_id' => $defaultTeam->id]
+            ['name' => 'super_admin', 'guard_name' => 'web', 'team_id' => $defaultTeam->id]
         );
 
         $admin = Role::firstOrCreate(
@@ -103,7 +108,7 @@ class RoleSeeder extends Seeder
             $superAdminUser->teams()->attach($defaultTeam->id);
         }
         
-        // Then assign role with team_id in pivot
+        // Assign super_admin role with team_id in pivot
         DB::table('model_has_roles')->updateOrInsert(
             [
                 'model_id' => $superAdminUser->id,
@@ -111,6 +116,16 @@ class RoleSeeder extends Seeder
                 'role_id' => $superAdmin->id,
             ],
             ['team_id' => $defaultTeam->id]
+        );
+        
+        // Assign global super_admin role (team_id = null) for superadmin panel access
+        DB::table('model_has_roles')->updateOrInsert(
+            [
+                'model_id' => $superAdminUser->id,
+                'model_type' => User::class,
+                'role_id' => $superAdminGlobal->id,
+            ],
+            ['team_id' => null]
         );
 
         // Admin User

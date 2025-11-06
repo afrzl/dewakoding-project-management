@@ -12,7 +12,7 @@
         {{ $this->form }}
 
         <div class="mt-6">
-            <x-filament::button type="submit" class="w-full">
+            <x-filament::button :color="\Filament\Support\Colors\Color::Blue" type="submit" class="w-full">
                 Join Team
             </x-filament::button>
         </div>
@@ -22,7 +22,7 @@
         <p class="text-sm text-gray-600 dark:text-gray-400">
             Don't have an invite code?
             <a href="{{ route('filament.admin.tenant.registration') }}"
-                class="text-primary-600 hover:text-primary-500 font-medium">
+                class="text-blue-600 hover:text-blue-500 font-medium">
                 Create a new team
             </a>
         </p>

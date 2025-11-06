@@ -4,12 +4,14 @@ namespace App\Livewire;
 
 use App\Models\Team;
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
 
+#[Layout('filament-panels::components.layout.simple')]
 class JoinTeam extends Component implements HasForms
 {
     use InteractsWithForms;
@@ -18,6 +20,10 @@ class JoinTeam extends Component implements HasForms
 
     public function mount(): void
     {
+        if (!auth()->check()) {
+            redirect()->route('filament.admin.auth.login');
+        }
+
         $this->form->fill();
     }
 
@@ -28,11 +34,9 @@ class JoinTeam extends Component implements HasForms
                 ->label('Invite Code')
                 ->placeholder('Enter your team invite code (e.g. DK000001)')
                 ->required()
-                ->maxLength(8)
-                ->rules(['regex:/^[A-Z0-9]{8}$/'])
-                ->helperText('Enter the 8-character team invite code')
                 ->autocomplete('off')
-                ->autofocus(),
+                ->autofocus()
+                ->extraInputAttributes(['style' => 'text-transform: uppercase']),
         ];
     }
 
@@ -44,7 +48,6 @@ class JoinTeam extends Component implements HasForms
     public function join(): void
     {
         $data = $this->form->getState();
-
         $team = Team::where('invite_code', strtoupper($data['invite_code']))->first();
 
         if (!$team) {
@@ -65,7 +68,7 @@ class JoinTeam extends Component implements HasForms
                 ->warning()
                 ->send();
 
-            $this->redirect(filament()->getUrl($team));
+            $this->redirect(route('filament.admin.pages.dashboard', ['tenant' => $team->slug]));
             return;
         }
 
@@ -77,12 +80,11 @@ class JoinTeam extends Component implements HasForms
             ->success()
             ->send();
 
-        $this->redirect(filament()->getUrl($team));
+        $this->redirect(route('filament.admin.pages.dashboard', ['tenant' => $team->slug]));
     }
 
     public function render()
     {
-        return view('livewire.join-team')
-            ->layout('filament-panels::components.layout.simple');
+        return view('livewire.join-team');
     }
 }

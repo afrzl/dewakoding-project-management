@@ -29,7 +29,10 @@ class TeamPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
+        // Allow creating a team if the user doesn't belong to any team yet,
+        // or if the user is a super admin who can bootstrap teams.
+        return ($user->teams()->count() === 0) || $user->hasRole('super_admin');
     }
 
     /**

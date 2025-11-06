@@ -34,11 +34,10 @@ class RoleSeeder extends Seeder
             foreach ($actions as $action) {
                 $permissionName = $action . '_' . $resource;
                 $permissions[] = $permissionName;
-                
+
                 // Create permission with team_id
                 Permission::firstOrCreate(
-                    ['name' => $permissionName, 'guard_name' => 'web'],
-                    ['team_id' => $defaultTeam->id]
+                    ['name' => $permissionName, 'guard_name' => 'web']
                 );
             }
         }
@@ -48,44 +47,42 @@ class RoleSeeder extends Seeder
             ['name' => 'super_admin', 'guard_name' => 'web'],
             ['team_id' => $defaultTeam->id]
         );
-        
+
         $admin = Role::firstOrCreate(
             ['name' => 'admin', 'guard_name' => 'web'],
             ['team_id' => $defaultTeam->id]
         );
-        
+
         $member = Role::firstOrCreate(
             ['name' => 'member', 'guard_name' => 'web'],
             ['team_id' => $defaultTeam->id]
         );
 
         // super_admin: semua permission
-        $allPermissions = Permission::where('team_id', $defaultTeam->id)->get();
+        $allPermissions = Permission::all();
         $superAdmin->syncPermissions($allPermissions);
 
         // admin: semua permission kecuali user delete
-        $adminPermissions = Permission::where('team_id', $defaultTeam->id)
-            ->whereNotIn('name', ['delete_user'])
+        $adminPermissions = Permission::whereNotIn('name', ['delete_user'])
             ->get();
         $admin->syncPermissions($adminPermissions);
 
         // member: hanya view/view_any project, ticket, ticket_priority, ticket_comment, notification, dan update ticket (untuk drag & drop)
-        $memberPermissions = Permission::where('team_id', $defaultTeam->id)
-            ->where(function ($q) {
-                $q->whereIn('name', [
-                    'view_project',
-                    'view_any_project',
-                    'view_ticket',
-                    'view_any_ticket',
-                    'update_ticket',
-                    'view_ticket_priority',
-                    'view_any_ticket_priority',
-                    'view_ticket_comment',
-                    'view_any_ticket_comment',
-                    'view_notification',
-                    'view_any_notification',
-                ]);
-            })->get();
+        $memberPermissions = Permission::where(function ($q) {
+            $q->whereIn('name', [
+                'view_project',
+                'view_any_project',
+                'view_ticket',
+                'view_any_ticket',
+                'update_ticket',
+                'view_ticket_priority',
+                'view_any_ticket_priority',
+                'view_ticket_comment',
+                'view_any_ticket_comment',
+                'view_notification',
+                'view_any_notification',
+            ]);
+        })->get();
         $member->syncPermissions($memberPermissions);
 
         // Get default team
@@ -100,10 +97,21 @@ class RoleSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]
         );
-        $superAdminUser->assignRole($superAdmin);
+        
+        // Attach user to team first
         if ($defaultTeam && !$superAdminUser->teams->contains($defaultTeam->id)) {
             $superAdminUser->teams()->attach($defaultTeam->id);
         }
+        
+        // Then assign role with team_id in pivot
+        DB::table('model_has_roles')->updateOrInsert(
+            [
+                'model_id' => $superAdminUser->id,
+                'model_type' => User::class,
+                'role_id' => $superAdmin->id,
+            ],
+            ['team_id' => $defaultTeam->id]
+        );
 
         // Admin User
         $adminUser = User::firstOrCreate(
@@ -113,10 +121,19 @@ class RoleSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]
         );
-        $adminUser->assignRole($admin);
+        
         if ($defaultTeam && !$adminUser->teams->contains($defaultTeam->id)) {
             $adminUser->teams()->attach($defaultTeam->id);
         }
+        
+        DB::table('model_has_roles')->updateOrInsert(
+            [
+                'model_id' => $adminUser->id,
+                'model_type' => User::class,
+                'role_id' => $admin->id,
+            ],
+            ['team_id' => $defaultTeam->id]
+        );
 
         // Member User
         $memberUser = User::firstOrCreate(
@@ -126,9 +143,18 @@ class RoleSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]
         );
-        $memberUser->assignRole($member);
+        
         if ($defaultTeam && !$memberUser->teams->contains($defaultTeam->id)) {
             $memberUser->teams()->attach($defaultTeam->id);
         }
+        
+        DB::table('model_has_roles')->updateOrInsert(
+            [
+                'model_id' => $memberUser->id,
+                'model_type' => User::class,
+                'role_id' => $member->id,
+            ],
+            ['team_id' => $defaultTeam->id]
+        );
     }
 }

@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('invite_code', 8)->unique();
             $table->timestamps();
         });
 
@@ -24,6 +24,7 @@ return new class extends Migration
             'id' => 1,
             'name' => 'Dewakoding',
             'slug' => 'dk',
+            'invite_code' => 'DK123',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

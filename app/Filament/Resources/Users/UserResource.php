@@ -2,42 +2,56 @@
 
 namespace App\Filament\Resources\Users;
 
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Select;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\BulkAction;
-use Filament\Forms\Components\Radio;
-use App\Filament\Resources\Users\RelationManagers\ProjectsRelationManager;
-use App\Filament\Resources\Users\Pages\ListUsers;
-use App\Filament\Resources\Users\Pages\CreateUser;
-use App\Filament\Resources\Users\Pages\EditUser;
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Schemas\Schema;
+use Filament\Actions\BulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Radio;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Filament\Actions\BulkActionGroup;
+use Filament\Forms\Components\Select;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\DateTimePicker;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\Users\Pages\EditUser;
+use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Filament\Resources\Users\Pages\CreateUser;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\Users\RelationManagers\ProjectsRelationManager;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationLabel = 'Users';
 
     protected static ?string $tenantOwnershipRelationshipName = 'teams';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereNotExists(function ($query) {
+                $query->select(\DB::raw(1))
+                    ->from('model_has_roles')
+                    ->whereColumn('model_has_roles.model_id', 'users.id')
+                    ->where('model_has_roles.model_type', User::class)
+                    ->whereNull('model_has_roles.team_id');
+            });
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -50,20 +64,24 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->unique(
-                        ignoreRecord: true 
+                        ignoreRecord: true
                     )
                     ->maxLength(255),
                 DateTimePicker::make('email_verified_at'),
                 TextInput::make('password')
                     ->password()
-                    ->dehydrateStateUsing(fn ($state) => ! empty($state) ? Hash::make($state) : null
+                    ->dehydrateStateUsing(
+                        fn($state) => !empty($state) ? Hash::make($state) : null
                     )
-                    ->dehydrated(fn ($state) => ! empty($state))
-                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->dehydrated(fn($state) => !empty($state))
+                    ->required(fn(string $operation): bool => $operation === 'create')
                     ->maxLength(255),
                 Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
+                    ->saveRelationshipsUsing(function (Model $record, $state) {
+                        $record->roles()->syncWithPivotValues($state, [config('permission.column_names.team_foreign_key') => getPermissionsTeamId()]);
+                    })
                     ->preload()
                     ->searchable(),
             ]);
@@ -85,13 +103,13 @@ class UserResource extends Resource
                     ->label('Roles')
                     ->badge()
                     ->separator(',')
-                    ->tooltip(fn (User $record): string => $record->roles->pluck('name')->join(', ') ?: 'No Roles')
+                    ->tooltip(fn(User $record): string => $record->roles->pluck('name')->join(', ') ?: 'No Roles')
                     ->sortable(),
 
                 TextColumn::make('projects_count')
                     ->label('Projects')
                     ->counts('projects')
-                    ->tooltip(fn (User $record): string => $record->projects->pluck('name')->join(', ') ?: 'No Projects')
+                    ->tooltip(fn(User $record): string => $record->projects->pluck('name')->join(', ') ?: 'No Projects')
                     ->sortable(),
 
                 TextColumn::make('assigned_tickets_count')
@@ -126,15 +144,15 @@ class UserResource extends Resource
             ->filters([
                 Filter::make('has_projects')
                     ->label('Has Projects')
-                    ->query(fn (Builder $query): Builder => $query->whereHas('projects')),
+                    ->query(fn(Builder $query): Builder => $query->whereHas('projects')),
 
                 Filter::make('has_assigned_tickets')
                     ->label('Has Assigned Tickets')
-                    ->query(fn (Builder $query): Builder => $query->whereHas('assignedTickets')),
+                    ->query(fn(Builder $query): Builder => $query->whereHas('assignedTickets')),
 
                 Filter::make('has_created_tickets')
                     ->label('Has Created Tickets')
-                    ->query(fn (Builder $query): Builder => $query->whereHas('createdTickets')),
+                    ->query(fn(Builder $query): Builder => $query->whereHas('createdTickets')),
 
                 // Filter by role
                 SelectFilter::make('roles')
@@ -145,7 +163,7 @@ class UserResource extends Resource
 
                 Filter::make('email_unverified')
                     ->label('Email Unverified')
-                    ->query(fn (Builder $query): Builder => $query->whereNull('email_verified_at')),
+                    ->query(fn(Builder $query): Builder => $query->whereNull('email_verified_at')),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -154,7 +172,7 @@ class UserResource extends Resource
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
-                    
+
                     // NEW: Bulk action to assign role
                     BulkAction::make('assignRole')
                         ->label('Assign Role')
@@ -167,7 +185,7 @@ class UserResource extends Resource
                                 ->preload()
                                 ->searchable()
                                 ->required(),
-                            
+
                             Radio::make('role_mode')
                                 ->label('Assignment Mode')
                                 ->options([

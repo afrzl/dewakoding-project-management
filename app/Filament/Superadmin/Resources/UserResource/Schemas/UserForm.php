@@ -17,27 +17,27 @@ class UserForm
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                    
+
                 TextInput::make('email')
                     ->label('Email address')
                     ->email()
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
-                    
+
                 TextInput::make('password')
                     ->password()
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->required(fn (string $context): bool => $context === 'create')
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $context): bool => $context === 'create')
                     ->maxLength(255),
-                    
+
                 Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
                     ->preload()
                     ->searchable(),
-                    
+
                 Select::make('teams')
                     ->relationship('teams', 'name')
                     ->multiple()

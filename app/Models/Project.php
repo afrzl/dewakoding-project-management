@@ -20,6 +20,7 @@ class Project extends Model implements HasCurrentTenantLabel
         'name',
         'description',
         'ticket_prefix',
+        'color',
         'start_date',
         'end_date',
         'pinned_date',

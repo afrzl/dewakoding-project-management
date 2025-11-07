@@ -28,57 +28,57 @@ class TicketPriorityPolicy
 
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('view_any_ticket::priority');
+        return $authUser->can('ViewAny:TicketPriority');
     }
 
     public function view(AuthUser $authUser, TicketPriority $ticketPriority): bool
     {
-        return $authUser->can('view_ticket::priority');
+        return $authUser->can('View:TicketPriority');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('create_ticket::priority');
+        return $authUser->can('Create:TicketPriority');
     }
 
     public function update(AuthUser $authUser, TicketPriority $ticketPriority): bool
     {
-        return $authUser->can('update_ticket::priority');
+        return $authUser->can('Update:TicketPriority');
     }
 
     public function delete(AuthUser $authUser, TicketPriority $ticketPriority): bool
     {
-        return $authUser->can('delete_ticket::priority');
+        return $authUser->can('Delete:TicketPriority');
     }
 
     public function restore(AuthUser $authUser, TicketPriority $ticketPriority): bool
     {
-        return $authUser->can('restore_ticket::priority');
+        return $authUser->can('Restore:TicketPriority');
     }
 
     public function forceDelete(AuthUser $authUser, TicketPriority $ticketPriority): bool
     {
-        return $authUser->can('force_delete_ticket::priority');
+        return $authUser->can('ForceDelete:TicketPriority');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('force_delete_any_ticket::priority');
+        return $authUser->can('ForceDeleteAny:TicketPriority');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('restore_any_ticket::priority');
+        return $authUser->can('RestoreAny:TicketPriority');
     }
 
     public function replicate(AuthUser $authUser, TicketPriority $ticketPriority): bool
     {
-        return $authUser->can('replicate_ticket::priority');
+        return $authUser->can('Replicate:TicketPriority');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('reorder_ticket::priority');
+        return $authUser->can('Reorder:TicketPriority');
     }
 
 }

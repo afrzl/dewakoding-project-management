@@ -18,21 +18,21 @@ class RoleSeeder extends Seeder
 
         // Daftar resource Filament
         $resources = [
-            'project',
-            'ticket',
-            'ticket::priority',
-            'ticket::comment',
-            'notification',
-            'user',
-            'role',
+            'Project',
+            'Ticket',
+            'TicketPriority',
+            'TicketComment',
+            'Notification',
+            'User',
+            'Role',
         ];
 
-        $actions = ['view', 'view_any', 'create', 'update', 'delete', 'restore', 'force_delete', 'force_delete_any', 'restore_any', 'replicate', 'reorder'];
+        $actions = ['View', 'ViewAny', 'Create', 'Update', 'Delete', 'Restore', 'ForceDelete', 'ForceDeleteAny', 'RestoreAny', 'Replicate', 'Reorder'];
 
         // Buat permission granular untuk setiap resource PERTAMA
         foreach ($resources as $resource) {
             foreach ($actions as $action) {
-                $permissionName = $action . '_' . $resource;
+                $permissionName = $action . ':' . $resource;
                 Permission::firstOrCreate(
                     ['name' => $permissionName, 'guard_name' => 'web']
                 );
@@ -51,7 +51,7 @@ class RoleSeeder extends Seeder
 
         foreach ($pages as $page) {
             Permission::firstOrCreate([
-                'name' => 'page_' . $page,
+                'name' => 'View:' . $page,
                 'guard_name' => 'web'
             ]);
         }
@@ -69,7 +69,7 @@ class RoleSeeder extends Seeder
 
         foreach ($widgets as $widget) {
             Permission::firstOrCreate([
-                'name' => 'widget_' . $widget,
+                'name' => 'View:' . $widget,
                 'guard_name' => 'web'
             ]);
         }
@@ -108,17 +108,17 @@ class RoleSeeder extends Seeder
         // member: hanya view/view_any project, ticket, ticket_priority, ticket_comment, notification, dan update ticket (untuk drag & drop)
         $memberPermissions = Permission::where(function ($q) {
             $q->whereIn('name', [
-                'view_project',
-                'view_any_project',
-                'view_ticket',
-                'view_any_ticket',
-                'update_ticket',
-                'view_ticket_priority',
-                'view_any_ticket_priority',
-                'view_ticket_comment',
-                'view_any_ticket_comment',
-                'view_notification',
-                'view_any_notification',
+                'View:Project',
+                'ViewAny:Project',
+                'View:Ticket',
+                'ViewAny:Ticket',
+                'Update:Ticket',
+                'View:TicketPriority',
+                'ViewAny:TicketPriority',
+                'View:TicketComment',
+                'ViewAny:TicketComment',
+                'View:Notification',
+                'ViewAny:Notification',
             ]);
         })->get();
         $member->syncPermissions($memberPermissions);

@@ -28,57 +28,57 @@ class TicketCommentPolicy
 
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('view_any_ticket::comment');
+        return $authUser->can('ViewAny:TicketComment');
     }
 
     public function view(AuthUser $authUser, TicketComment $ticketComment): bool
     {
-        return $authUser->can('view_ticket::comment');
+        return $authUser->can('View:TicketComment');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('create_ticket::comment');
+        return $authUser->can('Create:TicketComment');
     }
 
     public function update(AuthUser $authUser, TicketComment $ticketComment): bool
     {
-        return $authUser->can('update_ticket::comment');
+        return $authUser->can('Update:TicketComment');
     }
 
     public function delete(AuthUser $authUser, TicketComment $ticketComment): bool
     {
-        return $authUser->can('delete_ticket::comment');
+        return $authUser->can('Delete:TicketComment');
     }
 
     public function restore(AuthUser $authUser, TicketComment $ticketComment): bool
     {
-        return $authUser->can('restore_ticket::comment');
+        return $authUser->can('Restore:TicketComment');
     }
 
     public function forceDelete(AuthUser $authUser, TicketComment $ticketComment): bool
     {
-        return $authUser->can('force_delete_ticket::comment');
+        return $authUser->can('ForceDelete:TicketComment');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('force_delete_any_ticket::comment');
+        return $authUser->can('ForceDeleteAny:TicketComment');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('restore_any_ticket::comment');
+        return $authUser->can('RestoreAny:TicketComment');
     }
 
     public function replicate(AuthUser $authUser, TicketComment $ticketComment): bool
     {
-        return $authUser->can('replicate_ticket::comment');
+        return $authUser->can('Replicate:TicketComment');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('reorder_ticket::comment');
+        return $authUser->can('Reorder:TicketComment');
     }
 
 }

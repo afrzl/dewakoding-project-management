@@ -24,57 +24,57 @@ class TeamPolicy
 
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('view_any_team');
+        return $authUser->can('ViewAny:Team');
     }
 
     public function view(AuthUser $authUser, Team $team): bool
     {
-        return $authUser->can('view_team');
+        return $authUser->can('View:Team');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('create_team');
+        return $authUser->can('Create:Team');
     }
 
     public function update(AuthUser $authUser, Team $team): bool
     {
-        return $authUser->can('update_team');
+        return $authUser->can('Update:Team');
     }
 
     public function delete(AuthUser $authUser, Team $team): bool
     {
-        return $authUser->can('delete_team');
+        return $authUser->can('Delete:Team');
     }
 
     public function restore(AuthUser $authUser, Team $team): bool
     {
-        return $authUser->can('restore_team');
+        return $authUser->can('Restore:Team');
     }
 
     public function forceDelete(AuthUser $authUser, Team $team): bool
     {
-        return $authUser->can('force_delete_team');
+        return $authUser->can('ForceDelete:Team');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('force_delete_any_team');
+        return $authUser->can('ForceDeleteAny:Team');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('restore_any_team');
+        return $authUser->can('RestoreAny:Team');
     }
 
     public function replicate(AuthUser $authUser, Team $team): bool
     {
-        return $authUser->can('replicate_team');
+        return $authUser->can('Replicate:Team');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('reorder_team');
+        return $authUser->can('Reorder:Team');
     }
 
 }

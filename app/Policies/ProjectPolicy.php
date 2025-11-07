@@ -28,57 +28,57 @@ class ProjectPolicy
 
     public function viewAny(AuthUser $authUser): bool
     {
-        return $authUser->can('view_any_project');
+        return $authUser->can('ViewAny:Project');
     }
 
     public function view(AuthUser $authUser, Project $project): bool
     {
-        return $authUser->can('view_project');
+        return $authUser->can('View:Project');
     }
 
     public function create(AuthUser $authUser): bool
     {
-        return $authUser->can('create_project');
+        return $authUser->can('Create:Project');
     }
 
     public function update(AuthUser $authUser, Project $project): bool
     {
-        return $authUser->can('update_project');
+        return $authUser->can('Update:Project');
     }
 
     public function delete(AuthUser $authUser, Project $project): bool
     {
-        return $authUser->can('delete_project');
+        return $authUser->can('Delete:Project');
     }
 
     public function restore(AuthUser $authUser, Project $project): bool
     {
-        return $authUser->can('restore_project');
+        return $authUser->can('Restore:Project');
     }
 
     public function forceDelete(AuthUser $authUser, Project $project): bool
     {
-        return $authUser->can('force_delete_project');
+        return $authUser->can('ForceDelete:Project');
     }
 
     public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $authUser->can('force_delete_any_project');
+        return $authUser->can('ForceDeleteAny:Project');
     }
 
     public function restoreAny(AuthUser $authUser): bool
     {
-        return $authUser->can('restore_any_project');
+        return $authUser->can('RestoreAny:Project');
     }
 
     public function replicate(AuthUser $authUser, Project $project): bool
     {
-        return $authUser->can('replicate_project');
+        return $authUser->can('Replicate:Project');
     }
 
     public function reorder(AuthUser $authUser): bool
     {
-        return $authUser->can('reorder_project');
+        return $authUser->can('Reorder:Project');
     }
 
 }

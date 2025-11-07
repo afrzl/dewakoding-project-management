@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Team;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -15,10 +16,10 @@ class TeamObserver
     {
         try {
             \Log::info('TeamObserver: Team created', ['team_id' => $team->id, 'team_name' => $team->name]);
-            
+
             // Setup roles untuk team baru
             $this->setupTeamRoles($team);
-            
+
             \Log::info('TeamObserver: Roles setup completed', ['team_id' => $team->id]);
         } catch (\Exception $e) {
             \Log::error('TeamObserver: Failed to setup roles', [
@@ -26,7 +27,7 @@ class TeamObserver
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
-            
+
             // Jangan throw error agar team tetap terbuat
             // Role bisa di-assign manual nanti
         }
@@ -38,7 +39,7 @@ class TeamObserver
     protected function setupTeamRoles(Team $team): void
     {
         \Log::info('TeamObserver: Starting role setup', ['team_id' => $team->id]);
-        
+
         // Buat role super_admin untuk team ini
         $superAdmin = Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'web', 'team_id' => $team->id]
@@ -74,20 +75,44 @@ class TeamObserver
         // Member: hanya view permissions dan update ticket
         $memberPermissions = Permission::where(function ($q) {
             $q->whereIn('name', [
-                'view_project',
-                'view_any_project',
-                'view_ticket',
-                'view_any_ticket',
-                'update_ticket',
-                'view_ticketPriority',
-                'view_any_ticketPriority',
-                'view_ticketComment',
-                'view_any_ticketComment',
-                'view_notification',
-                'view_any_notification',
+                'View:Project',
+                'ViewAny:Project',
+                'View:Ticket',
+                'ViewAny:Ticket',
+                'Update:Ticket',
+                'View:TicketPriority',
+                'ViewAny:TicketPriority',
+                'View:TicketComment',
+                'ViewAny:TicketComment',
+                'View:Notification',
+                'ViewAny:Notification',
             ]);
         })->get();
         $member->syncPermissions($memberPermissions);
+
+        DB::table('ticket_priorities')->insert([
+            [
+                'name' => 'Low',
+                'color' => '#10B981', // Green
+                'created_at' => now(),
+                'team_id' => $team->id,
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Medium',
+                'color' => '#F59E0B', // Yellow
+                'created_at' => now(),
+                'team_id' => $team->id,
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'High',
+                'color' => '#EF4444', // Red
+                'created_at' => now(),
+                'team_id' => $team->id,
+                'updated_at' => now(),
+            ],
+        ]);
         \Log::info('TeamObserver: member permissions synced', ['permissions_count' => $memberPermissions->count()]);
     }
 

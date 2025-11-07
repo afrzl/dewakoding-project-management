@@ -92,8 +92,42 @@ class RegisterTeam extends RegisterTenant
 
         try {
             $team = Team::create($data);
+            
             // Attach user sebagai member
-            $team->members()->attach(auth()->user());
+            $team->members()->attach(auth()->id());
+            
+            \Log::info('RegisterTeam: User attached as member', [
+                'team_id' => $team->id,
+                'user_id' => auth()->id()
+            ]);
+
+            // Assign user sebagai super_admin di team ini
+            $superAdminRole = \App\Models\Role::where('name', 'super_admin')
+                ->where('team_id', $team->id)
+                ->first();
+
+            if ($superAdminRole) {
+                \Log::info('RegisterTeam: super_admin role found', [
+                    'role_id' => $superAdminRole->id,
+                    'team_id' => $team->id
+                ]);
+
+                \DB::table('model_has_roles')->insert([
+                    'role_id' => $superAdminRole->id,
+                    'model_type' => \App\Models\User::class,
+                    'model_id' => auth()->id(),
+                    'team_id' => $team->id,
+                ]);
+
+                \Log::info('RegisterTeam: super_admin role assigned', [
+                    'user_id' => auth()->id(),
+                    'team_id' => $team->id
+                ]);
+            } else {
+                \Log::warning('RegisterTeam: super_admin role NOT found', [
+                    'team_id' => $team->id
+                ]);
+            }
 
             return $team;
         } catch (\Exception $e) {

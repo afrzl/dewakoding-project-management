@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use Illuminate\Foundation\Auth\User as AuthUser;
+use Filament\Facades\Filament;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class UserPolicy
 {
@@ -15,6 +16,9 @@ class UserPolicy
         if ($authUser->isSuperAdmin()) {
             return true;
         }
+
+        $tenant = Filament::getTenant();
+        setPermissionsTeamId($tenant?->id);
 
         return null;
     }

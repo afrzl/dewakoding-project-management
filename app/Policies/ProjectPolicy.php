@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use Illuminate\Foundation\Auth\User as AuthUser;
 use App\Models\Project;
+use Filament\Facades\Filament;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class ProjectPolicy
 {
@@ -18,6 +19,9 @@ class ProjectPolicy
         if ($authUser->isSuperAdmin()) {
             return true;
         }
+
+        $tenant = Filament::getTenant();
+        setPermissionsTeamId($tenant?->id);
 
         return null;
     }

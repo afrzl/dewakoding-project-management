@@ -9,6 +9,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Exceptions\Halt;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Tenancy\RegisterTenant;
+use Filament\Support\Facades\FilamentView;
 
 class RegisterTeam extends RegisterTenant
 {

@@ -91,6 +91,7 @@ class GoogleController extends Controller
             return redirect()->route('filament.admin.pages.dashboard', ['tenant' => $firstTenant->slug]);
         }
 
-        return redirect()->route('filament.admin.tenant-registration');
+        // Gunakan Filament helper untuk mendapatkan tenant registration URL
+        return redirect(\Filament\Facades\Filament::getPanel('admin')->getTenantRegistrationUrl());
     }
 }

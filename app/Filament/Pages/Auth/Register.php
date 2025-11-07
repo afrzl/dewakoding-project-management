@@ -22,11 +22,18 @@ class Register extends BaseRegister
     {
         $user = Auth::user();
 
-        // If user doesn't have any teams, redirect to tenant registration
-        if ($user && $user->teams()->count() === 0) {
-            return filament()->getTenantRegistrationUrl();
+        if (!$user) {
+            return parent::getRedirectUrl();
         }
 
-        return parent::getRedirectUrl();
+        // Jika user punya team, redirect ke dashboard team pertama
+        $firstTenant = $user->teams()->first();
+        
+        if ($firstTenant) {
+            return route('filament.admin.pages.dashboard', ['tenant' => $firstTenant->slug]);
+        }
+
+        // Jika user belum punya team, redirect ke tenant registration
+        return filament()->getTenantRegistrationUrl();
     }
 }

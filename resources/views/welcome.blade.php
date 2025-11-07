@@ -96,9 +96,13 @@
                             @php
                                 $user = auth()->user();
                                 $firstTenant = $user->teams()->first();
-                                $redirectUrl = $firstTenant 
-                                    ? route('filament.admin.pages.dashboard', ['tenant' => $firstTenant->slug])
-                                    : route('filament.admin.tenant-registration');
+                                
+                                if ($firstTenant) {
+                                    $redirectUrl = route('filament.admin.pages.dashboard', ['tenant' => $firstTenant->slug]);
+                                } else {
+                                    $panel = \Filament\Facades\Filament::getPanel('admin');
+                                    $redirectUrl = $panel->getTenantRegistrationUrl();
+                                }
                             @endphp
                             <a href="{{ $redirectUrl }}" class="gradient-background text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg">
                                 {{ $firstTenant ? 'Go to Dashboard' : 'Create Your Team' }}

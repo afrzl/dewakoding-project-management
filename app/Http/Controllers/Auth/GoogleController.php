@@ -26,7 +26,7 @@ class GoogleController extends Controller
             
             if ($user) {
                 Auth::login($user);
-                return redirect()->intended('/admin');
+                return $this->redirectToTenant($user);
             }
             
             $existingUser = User::where('email', $googleUser->email)->first();
@@ -36,7 +36,7 @@ class GoogleController extends Controller
                     'google_id' => $googleUser->id
                 ]);
                 Auth::login($existingUser);
-                return redirect()->intended('/admin');
+                return $this->redirectToTenant($existingUser);
             }
             
             $newUser = User::create([
@@ -47,10 +47,21 @@ class GoogleController extends Controller
             ]);
             
             Auth::login($newUser);
-            return redirect()->intended('/admin');
+            return $this->redirectToTenant($newUser);
             
         } catch (Exception $e) {
             return redirect('/admin/login')->with('error', 'Something went wrong with Google authentication.');
         }
+    }
+
+    private function redirectToTenant(User $user)
+    {
+        $firstTenant = $user->teams()->first();
+        
+        if ($firstTenant) {
+            return redirect()->route('filament.admin.pages.dashboard', ['tenant' => $firstTenant->slug]);
+        }
+        
+        return redirect()->route('filament.admin.tenant-registration');
     }
 }

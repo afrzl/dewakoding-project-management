@@ -2,11 +2,13 @@
 
 namespace App\Filament\Pages\Tenancy;
 
+use Throwable;
 use App\Models\Team;
+use Illuminate\Support\Str;
+use Filament\Schemas\Schema;
+use Filament\Support\Exceptions\Halt;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Tenancy\RegisterTenant;
-use Filament\Schemas\Schema;
-use Illuminate\Support\Str;
 
 class RegisterTeam extends RegisterTenant
 {
@@ -15,6 +17,45 @@ class RegisterTeam extends RegisterTenant
     public function mount(): void
     {
         $this->form->fill();
+    }
+
+    public function register(): void
+    {
+        try {
+            $this->beginDatabaseTransaction();
+
+            $this->callHook('beforeValidate');
+
+            $data = $this->form->getState();
+
+            $this->callHook('afterValidate');
+
+            $data = $this->mutateFormDataBeforeRegister($data);
+
+            $this->callHook('beforeRegister');
+
+            $this->tenant = $this->handleRegistration($data);
+
+            $this->form->model($this->tenant)->saveRelationships();
+
+            $this->callHook('afterRegister');
+        } catch (Halt $exception) {
+            $exception->shouldRollbackDatabaseTransaction() ?
+                $this->rollBackDatabaseTransaction() :
+                $this->commitDatabaseTransaction();
+
+            return;
+        } catch (Throwable $exception) {
+            $this->rollBackDatabaseTransaction();
+
+            throw $exception;
+        }
+
+        $this->commitDatabaseTransaction();
+
+        if ($redirectUrl = $this->getRedirectUrl()) {
+            $this->redirect($redirectUrl, navigate: FilamentView::hasSpaMode($redirectUrl));
+        }
     }
 
     public static function getLabel(): string
@@ -50,49 +91,8 @@ class RegisterTeam extends RegisterTenant
 
         try {
             $team = Team::create($data);
-            \Log::info('RegisterTeam: Team created successfully', [
-                'team_id' => $team->id,
-                'team_slug' => $team->slug
-            ]);
-
             // Attach user sebagai member
             $team->members()->attach(auth()->user());
-            \Log::info('RegisterTeam: User attached as member', [
-                'team_id' => $team->id,
-                'user_id' => auth()->id()
-            ]);
-
-            // Assign user sebagai super_admin di team ini
-            $superAdminRole = \App\Models\Role::where('name', 'super_admin')
-                ->where('team_id', $team->id)
-                ->first();
-
-            if ($superAdminRole) {
-                \Log::info('RegisterTeam: super_admin role found', [
-                    'role_id' => $superAdminRole->id,
-                    'team_id' => $team->id
-                ]);
-
-                \DB::table('model_has_roles')->insert([
-                    'role_id' => $superAdminRole->id,
-                    'model_type' => \App\Models\User::class,
-                    'model_id' => auth()->id(),
-                    'team_id' => $team->id,
-                ]);
-
-                \Log::info('RegisterTeam: super_admin role assigned', [
-                    'user_id' => auth()->id(),
-                    'team_id' => $team->id
-                ]);
-            } else {
-                \Log::warning('RegisterTeam: super_admin role NOT found', [
-                    'team_id' => $team->id
-                ]);
-            }
-
-            \Log::info('RegisterTeam: Registration completed successfully', [
-                'team_id' => $team->id
-            ]);
 
             return $team;
         } catch (\Exception $e) {

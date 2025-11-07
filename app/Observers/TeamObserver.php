@@ -13,8 +13,23 @@ class TeamObserver
      */
     public function created(Team $team): void
     {
-        // Setup roles untuk team baru
-        $this->setupTeamRoles($team);
+        try {
+            \Log::info('TeamObserver: Team created', ['team_id' => $team->id, 'team_name' => $team->name]);
+            
+            // Setup roles untuk team baru
+            $this->setupTeamRoles($team);
+            
+            \Log::info('TeamObserver: Roles setup completed', ['team_id' => $team->id]);
+        } catch (\Exception $e) {
+            \Log::error('TeamObserver: Failed to setup roles', [
+                'team_id' => $team->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            
+            // Jangan throw error agar team tetap terbuat
+            // Role bisa di-assign manual nanti
+        }
     }
 
     /**
@@ -22,28 +37,39 @@ class TeamObserver
      */
     protected function setupTeamRoles(Team $team): void
     {
+        \Log::info('TeamObserver: Starting role setup', ['team_id' => $team->id]);
+        
         // Buat role super_admin untuk team ini
         $superAdmin = Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'web', 'team_id' => $team->id]
         );
+        \Log::info('TeamObserver: super_admin role created', ['role_id' => $superAdmin->id]);
 
         // Buat role admin untuk team ini
         $admin = Role::firstOrCreate(
             ['name' => 'admin', 'guard_name' => 'web', 'team_id' => $team->id]
         );
+        \Log::info('TeamObserver: admin role created', ['role_id' => $admin->id]);
 
         // Buat role member untuk team ini
         $member = Role::firstOrCreate(
             ['name' => 'member', 'guard_name' => 'web', 'team_id' => $team->id]
         );
+        \Log::info('TeamObserver: member role created', ['role_id' => $member->id]);
+
+        // Get all permissions count
+        $permissionsCount = Permission::count();
+        \Log::info('TeamObserver: Total permissions available', ['count' => $permissionsCount]);
 
         // Super admin mendapat SEMUA permissions
         $allPermissions = Permission::all();
         $superAdmin->syncPermissions($allPermissions);
+        \Log::info('TeamObserver: super_admin permissions synced', ['permissions_count' => $allPermissions->count()]);
 
         // Admin: semua permission kecuali delete_user
         $adminPermissions = Permission::whereNotIn('name', ['delete_user'])->get();
         $admin->syncPermissions($adminPermissions);
+        \Log::info('TeamObserver: admin permissions synced', ['permissions_count' => $adminPermissions->count()]);
 
         // Member: hanya view permissions dan update ticket
         $memberPermissions = Permission::where(function ($q) {
@@ -62,6 +88,7 @@ class TeamObserver
             ]);
         })->get();
         $member->syncPermissions($memberPermissions);
+        \Log::info('TeamObserver: member permissions synced', ['permissions_count' => $memberPermissions->count()]);
     }
 
     /**

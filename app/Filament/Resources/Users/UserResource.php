@@ -41,18 +41,6 @@ class UserResource extends Resource
 
     protected static ?string $tenantOwnershipRelationshipName = 'teams';
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->whereNotExists(function ($query) {
-                $query->select(\DB::raw(1))
-                    ->from('model_has_roles')
-                    ->whereColumn('model_has_roles.model_id', 'users.id')
-                    ->where('model_has_roles.model_type', User::class)
-                    ->whereNull('model_has_roles.team_id');
-            });
-    }
-
     public static function form(Schema $schema): Schema
     {
         return $schema

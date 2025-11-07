@@ -3,12 +3,16 @@
 namespace App\Providers;
 
 use App\Models\Role;
+use App\Models\Team;
+use App\Models\User;
 use Livewire\Livewire;
 use App\Models\Permission;
 use Illuminate\Support\Str;
 use Filament\Widgets\Widget;
+use App\Observers\TeamObserver;
 use Filament\Resources\Resource;
 use Filament\Pages\BasePage as Page;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\PanelSwitch\PanelSwitch;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
@@ -32,6 +36,13 @@ class AppServiceProvider extends ServiceProvider
         app(\Spatie\Permission\PermissionRegistrar::class)
             ->setPermissionClass(Permission::class)
             ->setRoleClass(Role::class);
+
+        // Superadmin global bypass semua permission checks
+        Gate::before(function (User $user, string $ability) {
+            if ($user->isSuperAdmin()) {
+                return true;
+            }
+        });
 
         Livewire::component('edit-comment-modal', EditCommentModal::class);
         FilamentShield::buildPermissionKeyUsing(
@@ -61,7 +72,9 @@ class AppServiceProvider extends ServiceProvider
         );
 
         PanelSwitch::configureUsing(function (PanelSwitch $panelSwitch) {
-            $panelSwitch->simple();
+            $panelSwitch->simple()
+                ->canSwitchPanels(fn(): bool => auth()->user()?->isSuperAdmin())
+                ->visible(fn(): bool => auth()->user()?->isSuperAdmin());
         });
     }
 }

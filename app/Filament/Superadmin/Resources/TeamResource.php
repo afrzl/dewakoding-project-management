@@ -5,6 +5,7 @@ namespace App\Filament\Superadmin\Resources;
 use App\Filament\Superadmin\Resources\TeamResource\Pages\CreateTeam;
 use App\Filament\Superadmin\Resources\TeamResource\Pages\EditTeam;
 use App\Filament\Superadmin\Resources\TeamResource\Pages\ListTeams;
+use App\Filament\Superadmin\Resources\TeamResource\RelationManagers;
 use App\Filament\Superadmin\Resources\TeamResource\Schemas\TeamForm;
 use App\Filament\Superadmin\Resources\TeamResource\Tables\TeamsTable;
 use App\Models\Team;
@@ -28,8 +29,16 @@ class TeamResource extends Resource
     
     protected static ?int $navigationSort = 2;
     
+    // Set policy to null to completely disable policy checks
+    protected static ?string $modelPolicy = null;
+    
     // Disable policy authorization for superadmin panel
     public static function canViewAny(): bool
+    {
+        return true;
+    }
+    
+    public static function canView($record): bool
     {
         return true;
     }
@@ -53,6 +62,36 @@ class TeamResource extends Resource
     {
         return true;
     }
+    
+    public static function canForceDelete($record): bool
+    {
+        return true;
+    }
+    
+    public static function canForceDeleteAny(): bool
+    {
+        return true;
+    }
+    
+    public static function canRestore($record): bool
+    {
+        return true;
+    }
+    
+    public static function canRestoreAny(): bool
+    {
+        return true;
+    }
+    
+    public static function canReplicate($record): bool
+    {
+        return true;
+    }
+    
+    public static function canReorder(): bool
+    {
+        return true;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -67,7 +106,7 @@ class TeamResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\MembersRelationManager::class,
         ];
     }
 

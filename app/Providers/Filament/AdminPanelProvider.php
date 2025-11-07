@@ -33,10 +33,11 @@ class AdminPanelProvider extends PanelProvider
             ->databaseTransactions()
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('/')
             ->login(Login::class)
             ->registration(Register::class)
             ->tenant(\App\Models\Team::class, ownershipRelationship: 'teams', slugAttribute: 'slug')
+            ->tenantDomain('{tenant:slug}.' . config('app.url'))
             ->colors([
                 'primary' => Color::Blue,
             ])

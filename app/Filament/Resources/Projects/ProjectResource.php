@@ -214,16 +214,16 @@ class ProjectResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        $userIsSuperAdmin = auth()->user() && (
-            (method_exists(auth()->user(), 'hasRole') && auth()->user()->hasRole('super_admin'))
-            || (isset(auth()->user()->role) && auth()->user()->role === 'super_admin')
-        );
-
-        if (! $userIsSuperAdmin) {
-            $query->whereHas('members', function (Builder $query) {
-                $query->where('user_id', auth()->id());
-            });
+        // Superadmin global bisa lihat semua projects (bypass tenant scope)
+        if (auth()->check() && auth()->user()->isSuperAdmin()) {
+            // Jangan filter berdasarkan team_id untuk superadmin
+            return $query->withoutGlobalScopes();
         }
+
+        // User biasa hanya bisa lihat projects dimana mereka adalah member
+        $query->whereHas('members', function (Builder $query) {
+            $query->where('user_id', auth()->id());
+        });
 
         return $query;
     }

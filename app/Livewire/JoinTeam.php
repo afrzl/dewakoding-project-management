@@ -74,6 +74,20 @@ class JoinTeam extends Component implements HasForms
 
         $team->members()->attach($user);
 
+        // Auto-assign role "member" saat join team
+        $memberRole = \App\Models\Role::where('name', 'member')
+            ->where('team_id', $team->id)
+            ->first();
+
+        if ($memberRole) {
+            \DB::table('model_has_roles')->insert([
+                'role_id' => $memberRole->id,
+                'model_type' => \App\Models\User::class,
+                'model_id' => $user->id,
+                'team_id' => $team->id,
+            ]);
+        }
+
         Notification::make()
             ->title('Success!')
             ->body('You have successfully joined ' . $team->name)

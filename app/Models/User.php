@@ -103,7 +103,15 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function isSuperAdmin(): bool
     {
-        return $this->team_id === null && $this->hasRole('super_admin');
+        // Cek apakah user punya role dengan team_id null menggunakan direct DB query
+        // untuk bypass Spatie Permission team scoping
+        return \Illuminate\Support\Facades\DB::table('model_has_roles')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->where('model_has_roles.model_id', $this->id)
+            ->where('model_has_roles.model_type', self::class)
+            ->where('roles.name', 'super_admin')
+            ->whereNull('model_has_roles.team_id')
+            ->exists();
     }
 
     public function canAccessPanel(Panel $panel): bool
@@ -123,11 +131,36 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function getTenants(Panel $panel): Collection
     {
+        // Jika superadmin, return semua teams
+        if ($this->isSuperAdmin()) {
+            return \App\Models\Team::query()->get();
+        }
+        
         return $this->teams;
     }
 
     public function canAccessTenant(\Illuminate\Database\Eloquent\Model $tenant): bool
     {
+        // Superadmin bisa akses semua tenant
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+        
         return $this->teams->contains($tenant);
+    }
+
+    /**
+     * Determine if the entity has the given abilities.
+     * Override untuk memberikan superadmin akses ke semua permissions
+     */
+    public function can($abilities, $arguments = []): bool
+    {
+        // Jika user adalah superadmin global, otomatis punya semua permissions
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        // Gunakan logic default dari Laravel
+        return parent::can($abilities, $arguments);
     }
 }

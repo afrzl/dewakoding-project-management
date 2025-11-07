@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
-use Filament\Models\Contracts\HasName;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use App\Observers\TeamObserver;
+use Filament\Models\Contracts\HasName;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+
+#[ObservedBy(TeamObserver::class)]
 class Team extends Model implements HasName
 {
     /** @use HasFactory<\Database\Factories\TeamFactory> */

@@ -20,39 +20,76 @@ class RoleSeeder extends Seeder
         $resources = [
             'project',
             'ticket',
-            'ticket_priority',
-            'ticket_comment',
+            'ticket::priority',
+            'ticket::comment',
             'notification',
             'user',
+            'role',
         ];
 
-        $actions = ['view', 'view_any', 'create', 'update', 'delete'];
+        $actions = ['view', 'view_any', 'create', 'update', 'delete', 'restore', 'force_delete', 'force_delete_any', 'restore_any', 'replicate', 'reorder'];
 
-        // Buat permission granular untuk setiap resource
-        $permissions = [];
+        // Buat permission granular untuk setiap resource PERTAMA
         foreach ($resources as $resource) {
             foreach ($actions as $action) {
                 $permissionName = $action . '_' . $resource;
-                $permissions[] = $permissionName;
-
-                // Create permission with team_id
                 Permission::firstOrCreate(
                     ['name' => $permissionName, 'guard_name' => 'web']
                 );
             }
         }
 
+        // Buat permissions untuk pages
+        $pages = [
+            'EpicsOverview',
+            'Leaderboard',
+            'ProjectBoard',
+            'ProjectTimeline',
+            'TicketTimeline',
+            'UserContributions',
+        ];
+
+        foreach ($pages as $page) {
+            Permission::firstOrCreate([
+                'name' => 'page_' . $page,
+                'guard_name' => 'web'
+            ]);
+        }
+
+        // Buat permissions untuk widgets (jika ada custom widgets yang perlu authorization)
+        $widgets = [
+            // Tambahkan widget names di sini jika ada yang perlu permissions
+            'StatsOverview',
+            'TicketsPerProjectChart',
+            'UserStatisticsChart',
+            'MonthlyTicketTrendChart',
+            'ProjectTimeline',
+            'RecentActivityTable',
+        ];
+
+        foreach ($widgets as $widget) {
+            Permission::firstOrCreate([
+                'name' => 'widget_' . $widget,
+                'guard_name' => 'web'
+            ]);
+        }
+
         // Buat role super_admin GLOBAL (tanpa team_id) untuk superadmin panel
         $superAdminGlobal = Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'web', 'team_id' => null]
         );
-        $superAdminGlobal->syncPermissions($permissions);
 
-        // Buat role super_admin, admin, member dengan team_id untuk default team
+        // Buat role super_admin dengan team_id untuk default team
         $superAdmin = Role::firstOrCreate(
             ['name' => 'super_admin', 'guard_name' => 'web', 'team_id' => $defaultTeam->id]
         );
 
+        // Super admin mendapat SEMUA permissions yang ada di database
+        $allPermissions = Permission::all();
+        $superAdminGlobal->syncPermissions($allPermissions);
+        $superAdmin->syncPermissions($allPermissions);
+
+        // Buat role admin dan member dengan team_id untuk default team
         $admin = Role::firstOrCreate(
             ['name' => 'admin', 'guard_name' => 'web'],
             ['team_id' => $defaultTeam->id]
@@ -62,10 +99,6 @@ class RoleSeeder extends Seeder
             ['name' => 'member', 'guard_name' => 'web'],
             ['team_id' => $defaultTeam->id]
         );
-
-        // super_admin: semua permission
-        $allPermissions = Permission::all();
-        $superAdmin->syncPermissions($allPermissions);
 
         // admin: semua permission kecuali user delete
         $adminPermissions = Permission::whereNotIn('name', ['delete_user'])
@@ -90,9 +123,6 @@ class RoleSeeder extends Seeder
         })->get();
         $member->syncPermissions($memberPermissions);
 
-        // Get default team
-        $defaultTeam = Team::find(1);
-
         // Buat user untuk masing-masing role
         // Super Admin User
         $superAdminUser = User::firstOrCreate(
@@ -102,12 +132,12 @@ class RoleSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]
         );
-        
+
         // Attach user to team first
         if ($defaultTeam && !$superAdminUser->teams->contains($defaultTeam->id)) {
             $superAdminUser->teams()->attach($defaultTeam->id);
         }
-        
+
         // Assign super_admin role with team_id in pivot
         DB::table('model_has_roles')->updateOrInsert(
             [
@@ -117,7 +147,7 @@ class RoleSeeder extends Seeder
             ],
             ['team_id' => $defaultTeam->id]
         );
-        
+
         // Assign global super_admin role (team_id = null) for superadmin panel access
         DB::table('model_has_roles')->updateOrInsert(
             [
@@ -136,11 +166,11 @@ class RoleSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]
         );
-        
+
         if ($defaultTeam && !$adminUser->teams->contains($defaultTeam->id)) {
             $adminUser->teams()->attach($defaultTeam->id);
         }
-        
+
         DB::table('model_has_roles')->updateOrInsert(
             [
                 'model_id' => $adminUser->id,
@@ -158,11 +188,11 @@ class RoleSeeder extends Seeder
                 'password' => bcrypt('password'),
             ]
         );
-        
+
         if ($defaultTeam && !$memberUser->teams->contains($defaultTeam->id)) {
             $memberUser->teams()->attach($defaultTeam->id);
         }
-        
+
         DB::table('model_has_roles')->updateOrInsert(
             [
                 'model_id' => $memberUser->id,

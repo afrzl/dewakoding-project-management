@@ -12,6 +12,11 @@ class RegisterTeam extends RegisterTenant
 {
     protected string $view = 'filament.pages.tenancy.register-team';
 
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+
     public static function getLabel(): string
     {
         return 'Register team';
@@ -39,7 +44,22 @@ class RegisterTeam extends RegisterTenant
     {
         $team = Team::create($data);
 
+        // Attach user sebagai member
         $team->members()->attach(auth()->user());
+
+        // Assign user sebagai super_admin di team ini
+        $superAdminRole = \App\Models\Role::where('name', 'super_admin')
+            ->where('team_id', $team->id)
+            ->first();
+
+        if ($superAdminRole) {
+            \DB::table('model_has_roles')->insert([
+                'role_id' => $superAdminRole->id,
+                'model_type' => \App\Models\User::class,
+                'model_id' => auth()->id(),
+                'team_id' => $team->id,
+            ]);
+        }
 
         return $team;
     }

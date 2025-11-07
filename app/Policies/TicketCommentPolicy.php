@@ -11,7 +11,17 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class TicketCommentPolicy
 {
     use HandlesAuthorization;
-    
+
+    public function before(AuthUser $authUser, string $ability): bool|null
+    {
+        // Jika user punya role super_admin dengan team_id null
+        if ($authUser->isSuperAdmin()) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function viewAny(AuthUser $authUser): bool
     {
         return $authUser->can('view_any_ticket::comment');

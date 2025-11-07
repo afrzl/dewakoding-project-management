@@ -16,17 +16,22 @@ class CreateUser extends CreateRecord
         // Create user
         $record = static::getModel()::create($data);
 
-        // Handle global roles separately
-        // if (isset($data['global_roles']) && !empty($data['global_roles'])) {
-        //     foreach ($data['global_roles'] as $roleId) {
-        //         DB::table('model_has_roles')->insert([
-        //             'role_id' => $roleId,
-        //             'model_type' => get_class($record),
-        //             'model_id' => $record->id,
-        //             'team_id' => null,
-        //         ]);
-        //     }
-        // }
+        // Handle is_superadmin toggle
+        if (isset($data['is_superadmin']) && $data['is_superadmin']) {
+            // Get or create global super_admin role
+            $superAdminRole = \Spatie\Permission\Models\Role::firstOrCreate([
+                'name' => 'super_admin',
+                'team_id' => null,
+            ]);
+
+            // Assign global super_admin role
+            DB::table('model_has_roles')->updateOrInsert([
+                'role_id' => $superAdminRole->id,
+                'model_type' => get_class($record),
+                'model_id' => $record->id,
+                'team_id' => null,
+            ], []);
+        }
 
         return $record;
     }

@@ -92,10 +92,26 @@
                     </div>
 
                     <div class="flex flex-col items-center">
-                        <a href="/admin" class="gradient-background text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg">
-                            Access Admin Panel
-                        </a>
-                        <p class="mt-4 text-sm text-gray-500">Manage your projects and team from our powerful administration dashboard</p>
+                        @auth
+                            @php
+                                $user = auth()->user();
+                                $firstTenant = $user->teams()->first();
+                                $redirectUrl = $firstTenant 
+                                    ? route('filament.admin.pages.dashboard', ['tenant' => $firstTenant->slug])
+                                    : route('filament.admin.tenant-registration');
+                            @endphp
+                            <a href="{{ $redirectUrl }}" class="gradient-background text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg">
+                                {{ $firstTenant ? 'Go to Dashboard' : 'Create Your Team' }}
+                            </a>
+                            <p class="mt-4 text-sm text-gray-500">
+                                {{ $firstTenant ? 'Access your workspace and start managing projects' : 'Start by creating or joining a team' }}
+                            </p>
+                        @else
+                            <a href="{{ route('filament.admin.auth.login') }}" class="gradient-background text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg">
+                                Login to Continue
+                            </a>
+                            <p class="mt-4 text-sm text-gray-500">Sign in to access your projects and team workspace</p>
+                        @endauth
                     </div>
                 </div>
             </main>

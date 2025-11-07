@@ -27,6 +27,7 @@ class TeamForm
                     }),
 
                 TextInput::make('slug')
+                    ->label('Subdomain')
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true)

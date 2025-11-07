@@ -33,6 +33,7 @@ class RegisterTeam extends RegisterTenant
                     ->afterStateUpdated(fn($state, callable $set) => $set('slug', Str::slug($state))),
 
                 TextInput::make('slug')
+                    ->label('Subdomain')
                     ->required()
                     ->unique(table: Team::class, ignorable: fn($record) => $record)
                     ->alphaDash()

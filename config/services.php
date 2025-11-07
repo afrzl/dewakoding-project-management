@@ -39,5 +39,11 @@ return [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('APP_URL') . '/auth/google/callback',
+
+        'guzzle' => [
+            'verify' => '/etc/ssl/certs/ca-certificates.crt',
+            'timeout' => 30,
+            'connect_timeout' => 10,
+        ],
     ],
 ];

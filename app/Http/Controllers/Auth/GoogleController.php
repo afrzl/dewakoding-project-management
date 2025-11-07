@@ -3,24 +3,42 @@
 namespace App\Http\Controllers\Auth;
 
 use Exception;
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use GuzzleHttp\Client;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Str;
 
 class GoogleController extends Controller
 {
+
+    private function getGoogleDriver()
+    {
+        return Socialite::buildProvider(
+            \Laravel\Socialite\Two\GoogleProvider::class,
+            [
+                'client_id' => config('services.google.client_id'),
+                'client_secret' => config('services.google.client_secret'),
+                'redirect' => config('services.google.redirect'),
+                'guzzle' => [
+                    'verify' => '/etc/ssl/certs/ca-certificates.crt',
+                    'timeout' => 30,
+                ],
+            ]
+        );
+    }
+
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        return $this->getGoogleDriver()->redirect();
     }
 
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = $this->getGoogleDriver()->user();
 
             \Log::info('Google OAuth callback', [
                 'google_id' => $googleUser->id,

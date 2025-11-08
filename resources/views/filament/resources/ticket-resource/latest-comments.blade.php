@@ -22,7 +22,7 @@
                                         <div class="flex gap-x-1">
                                             <!-- Edit Button -->
                                             <a
-                                                href="{{ route('filament.admin.resources.ticket-comments.edit', $comment) }}"
+                                                href="{{ route('filament.admin.resources.ticket-comments.edit', ['tenant' => \Filament\Facades\Filament::getTenant(), 'record' => $comment]) }}"
                                                 class="p-1 text-gray-400 hover:text-blue-500 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
                                                 title="Edit comment"
                                             >

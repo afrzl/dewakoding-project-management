@@ -123,12 +123,18 @@ class RecentActivityTable extends BaseWidget
                     ->size('sm')
                     ->tooltip('Open Ticket')
                     ->url(fn (TicketHistory $record): string => 
-                        route('filament.admin.resources.tickets.view', $record->ticket)
+                        route('filament.admin.resources.tickets.view', [
+                            'tenant' => \Filament\Facades\Filament::getTenant(),
+                            'record' => $record->ticket
+                        ])
                     )
                     ->openUrlInNewTab()
             ])
             ->recordUrl(fn (TicketHistory $record) => 
-                route('filament.admin.resources.tickets.view', $record->ticket)
+                route('filament.admin.resources.tickets.view', [
+                    'tenant' => \Filament\Facades\Filament::getTenant(),
+                    'record' => $record->ticket
+                ])
             )
             ->paginated([5, 25, 50])
             ->poll('30s')

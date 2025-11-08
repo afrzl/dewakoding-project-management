@@ -33,6 +33,8 @@ class EpicsOverview extends Page
 
     public Collection $availableProjects;
 
+    public string $searchProject = '';
+
     public function mount($project_id = null): void
     {
         $this->loadAvailableProjects();
@@ -57,10 +59,29 @@ class EpicsOverview extends Page
         $user = auth()->user();
 
         if ($user->hasRole('super_admin')) {
-            $this->availableProjects = Project::orderBy('name')->get();
+            $this->availableProjects = Project::orderByRaw('pinned_date IS NULL')
+                ->orderBy('pinned_date', 'desc')
+                ->orderBy('name')
+                ->get();
         } else {
-            $this->availableProjects = $user->projects()->orderBy('name')->get();
+            $this->availableProjects = $user->projects()
+                ->orderByRaw('pinned_date IS NULL')
+                ->orderBy('pinned_date', 'desc')
+                ->orderBy('name')
+                ->get();
         }
+    }
+
+    public function getFilteredProjectsProperty(): Collection
+    {
+        if (empty($this->searchProject)) {
+            return $this->availableProjects;
+        }
+
+        return $this->availableProjects->filter(function ($project) {
+            return str_contains(strtolower($project->name), strtolower($this->searchProject)) ||
+                   str_contains(strtolower($project->ticket_prefix ?? ''), strtolower($this->searchProject));
+        });
     }
 
     public function loadEpics(): void

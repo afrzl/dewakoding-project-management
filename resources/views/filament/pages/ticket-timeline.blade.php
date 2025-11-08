@@ -13,19 +13,67 @@
                         </p>
                     </div>
 
+                    {{-- Search Bar --}}
+                    <div class="mb-4">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <input
+                                type="text"
+                                wire:model.live.debounce.300ms="searchProject"
+                                placeholder="Search projects by name or prefix..."
+                                class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            />
+                            @if($searchProject)
+                                <button
+                                    wire:click="$set('searchProject', '')"
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                                >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+
                     @if($projects->isEmpty())
                         <div class="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
                             <h3 class="text-base font-medium text-gray-900 dark:text-white mb-1">No Projects Available</h3>
                             <p class="text-sm text-gray-500 dark:text-gray-400">You don't have access to any projects yet.</p>
                         </div>
+                    @elseif($this->filteredProjects->isEmpty())
+                        <div class="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+                            <svg class="w-12 h-12 mb-3 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <h3 class="text-base font-medium text-gray-900 dark:text-white mb-1">No Projects Found</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Try adjusting your search terms</p>
+                        </div>
                     @else
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                            @foreach($projects as $project)
+                            @foreach($this->filteredProjects as $project)
                                 <button
                                     wire:click="selectProject({{ $project->id }})"
                                     class="relative p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-all text-left overflow-hidden"
                                     style="border-left: 4px solid {{ $project->color ?? '#6B7280' }};"
                                 >
+                                    {{-- Pin Icon Badge --}}
+                                    @if($project->is_pinned)
+                                        <div class="absolute top-2 right-2">
+                                            <div class="flex items-center justify-center w-6 h-6 rounded-full shadow-sm" 
+                                                 style="background-color: {{ $project->color ?? '#6B7280' }};"
+                                                 title="Pinned Project">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
                                     {{-- Project Prefix Badge --}}
                                     @if($project->ticket_prefix)
                                         @php
@@ -100,12 +148,21 @@
                             <div class="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Switch Project
                             </div>
-                            @foreach($projects as $project)
+                            @foreach($this->filteredProjects as $project)
                                 <button
                                     wire:click="selectProject({{ $project->id }})"
                                     @click="open = false"
                                     class="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left {{ $project->id === $selectedProject->id ? 'bg-gray-50 dark:bg-gray-700' : '' }}"
                                 >
+                                    @if($project->is_pinned)
+                                        <div class="flex items-center justify-center w-5 h-5 rounded-full shrink-0" 
+                                             style="background-color: {{ $project->color ?? '#6B7280' }};"
+                                             title="Pinned">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/>
+                                            </svg>
+                                        </div>
+                                    @endif
                                     @if($project->ticket_prefix)
                                         @php
                                             $color = $project->color ?? '#6B7280';

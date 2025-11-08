@@ -34,6 +34,8 @@ class TicketTimeline extends Page implements HasForms
     public Collection $projects;
     public ?Project $selectedProject = null;
 
+    public string $searchProject = '';
+
     protected $listeners = [
         'refreshData' => '$refresh'
     ];
@@ -44,9 +46,16 @@ class TicketTimeline extends Page implements HasForms
             $user = Auth::user();
 
             if ($user->hasRole('super_admin')) {
-                $this->projects = Project::all();
+                $this->projects = Project::orderByRaw('pinned_date IS NULL')
+                    ->orderBy('pinned_date', 'desc')
+                    ->orderBy('name')
+                    ->get();
             } else {
-                $this->projects = $user->projects ?? collect();
+                $this->projects = $user->projects()
+                    ->orderByRaw('pinned_date IS NULL')
+                    ->orderBy('pinned_date', 'desc')
+                    ->orderBy('name')
+                    ->get();
             }
 
             if ($project_id && $this->projects->contains('id', $project_id)) {
@@ -61,6 +70,18 @@ class TicketTimeline extends Page implements HasForms
                 ->danger()
                 ->send();
         }
+    }
+
+    public function getFilteredProjectsProperty(): Collection
+    {
+        if (empty($this->searchProject)) {
+            return $this->projects;
+        }
+
+        return $this->projects->filter(function ($project) {
+            return str_contains(strtolower($project->name), strtolower($this->searchProject)) ||
+                   str_contains(strtolower($project->ticket_prefix ?? ''), strtolower($this->searchProject));
+        });
     }
 
     public function updatedProjectId($value): void

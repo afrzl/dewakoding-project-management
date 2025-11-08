@@ -35,14 +35,27 @@ class NotificationResource extends Resource
         return $schema->components([]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery()->with(['user', 'ticket.project']);
+        
+        // Filter berdasarkan team yang sedang aktif
+        $currentTenant = \Filament\Facades\Filament::getTenant();
+        if ($currentTenant) {
+            $query->where('team_id', $currentTenant->id);
+        }
+        
+        // Jika bukan superadmin, hanya lihat notifikasi milik user tersebut
+        if (!auth()->user()->hasRole('super_admin')) {
+            $query->where('user_id', auth()->id());
+        }
+        
+        return $query;
+    }
+
     public static function table(Table $table): Table
     {
         return $table
-            ->query(fn () => 
-                auth()->user()->hasRole('super_admin') 
-                    ? Notification::with(['user', 'ticket.project'])
-                    : Notification::where('user_id', auth()->id())->with(['ticket.project'])
-            )
             ->columns([
                 IconColumn::make('read_status')
                     ->label('')

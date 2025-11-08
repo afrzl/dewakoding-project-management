@@ -43,8 +43,8 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static string | \UnitEnum | null $navigationGroup = 'Project Management';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\UnitEnum|null $navigationGroup = 'Project Management';
     protected static ?int $navigationSort = 1;
 
     protected static ?string $tenantOwnershipRelationshipName = 'team';
@@ -79,8 +79,8 @@ class ProjectResource extends Resource
                     ->helperText('Create standard Backlog, To Do, In Progress, Review, and Done statuses automatically')
                     ->default(true)
                     ->dehydrated(false)
-                    ->visible(fn ($livewire) => $livewire instanceof CreateProject),
-                
+                    ->visible(fn($livewire) => $livewire instanceof CreateProject),
+
                 Toggle::make('is_pinned')
                     ->label('Pin Project')
                     ->helperText('Pinned projects will appear in the dashboard timeline')
@@ -100,7 +100,7 @@ class ProjectResource extends Resource
                     ->label('Pinned Date')
                     ->native(false)
                     ->displayFormat('d/m/Y H:i')
-                    ->visible(fn ($get) => $get('is_pinned'))
+                    ->visible(fn($get) => $get('is_pinned'))
                     ->dehydrated(true),
             ]);
     }
@@ -123,11 +123,12 @@ class ProjectResource extends Resource
                         return $record->progress_percentage . '%';
                     })
                     ->badge()
-                    ->color(fn (Project $record): string => 
+                    ->color(
+                        fn(Project $record): string =>
                         $record->progress_percentage >= 100 ? 'success' :
                         ($record->progress_percentage >= 75 ? 'info' :
-                        ($record->progress_percentage >= 50 ? 'warning' :
-                        ($record->progress_percentage >= 25 ? 'gray' : 'danger')))
+                            ($record->progress_percentage >= 50 ? 'warning' :
+                                ($record->progress_percentage >= 25 ? 'gray' : 'danger')))
                     )
                     ->sortable(),
                 TextColumn::make('start_date')
@@ -142,14 +143,15 @@ class ProjectResource extends Resource
                         if (!$record->end_date) {
                             return null;
                         }
-                        
+
                         return $record->remaining_days . ' days';
                     })
                     ->badge()
-                    ->color(fn (Project $record): string => 
+                    ->color(
+                        fn(Project $record): string =>
                         !$record->end_date ? 'gray' :
-                        ($record->remaining_days <= 0 ? 'danger' : 
-                        ($record->remaining_days <= 7 ? 'warning' : 'success'))
+                        ($record->remaining_days <= 0 ? 'danger' :
+                            ($record->remaining_days <= 7 ? 'warning' : 'success'))
                     ),
                 ToggleColumn::make('is_pinned')
                     ->label('Pinned')
@@ -214,10 +216,16 @@ class ProjectResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        // Superadmin global bisa lihat semua projects (bypass tenant scope)
+        // Filter berdasarkan tenant/team yang sedang aktif
+        $currentTenant = \Filament\Facades\Filament::getTenant();
+
+        if ($currentTenant) {
+            $query->where('team_id', $currentTenant->id);
+        }
+
+        // Jika superadmin, tampilkan semua projects di team ini (tidak perlu filter member)
         if (auth()->check() && auth()->user()->isSuperAdmin()) {
-            // Jangan filter berdasarkan team_id untuk superadmin
-            return $query->withoutGlobalScopes();
+            return $query;
         }
 
         // User biasa hanya bisa lihat projects dimana mereka adalah member

@@ -50,17 +50,28 @@ class TicketResource extends Resource
     {
         $query = parent::getEloquentQuery();
 
-        if (! auth()->user()->hasRole(['super_admin'])) {
-            $query->where(function ($query) {
-                $query->whereHas('assignees', function ($query) {
-                        $query->where('users.id', auth()->id());
-                    })
-                    ->orWhere('created_by', auth()->id())
-                    ->orWhereHas('project.members', function ($query) {
-                        $query->where('users.id', auth()->id());
-                    });
-            });
+        // Filter berdasarkan tenant/team yang sedang aktif
+        $currentTenant = \Filament\Facades\Filament::getTenant();
+
+        if ($currentTenant) {
+            $query->where('team_id', $currentTenant->id);
         }
+
+        // Jika superadmin, tampilkan semua tickets di team ini
+        if (auth()->user()->hasRole(['super_admin'])) {
+            return $query;
+        }
+
+        // User biasa hanya bisa lihat tickets yang terkait dengan mereka
+        $query->where(function ($query) {
+            $query->whereHas('assignees', function ($query) {
+                    $query->where('users.id', auth()->id());
+                })
+                ->orWhere('created_by', auth()->id())
+                ->orWhereHas('project.members', function ($query) {
+                    $query->where('users.id', auth()->id());
+                });
+        });
 
         return $query;
     }

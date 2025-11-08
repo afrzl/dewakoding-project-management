@@ -45,7 +45,16 @@ class TicketPriorityResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255)
-                    ->unique(ignoreRecord: true),
+                    ->unique(
+                        ignoreRecord: true,
+                        modifyRuleUsing: function ($rule) {
+                            $currentTenant = \Filament\Facades\Filament::getTenant();
+                            if ($currentTenant) {
+                                return $rule->where('team_id', $currentTenant->id);
+                            }
+                            return $rule;
+                        }
+                    ),
                 ColorPicker::make('color')
                     ->required()
                     ->default('#6B7280'),

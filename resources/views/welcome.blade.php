@@ -6,6 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AturKerja by DewaKoding</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .reveal-fade {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+        .reveal-fade.active {
+            opacity: 1;
+        }
+        /* Stagger delays */
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        .delay-400 { transition-delay: 0.4s; }
+        .delay-500 { transition-delay: 0.5s; }
+        .delay-600 { transition-delay: 0.6s; }
+    </style>
 </head>
 
 <body class="antialiased bg-white text-black font-sans selection:bg-[#cce9ff] selection:text-black">
@@ -42,21 +95,21 @@
 
     <!-- Hero Section -->
     <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
-        <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-[1.1]">
+        <h1 class="reveal text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-[1.1]">
             Plan, Track, Deliver.<br>
             Projects Made Simple.
         </h1>
-        <p class="text-lg sm:text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
+        <p class="reveal delay-100 text-lg sm:text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
             AturKerja is the project management platform where teams collaborate, track progress, and deliver on time.
         </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4 mb-10 sm:mb-16">
+        <div class="reveal delay-200 flex flex-col sm:flex-row justify-center gap-4 mb-10 sm:mb-16">
             <a href="{{ route('filament.admin.auth.login') }}"
                 class="bg-black text-white px-6 py-3 rounded-md font-semibold text-base sm:text-lg hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">Get
                 AturKerja free</a>
         </div>
 
         <!-- Hero Image Placeholder (Kanban Board) -->
-        <div class="relative mx-auto max-w-6xl hidden sm:block">
+        <div class="reveal-scale delay-300 relative mx-auto max-w-6xl hidden sm:block">
             <div
                 class="bg-gray-50 rounded-xl border border-gray-200 shadow-2xl overflow-hidden aspect-[16/9] flex flex-col group">
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent to-white/5 pointer-events-none"></div>
@@ -302,8 +355,8 @@
     <!-- Clients Section -->
     <section class="py-16 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="text-sm font-medium text-gray-500 mb-8">TRUSTED BY TEAMS AT</p>
-            <div class="flex flex-wrap justify-center gap-8 md:gap-16 grayscale opacity-60">
+            <p class="reveal-fade text-sm font-medium text-gray-500 mb-8">TRUSTED BY TEAMS AT</p>
+            <div class="reveal-fade delay-200 flex flex-wrap justify-center gap-8 md:gap-16 grayscale opacity-60">
                 <!-- Simple text placeholders for logos to keep it clean -->
                 <span class="text-xl font-bold font-serif">FIGMA</span>
                 <span class="text-xl font-bold font-mono">PIXAR</span>
@@ -320,7 +373,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Header & Illustration Split -->
             <div class="flex flex-col md:flex-row items-center justify-between mb-16 gap-12">
-                <div class="text-left md:w-1/2">
+                <div class="reveal-left text-left md:w-1/2">
                     <h2 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-gray-900 leading-tight">
                         Project Management <br />
                         <span class="text-gray-400">Simplified.</span>
@@ -334,7 +387,7 @@
                         <span class="group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                 </div>
-                <div class="md:w-1/2 flex justify-center md:justify-end">
+                <div class="reveal-right md:w-1/2 flex justify-center md:justify-end">
                     <!-- Abstract Illustration Placeholder matching the vibe -->
                     <div class="relative w-full max-w-md aspect-[4/3]">
                         <div class="absolute inset-0 bg-gray-100 rounded-full opacity-50 blur-3xl"></div>
@@ -368,7 +421,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Feature 1 -->
                 <div
-                    class="bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                    class="reveal delay-100 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
                     <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -392,7 +445,7 @@
 
                 <!-- Feature 2 -->
                 <div
-                    class="bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                    class="reveal delay-200 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
                     <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -414,7 +467,7 @@
 
                 <!-- Feature 3 -->
                 <div
-                    class="bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                    class="reveal delay-300 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
                     <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -436,7 +489,7 @@
 
                 <!-- Feature 4 (Added to balance grid) -->
                 <div
-                    class="bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                    class="reveal delay-400 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
                     <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -459,14 +512,14 @@
     <!-- Feature Grid (Bento Style) -->
     <section id="how-it-works" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl md:text-5xl font-bold mb-16 max-w-3xl">
+            <h2 class="reveal text-4xl md:text-5xl font-bold mb-16 max-w-3xl">
                 Millions run on AturKerja every day
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Card 1: Project Board -->
                 <div
-                    class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
+                    class="reveal delay-100 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
                     <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 7v7"/><path d="M12 7v4"/><path d="M16 7v9"/></svg>
                     </div>
@@ -572,7 +625,7 @@
 
                 <!-- Card 2: Timeline -->
                 <div
-                    class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
+                    class="reveal delay-200 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
                     <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
                     </div>
@@ -664,7 +717,7 @@
 
                 <!-- Analytics Card -->
                 <div
-                    class="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
+                    class="reveal delay-300 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
                     <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
                     </div>
@@ -813,12 +866,12 @@
     <section id="about" class="py-24 bg-gray-50 border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center gap-16">
-                <div class="flex-1">
+                <div class="reveal-left flex-1">
                     <h2 class="text-4xl md:text-5xl font-bold mb-6">Powerful building blocks</h2>
                     <p class="text-xl text-gray-600 mb-8">Customize AturKerja to work the way you do. Drag and drop to
                         craft the dashboard, website, or system you need.</p>
                 </div>
-                <div class="flex-1 w-full">
+                <div class="reveal-right flex-1 w-full">
                     <div
                         class="bg-white rounded-xl shadow-xl border border-gray-200 p-8 rotate-2 hover:rotate-0 transition-transform duration-500">
                         <div class="grid grid-cols-2 gap-4">
@@ -899,6 +952,28 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Reveal on scroll animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            reveals.forEach(reveal => {
+                observer.observe(reveal);
+            });
+        });
+    </script>
 </body>
 
 </html>

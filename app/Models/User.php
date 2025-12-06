@@ -13,7 +13,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Traits\HasRoles;
-use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable implements FilamentUser, HasTenants
 {
@@ -28,6 +27,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
         'google_id',
     ];
@@ -125,7 +125,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         if ($this->isSuperAdmin()) {
             return \App\Models\Team::query()->get();
         }
-        
+
         return $this->teams;
     }
 
@@ -135,7 +135,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         if ($this->isSuperAdmin()) {
             return true;
         }
-        
+
         return $this->teams->contains($tenant);
     }
 
@@ -152,5 +152,6 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
         // Gunakan logic default dari Laravel
         return parent::can($abilities, $arguments);
+        return true;
     }
 }

@@ -24,18 +24,9 @@ class TicketCommentForm extends Component implements HasForms
                 RichEditor::make('newComment')
                     ->label('Add a Comment')
                     ->placeholder('Write your comment here...')
-                    ->toolbarButtons([
-                        'blockquote',
-                        'bold',
-                        'bulletList',
-                        'codeBlock',
-                        'italic',
-                        'link',
-                        'orderedList',
-                        'redo',
-                        'strike',
-                        'undo',
-                    ])
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('attachments')
+                    ->fileAttachmentsVisibility('public')
                     ->required()
                     ->extraInputAttributes(['style' => 'min-height: 10rem;']),
             ]);

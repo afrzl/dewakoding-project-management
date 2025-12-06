@@ -19,10 +19,10 @@ class NotificationService
     {
         // Eager load relationships to ensure data is available
         $comment->load(['ticket.project.team', 'user']);
-        
+
         $ticket = $comment->ticket;
         $commenter = $comment->user;
-        
+
         if (!$ticket || !$commenter) {
             Log::warning('Cannot send comment notification: missing ticket or commenter', [
                 'comment_id' => $comment->id,
@@ -31,9 +31,9 @@ class NotificationService
             ]);
             return;
         }
-        
+
         $usersToNotify = $this->getUsersToNotifyForComment($ticket, $commenter);
-        
+
         foreach ($usersToNotify as $user) {
             try {
                 $user->notify(new CommentAddedNotification($comment, $ticket, $commenter));
@@ -50,12 +50,12 @@ class NotificationService
     {
         // Eager load relationships to ensure data is available
         $comment->load(['ticket.project.team', 'user']);
-        
+
         $ticket = $comment->ticket;
         $commenter = $comment->user;
-        
+
         $usersToNotify = $this->getUsersToNotifyForComment($ticket, $commenter);
-        
+
         foreach ($usersToNotify as $user) {
             try {
                 $user->notify(new CommentUpdatedNotification($comment, $ticket, $commenter));
@@ -71,14 +71,14 @@ class NotificationService
     private function getUsersToNotifyForComment(Ticket $ticket, User $commenter): Collection
     {
         $usersToNotify = collect();
-        
+
         if ($ticket->creator && $ticket->creator->id !== $commenter->id) {
             $usersToNotify->push($ticket->creator);
         }
-        
+
         $assignedUsers = $ticket->assignees()->where('users.id', '!=', $commenter->id)->get();
         $usersToNotify = $usersToNotify->merge($assignedUsers);
-        
+
         $commenters = $ticket->comments()
             ->with('user')
             ->where('user_id', '!=', $commenter->id)
@@ -86,7 +86,7 @@ class NotificationService
             ->pluck('user')
             ->unique('id');
         $usersToNotify = $usersToNotify->merge($commenters);
-        
+
         return $usersToNotify->unique('id');
     }
 
@@ -98,12 +98,12 @@ class NotificationService
         }
 
         $notification = $user->notifications()->find($notificationId);
-        
+
         if ($notification) {
             $notification->markAsRead();
             return true;
         }
-        
+
         return false;
     }
 

@@ -86,16 +86,6 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         $this->assignedTickets()->syncWithoutDetaching($ticket->id);
     }
 
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class)->orderBy('created_at', 'desc');
-    }
-
-    public function unreadNotifications(): HasMany
-    {
-        return $this->hasMany(Notification::class)->unread()->orderBy('created_at', 'desc');
-    }
-
     public function getUnreadNotificationsCountAttribute(): int
     {
         return $this->unreadNotifications()->count();

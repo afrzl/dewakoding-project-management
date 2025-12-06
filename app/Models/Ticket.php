@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\TicketAssignedNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,6 +59,27 @@ class Ticket extends Model
                 ]);
             }
         });
+    }
+
+    /**
+     * Sync assignees and notify newly assigned users
+     */
+    public function syncAssigneesWithNotification(array $userIds): void
+    {
+        $currentAssigneeIds = $this->assignees()->pluck('users.id')->toArray();
+        $newAssigneeIds = array_diff($userIds, $currentAssigneeIds);
+        
+        // Sync the assignees
+        $this->assignees()->sync($userIds);
+        
+        // Notify newly assigned users
+        $assignedBy = auth()->user();
+        foreach ($newAssigneeIds as $userId) {
+            $user = User::find($userId);
+            if ($user && $user->id !== $assignedBy?->id) {
+                $user->notify(new TicketAssignedNotification($this, $assignedBy));
+            }
+        }
     }
 
     public function project(): BelongsTo

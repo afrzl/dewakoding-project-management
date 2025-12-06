@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Tickets\Pages;
 
 use App\Filament\Resources\Tickets\TicketResource;
 use App\Models\Project;
+use App\Models\User;
+use App\Notifications\TicketAssignedNotification;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
@@ -47,65 +49,19 @@ class CreateTicket extends CreateRecord
         return $data;
     }
 
-    protected function handleRecordCreation(array $data): Model
+    protected function afterCreate(): void
     {
-        $ticket = parent::handleRecordCreation($data);
-
-        if (!empty($data['assignees']) && !empty($data['project_id'])) {
-            $project = Project::find($data['project_id']);
-            
-            if ($project) {
-                $validAssignees = [];
-                $invalidAssignees = [];
-                
-                foreach ($data['assignees'] as $userId) {
-                    $isMember = $project->members()->where('users.id', $userId)->exists();
-                    
-                    if ($isMember) {
-                        $validAssignees[] = $userId;
-                    } else {
-                        $invalidAssignees[] = $userId;
-                    }
-                }
-                
-                if (!empty($validAssignees)) {
-                    $ticket->assignees()->sync($validAssignees);
-                }
-                
-                if (!empty($invalidAssignees)) {
-                    Notification::make()
-                        ->warning()
-                        ->title('Some assignees removed')
-                        ->body('Some selected users are not members of this project and have been removed from assignees.')
-                        ->send();
-                }
-                
-                if (empty($validAssignees)) {
-                    $currentUserIsMember = $project->members()->where('users.id', auth()->id())->exists();
-                    
-                    if ($currentUserIsMember) {
-                        $ticket->assignees()->sync([auth()->id()]);
-                        
-                        Notification::make()
-                            ->info()
-                            ->title('Auto-assigned')
-                            ->body('No valid assignees found. You have been automatically assigned to this ticket.')
-                            ->send();
-                    }
-                }
-            }
-        } else {
-            if (!empty($data['project_id'])) {
-                $project = Project::find($data['project_id']);
-                $currentUserIsMember = $project?->members()->where('users.id', auth()->id())->exists();
-                
-                if ($currentUserIsMember) {
-                    $ticket->assignees()->sync([auth()->id()]);
-                }
+        // Get assignees that were set by Filament's relationship handling
+        $assigneeIds = $this->record->assignees()->pluck('users.id')->toArray();
+        
+        // Notify assigned users (except the creator)
+        $assignedBy = auth()->user();
+        foreach ($assigneeIds as $userId) {
+            $user = User::find($userId);
+            if ($user && $user->id !== $assignedBy?->id) {
+                $user->notify(new TicketAssignedNotification($this->record, $assignedBy));
             }
         }
-
-        return $ticket;
     }
 
     protected function getRedirectUrl(): string

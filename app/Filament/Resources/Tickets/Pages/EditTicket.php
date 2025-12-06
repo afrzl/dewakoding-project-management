@@ -5,7 +5,8 @@ namespace App\Filament\Resources\Tickets\Pages;
 use Filament\Actions\ViewAction;
 use Filament\Actions\DeleteAction;
 use App\Filament\Resources\Tickets\TicketResource;
-use App\Models\Project;
+use App\Models\User;
+use App\Notifications\TicketAssignedNotification;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Notifications\Notification;
@@ -13,6 +14,8 @@ use Filament\Notifications\Notification;
 class EditTicket extends EditRecord
 {
     protected static string $resource = TicketResource::class;
+    
+    protected array $previousAssigneeIds = [];
 
     protected function getHeaderActions(): array
     {
@@ -22,48 +25,27 @@ class EditTicket extends EditRecord
         ];
     }
 
-    protected function mutateFormDataBeforeSave(array $data): array
+    protected function beforeSave(): void
     {
-        // Handle assignees validation before saving
-        if (!empty($data['assignees']) && !empty($data['project_id'])) {
-            $project = Project::find($data['project_id']);
-            
-            if ($project) {
-                $validAssignees = [];
-                $invalidAssignees = [];
-                
-                foreach ($data['assignees'] as $userId) {
-                    $isMember = $project->members()->where('users.id', $userId)->exists();
-                    
-                    if ($isMember) {
-                        $validAssignees[] = $userId;
-                    } else {
-                        $invalidAssignees[] = $userId;
-                    }
-                }
-                
-                // Update data with only valid assignees
-                $data['assignees'] = $validAssignees;
-                
-                // Show warning if some users were invalid
-                if (!empty($invalidAssignees)) {
-                    Notification::make()
-                        ->warning()
-                        ->title('Some assignees removed')
-                        ->body('Some selected users are not members of this project and have been removed from assignees.')
-                        ->send();
-                }
-            }
-        }
-
-        return $data;
+        // Store current assignees before save
+        $this->previousAssigneeIds = $this->record->assignees()->pluck('users.id')->toArray();
     }
 
     protected function afterSave(): void
     {
-        // Sync assignees after saving (since it's a many-to-many relationship)
-        if (isset($this->data['assignees']) && is_array($this->data['assignees'])) {
-            $this->record->assignees()->sync($this->data['assignees']);
+        // Get new assignees after Filament's relationship handling
+        $newAssigneeIds = $this->record->assignees()->pluck('users.id')->toArray();
+        
+        // Find newly added assignees
+        $addedAssigneeIds = array_diff($newAssigneeIds, $this->previousAssigneeIds);
+        
+        // Notify newly assigned users
+        $assignedBy = auth()->user();
+        foreach ($addedAssigneeIds as $userId) {
+            $user = User::find($userId);
+            if ($user && $user->id !== $assignedBy?->id) {
+                $user->notify(new TicketAssignedNotification($this->record, $assignedBy));
+            }
         }
     }
 

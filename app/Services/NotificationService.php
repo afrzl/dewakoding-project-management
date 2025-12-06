@@ -2,62 +2,69 @@
 
 namespace App\Services;
 
-use Exception;
-use App\Mail\ProjectAssignmentNotification;
-use App\Models\Notification;
 use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\TicketComment;
 use App\Models\User;
+use App\Notifications\CommentAddedNotification;
+use App\Notifications\CommentUpdatedNotification;
+use App\Notifications\ProjectAssignedNotification;
+use App\Notifications\ProjectRemovedNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class NotificationService
 {
     public function notifyCommentAdded(TicketComment $comment): void
     {
+        // Eager load relationships to ensure data is available
+        $comment->load(['ticket.project.team', 'user']);
+        
         $ticket = $comment->ticket;
         $commenter = $comment->user;
+        
+        if (!$ticket || !$commenter) {
+            Log::warning('Cannot send comment notification: missing ticket or commenter', [
+                'comment_id' => $comment->id,
+                'has_ticket' => (bool) $ticket,
+                'has_commenter' => (bool) $commenter,
+            ]);
+            return;
+        }
         
         $usersToNotify = $this->getUsersToNotifyForComment($ticket, $commenter);
         
         foreach ($usersToNotify as $user) {
-            Notification::create([
-                'user_id' => $user->id,
-                'type' => 'comment_added',
-                'title' => 'New Comment on Ticket',
-                'message' => "{$commenter->name} added a comment on ticket {$ticket->title}",
-                'data' => [
+            try {
+                $user->notify(new CommentAddedNotification($comment, $ticket, $commenter));
+            } catch (\Exception $e) {
+                Log::error('Failed to send comment notification: ' . $e->getMessage(), [
+                    'user_id' => $user->id,
                     'ticket_id' => $ticket->id,
-                    'comment_id' => $comment->id,
-                    'commenter_id' => $commenter->id,
-                    'commenter_name' => $commenter->name,
-                ],
-            ]);
+                ]);
+            }
         }
     }
 
     public function notifyCommentUpdated(TicketComment $comment): void
     {
+        // Eager load relationships to ensure data is available
+        $comment->load(['ticket.project.team', 'user']);
+        
         $ticket = $comment->ticket;
         $commenter = $comment->user;
         
         $usersToNotify = $this->getUsersToNotifyForComment($ticket, $commenter);
         
         foreach ($usersToNotify as $user) {
-            Notification::create([
-                'user_id' => $user->id,
-                'type' => 'comment_updated',
-                'title' => 'Comment Updated',
-                'message' => "{$commenter->name} updated a comment on ticket {$ticket->title}",
-                'data' => [
+            try {
+                $user->notify(new CommentUpdatedNotification($comment, $ticket, $commenter));
+            } catch (\Exception $e) {
+                Log::error('Failed to send comment update notification: ' . $e->getMessage(), [
+                    'user_id' => $user->id,
                     'ticket_id' => $ticket->id,
-                    'comment_id' => $comment->id,
-                    'commenter_id' => $commenter->id,
-                    'commenter_name' => $commenter->name,
-                ],
-            ]);
+                ]);
+            }
         }
     }
 
@@ -83,12 +90,15 @@ class NotificationService
         return $usersToNotify->unique('id');
     }
 
-    public function markAsRead(int $notificationId, int $userId): bool
+    public function markAsRead(string $notificationId, int $userId): bool
     {
-        $notification = Notification::where('id', $notificationId)
-            ->where('user_id', $userId)
-            ->first();
-            
+        $user = User::find($userId);
+        if (!$user) {
+            return false;
+        }
+
+        $notification = $user->notifications()->find($notificationId);
+        
         if ($notification) {
             $notification->markAsRead();
             return true;
@@ -99,63 +109,34 @@ class NotificationService
 
     public function markAllAsRead(int $userId): void
     {
-        Notification::where('user_id', $userId)
-            ->whereNull('read_at')
-            ->update(['read_at' => now()]);
+        $user = User::find($userId);
+        if ($user) {
+            $user->unreadNotifications->markAsRead();
+        }
     }
 
     public function notifyProjectAssignment(Project $project, User $assignedUser, User $assignedBy): void
     {
-        // Create in-app notification
         try {
-            Notification::create([
-                'user_id' => $assignedUser->id,
-                'type' => 'project_assigned',
-                'title' => 'Ditambahkan ke Project',
-                'message' => "Anda telah ditambahkan ke project '{$project->name}' oleh {$assignedBy->name}",
-                'data' => [
-                    'project_id' => $project->id,
-                    'project_name' => $project->name,
-                    'assigned_by_id' => $assignedBy->id,
-                    'assigned_by_name' => $assignedBy->name,
-                ],
-            ]);
-        } catch (Exception $e) {
-            Log::error('Failed to create in-app notification: ' . $e->getMessage(), [
-                'project_id' => $project->id,
-                'user_id' => $assignedUser->id,
-            ]);
-        }
-
-        // Send email notification
-        try {
-            $mail = new ProjectAssignmentNotification($project, $assignedUser, $assignedBy);
-            Mail::to($assignedUser->email)->send($mail);
-        } catch (Exception $e) {
-            // Log error but don't fail the assignment
-            Log::error('Failed to send project assignment email: ' . $e->getMessage(), [
+            $assignedUser->notify(new ProjectAssignedNotification($project, $assignedBy));
+        } catch (\Exception $e) {
+            Log::error('Failed to send project assignment notification: ' . $e->getMessage(), [
                 'project_id' => $project->id,
                 'user_id' => $assignedUser->id,
                 'assigned_by_id' => $assignedBy->id,
-                'to_email' => $assignedUser->email,
             ]);
         }
     }
 
     public function notifyProjectRemoval(Project $project, User $removedUser, User $removedBy): void
     {
-        // Create in-app notification
-        Notification::create([
-            'user_id' => $removedUser->id,
-            'type' => 'project_removed',
-            'title' => 'Dihapus dari Project',
-            'message' => "Anda telah dihapus dari project '{$project->name}' oleh {$removedBy->name}",
-            'data' => [
+        try {
+            $removedUser->notify(new ProjectRemovedNotification($project, $removedBy));
+        } catch (\Exception $e) {
+            Log::error('Failed to send project removal notification: ' . $e->getMessage(), [
                 'project_id' => $project->id,
-                'project_name' => $project->name,
-                'removed_by_id' => $removedBy->id,
-                'removed_by_name' => $removedBy->name,
-            ],
-        ]);
+                'user_id' => $removedUser->id,
+            ]);
+        }
     }
 }

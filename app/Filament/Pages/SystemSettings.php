@@ -81,30 +81,35 @@ class SystemSettings extends Page implements HasForms
     {
         Setting::setUserValue('filament_navigation_style', $style, 'ui', auth()->id());
 
-        $this->dispatch('navigation-style-updated', style: $style);
+        // Clear any cached panel configuration
+        $this->clearFilamentCache();
 
-        // Notification::make()
-        //     ->title('Navigation Updated')
-        //     ->body($style === 'top'
-        //         ? 'Top navigation preference saved. Reload to apply.'
-        //         : 'Sidebar navigation preference saved.')
-        //     ->success()
-        //     ->send();
+        $this->dispatch('navigation-style-updated', style: $style);
     }
 
     protected function updateColorTheme(string $color): void
     {
         Setting::setUserValue('filament_primary_color', $color, 'ui', auth()->id());
 
+        // Clear any cached panel configuration
+        $this->clearFilamentCache();
+
         $this->applyColorChange($color);
 
         $this->dispatch('color-theme-updated', color: $color);
+    }
 
-        // Notification::make()
-        //     ->title('Color Theme Updated')
-        //     ->body("Primary color changed to {$color}.")
-        //     ->success()
-        //     ->send();
+    protected function clearFilamentCache(): void
+    {
+        // Clear Filament caches
+        cache()->forget('filament-panels');
+        cache()->forget('filament-panel-admin');
+        
+        // Clear user-specific cache if exists
+        $userId = auth()->id();
+        cache()->forget("user-settings-{$userId}");
+        cache()->forget("filament-user-nav-{$userId}");
+        cache()->forget("filament-user-color-{$userId}");
     }
 
     protected function applyColorChange(string $colorName): void
@@ -119,12 +124,13 @@ class SystemSettings extends Page implements HasForms
         $this->updateNavigationStyle($this->data['navigation_style']);
         $this->updateColorTheme($this->data['panel_color']);
 
-        // Notification::make()
-        //     ->title('Settings Saved Successfully')
-        //     ->body('Preferences saved. Reloading to apply layout...')
-        //     ->success()
-        //     ->send();
+        Notification::make()
+            ->title('Settings Saved Successfully')
+            ->body('Preferences saved. Reloading to apply changes...')
+            ->success()
+            ->send();
 
-        $this->dispatch('settings-saved');
+        // Force full page reload to apply panel changes (required for Octane)
+        $this->js('setTimeout(() => { window.location.reload(); }, 1000);');
     }
 }

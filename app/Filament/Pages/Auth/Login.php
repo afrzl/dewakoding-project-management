@@ -21,10 +21,9 @@ class Login extends BaseLogin
                 return;
             }
             
-            // Redirect ke subdomain tenant
+            // Redirect ke tenant path
             $firstTenant = $user->teams()->first();
-            $url = $this->getTenantUrl($firstTenant->slug);
-            redirect($url);
+            redirect("/{$firstTenant->slug}");
             return;
         }
 
@@ -56,28 +55,19 @@ class Login extends BaseLogin
             };
         }
         
-        // Jika sudah punya team, redirect ke subdomain tenant
+        // Jika sudah punya team, redirect ke tenant path
         $firstTenant = $user?->teams()->first();
         if ($firstTenant) {
-            $url = $this->getTenantUrl($firstTenant->slug);
-            return new class($url) implements LoginResponse {
-                public function __construct(private string $url) {}
+            $slug = $firstTenant->slug;
+            return new class($slug) implements LoginResponse {
+                public function __construct(private string $slug) {}
                 public function toResponse($request)
                 {
-                    return redirect($this->url);
+                    return redirect("/{$this->slug}");
                 }
             };
         }
         
         return $response;
-    }
-
-    protected function getTenantUrl(string $slug): string
-    {
-        $appUrl = config('app.url');
-        $scheme = parse_url($appUrl, PHP_URL_SCHEME) ?? 'https';
-        $host = parse_url($appUrl, PHP_URL_HOST) ?? $appUrl;
-        
-        return "{$scheme}://{$slug}.{$host}";
     }
 }

@@ -1,17 +1,23 @@
 <x-filament-panels::page.simple>
-    @if($this->hasLogo())
+    @if(method_exists($this, 'hasLogo') && $this->hasLogo())
         <div class="mb-6 flex justify-center">
             <x-filament-panels::logo />
         </div>
     @endif
 
-    {{ $this->content }}
+    <form wire:submit="join" class="space-y-6">
+        {{ $this->form }}
+
+        <x-filament::button type="submit" class="w-full">
+            Join Team
+        </x-filament::button>
+    </form>
 
     <div class="mt-6 text-center space-y-3">
         <p class="text-sm text-gray-600 dark:text-gray-400">
-            Have an invite code?
-            <a href="/join" class="text-primary-600 hover:text-primary-500 font-medium">
-                Join existing team instead
+            Don't have an invite code?
+            <a href="{{ route('filament.admin.tenant.registration') }}" class="text-primary-600 hover:text-primary-500 font-medium">
+                Register a new team instead
             </a>
         </p>
 

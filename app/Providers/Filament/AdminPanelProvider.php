@@ -42,8 +42,8 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
-            ->topNavigation(fn () => $this->shouldUseTopNavigation())
-            ->sidebarCollapsibleOnDesktop(fn () => !$this->shouldUseTopNavigation())
+            ->topNavigation(fn() => $this->shouldUseTopNavigation())
+            ->sidebarCollapsibleOnDesktop(fn() => !$this->shouldUseTopNavigation())
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -69,6 +69,16 @@ class AdminPanelProvider extends PanelProvider
                     ->tenantRelationshipName('teams'),
             ])
             ->tenantRegistration(RegisterTeam::class)
+            ->tenantMenuItems([
+                'register' => \Filament\Navigation\MenuItem::make()
+                    ->label('Join another team')
+                    ->icon('heroicon-o-user-plus')
+                    ->url(fn() => route('filament.admin.tenant.join')),
+            ])
+            ->routes(function () {
+                \Illuminate\Support\Facades\Route::get('/join', \App\Filament\Pages\Tenancy\JoinTeam::class)
+                    ->name('tenant.join');
+            })
             ->tenantMiddleware([
                 SyncShieldTenant::class,
             ], isPersistent: true)

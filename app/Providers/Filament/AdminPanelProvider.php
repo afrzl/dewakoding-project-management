@@ -42,6 +42,8 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
+            ->topNavigation(fn () => $this->shouldUseTopNavigation())
+            ->sidebarCollapsibleOnDesktop(fn () => !$this->shouldUseTopNavigation())
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -80,5 +82,19 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css');
 
         return $panel;
+    }
+
+    protected function shouldUseTopNavigation(): bool
+    {
+        if (!auth()->check()) {
+            return false;
+        }
+
+        try {
+            $navigationStyle = Setting::getUserValue('filament_navigation_style', 'sidebar', auth()->id());
+            return $navigationStyle === 'top';
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

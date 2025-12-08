@@ -22,7 +22,13 @@ class FilamentUserSettings
                 'primary' => $this->getColorConstant($savedColor),
             ]);
 
-            $this->setNavigationStyle($userId);
+            // Store navigation style in request for view to use
+            // Don't modify panel directly as it's shared in Octane
+            $navigationStyle = $this->getNavigationStyle($userId);
+            $request->attributes->set('filament_navigation_style', $navigationStyle);
+            
+            // Also store in view share for blade templates
+            view()->share('filamentNavigationStyle', $navigationStyle);
         }
 
         return $next($request);
@@ -37,22 +43,12 @@ class FilamentUserSettings
         }
     }
 
-    private function setNavigationStyle($userId): void
+    private function getNavigationStyle($userId): string
     {
         try {
-            $navigationStyle = Setting::getUserValue('filament_navigation_style', 'sidebar', $userId);
-            
-            $panel = Filament::getCurrentPanel();
-            
-            if ($panel) {
-                if ($navigationStyle === 'top') {
-                    $panel->topNavigation();
-                } else {
-                    $panel->sidebarCollapsibleOnDesktop(true);
-                }
-            }
+            return Setting::getUserValue('filament_navigation_style', 'sidebar', $userId);
         } catch (\Exception $e) {
-            // default
+            return 'sidebar';
         }
     }
 

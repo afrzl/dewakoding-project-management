@@ -23,6 +23,11 @@ class JoinTeam extends SimplePage
         return 'join';
     }
 
+    // public function getHeading(): string
+    // {
+    //     return 'AturKerja';
+    // }
+
     public function getTitle(): string
     {
         return 'Join Team';

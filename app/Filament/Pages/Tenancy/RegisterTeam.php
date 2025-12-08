@@ -64,23 +64,45 @@ class RegisterTeam extends RegisterTenant
         return 'Register team';
     }
 
+    // public function getHeading(): string
+    // {
+    //     return 'Register Team';
+    // }
+
+    public function hasLogo(): bool
+    {
+        return true;
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Team Name')
                     ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn($state, callable $set) => $set('slug', Str::slug($state))),
-
-                TextInput::make('slug')
-                    ->label('Subdomain')
-                    ->required()
-                    ->unique(table: Team::class, ignorable: fn($record) => $record)
-                    ->alphaDash()
                     ->maxLength(255),
             ]);
+    }
+
+    protected function mutateFormDataBeforeRegister(array $data): array
+    {
+        $data['slug'] = $this->generateUniqueSlug($data['name']);
+        return $data;
+    }
+
+    protected function generateUniqueSlug(string $name): string
+    {
+        $baseSlug = Str::slug($name);
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (Team::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . str_pad($counter, 3, '0', STR_PAD_LEFT);
+            $counter++;
+        }
+
+        return $slug;
     }
 
     protected function handleRegistration(array $data): Team
@@ -92,10 +114,10 @@ class RegisterTeam extends RegisterTenant
 
         try {
             $team = Team::create($data);
-            
+
             // Attach user sebagai member
             $team->members()->attach(auth()->id());
-            
+
             \Log::info('RegisterTeam: User attached as member', [
                 'team_id' => $team->id,
                 'user_id' => auth()->id()

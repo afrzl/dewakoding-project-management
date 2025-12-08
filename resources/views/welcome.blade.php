@@ -13,51 +13,78 @@
             transform: translateY(30px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
+
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
+
         .reveal-left {
             opacity: 0;
             transform: translateX(-50px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
+
         .reveal-left.active {
             opacity: 1;
             transform: translateX(0);
         }
+
         .reveal-right {
             opacity: 0;
             transform: translateX(50px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
+
         .reveal-right.active {
             opacity: 1;
             transform: translateX(0);
         }
+
         .reveal-scale {
             opacity: 0;
             transform: scale(0.9);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
+
         .reveal-scale.active {
             opacity: 1;
             transform: scale(1);
         }
+
         .reveal-fade {
             opacity: 0;
             transition: opacity 1s ease-out;
         }
+
         .reveal-fade.active {
             opacity: 1;
         }
+
         /* Stagger delays */
-        .delay-100 { transition-delay: 0.1s; }
-        .delay-200 { transition-delay: 0.2s; }
-        .delay-300 { transition-delay: 0.3s; }
-        .delay-400 { transition-delay: 0.4s; }
-        .delay-500 { transition-delay: 0.5s; }
-        .delay-600 { transition-delay: 0.6s; }
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-400 {
+            transition-delay: 0.4s;
+        }
+
+        .delay-500 {
+            transition-delay: 0.5s;
+        }
+
+        .delay-600 {
+            transition-delay: 0.6s;
+        }
     </style>
 </head>
 
@@ -95,7 +122,8 @@
 
     <!-- Hero Section -->
     <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
-        <h1 class="reveal text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-[1.1]">
+        <h1
+            class="reveal text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-[1.1]">
             Plan, Track, Deliver.<br>
             Projects Made Simple.
         </h1>
@@ -329,9 +357,12 @@
                 <!-- Simple Kanban Preview -->
                 <div class="p-3 space-y-2">
                     <div class="flex gap-2">
-                        <div class="flex-1 bg-gray-600 text-white px-2 py-1 rounded text-xs font-medium text-center">Backlog</div>
-                        <div class="flex-1 bg-orange-400 text-white px-2 py-1 rounded text-xs font-medium text-center">To Do</div>
-                        <div class="flex-1 bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium text-center">Doing</div>
+                        <div class="flex-1 bg-gray-600 text-white px-2 py-1 rounded text-xs font-medium text-center">
+                            Backlog</div>
+                        <div class="flex-1 bg-orange-400 text-white px-2 py-1 rounded text-xs font-medium text-center">
+                            To Do</div>
+                        <div class="flex-1 bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium text-center">
+                            Doing</div>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="bg-white p-2 rounded border border-gray-200 shadow-sm">
@@ -521,7 +552,13 @@
                 <div
                     class="reveal delay-100 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
                     <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 7v7"/><path d="M12 7v4"/><path d="M16 7v9"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="18" x="3" y="3" rx="2" />
+                            <path d="M8 7v7" />
+                            <path d="M12 7v4" />
+                            <path d="M16 7v9" />
+                        </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Project Board</h3>
                     <p class="text-gray-600 mb-8 leading-relaxed">Visualize work with Kanban boards. Move tickets from
@@ -627,7 +664,19 @@
                 <div
                     class="reveal delay-200 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
                     <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                            <line x1="16" x2="16" y1="2" y2="6" />
+                            <line x1="8" x2="8" y1="2" y2="6" />
+                            <line x1="3" x2="21" y1="10" y2="10" />
+                            <path d="M8 14h.01" />
+                            <path d="M12 14h.01" />
+                            <path d="M16 14h.01" />
+                            <path d="M8 18h.01" />
+                            <path d="M12 18h.01" />
+                            <path d="M16 18h.01" />
+                        </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Timeline View</h3>
                     <p class="text-gray-600 mb-8 leading-relaxed">Plan projects on a timeline. See deadlines,
@@ -719,7 +768,15 @@
                 <div
                     class="reveal delay-300 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
                     <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                            <path d="M4 22h16" />
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+                        </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Leaderboard</h3>
                     <p class="text-gray-600 mb-8 leading-relaxed">Gamify productivity with contribution tracking.</p>
@@ -911,7 +968,8 @@
                         <span class="font-semibold">AturKerja</span>
                     </div>
                     <p class="text-gray-500 text-sm mb-4">Project management platform by DewaKoding</p>
-                    <p class="text-gray-500 text-sm">Manage your team projects with ease. Track progress, collaborate, and deliver on time.</p>
+                    <p class="text-gray-500 text-sm">Manage your team projects with ease. Track progress, collaborate,
+                        and deliver on time.</p>
                 </div>
 
                 <div>
@@ -932,11 +990,26 @@
                         <li>Location: Bekasi - Purwokerto - Remote</li>
                     </ul>
                     <div class="flex gap-4 mt-4">
-                        <a href="https://instagram.com/dewakoding" target="_blank" class="text-gray-400 hover:text-black">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        <a href="https://instagram.com/dewakoding" target="_blank"
+                            class="text-gray-400 hover:text-black">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                            </svg>
                         </a>
-                        <a href="https://www.linkedin.com/company/dewakoding-indonesia" target="_blank" class="text-gray-400 hover:text-black">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                        <a href="https://www.linkedin.com/company/dewakoding-indonesia" target="_blank"
+                            class="text-gray-400 hover:text-black">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                                <rect width="4" height="12" x="2" y="9" />
+                                <circle cx="4" cy="4" r="2" />
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -955,9 +1028,9 @@
 
     <script>
         // Reveal on scroll animation
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-fade');
-            
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {

@@ -17,6 +17,10 @@ use Illuminate\Support\ServiceProvider;
 use BezhanSalleh\PanelSwitch\PanelSwitch;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use App\Filament\Resources\TicketResource\Pages\EditCommentModal;
+use Filament\Auth\Http\Responses\Contracts\RegistrationResponse as RegistrationResponseContract;
+use Filament\Auth\Http\Responses\Contracts\LoginResponse as LoginResponseContract;
+use App\Http\Responses\RegistrationResponse;
+use App\Http\Responses\LoginResponse;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,7 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(RegistrationResponseContract::class, RegistrationResponse::class);
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
     }
 
     /**

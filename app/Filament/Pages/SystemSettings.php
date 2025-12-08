@@ -24,7 +24,7 @@ class SystemSettings extends Page implements HasForms
     use InteractsWithForms;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Cog6Tooth;
-    protected static string | UnitEnum | null $navigationGroup = 'Settings';
+    protected static string|UnitEnum|null $navigationGroup = 'Settings';
     protected static ?string $title = 'UI Settings';
     protected string $view = 'filament.pages.system-settings';
 
@@ -60,10 +60,7 @@ class SystemSettings extends Page implements HasForms
                             ])
                             ->inline(false)
                             ->required()
-                            ->live()
-                            ->afterStateUpdated(function ($state) {
-                                $this->updateNavigationStyle($state);
-                            }),
+                            ->live(),
                     ]),
 
                 Section::make('Color Theme')
@@ -74,10 +71,7 @@ class SystemSettings extends Page implements HasForms
                             ->label('Primary Color')
                             ->options(ColorPalette::options())
                             ->required()
-                            ->live()
-                            ->afterStateUpdated(function ($state) {
-                                $this->updateColorTheme($state);
-                            }),
+                            ->live(),
                     ]),
             ])
             ->statePath('data');
@@ -89,13 +83,13 @@ class SystemSettings extends Page implements HasForms
 
         $this->dispatch('navigation-style-updated', style: $style);
 
-        Notification::make()
-            ->title('Navigation Updated')
-            ->body($style === 'top'
-                ? 'Top navigation preference saved. Reload to apply.'
-                : 'Sidebar navigation preference saved.')
-            ->success()
-            ->send();
+        // Notification::make()
+        //     ->title('Navigation Updated')
+        //     ->body($style === 'top'
+        //         ? 'Top navigation preference saved. Reload to apply.'
+        //         : 'Sidebar navigation preference saved.')
+        //     ->success()
+        //     ->send();
     }
 
     protected function updateColorTheme(string $color): void
@@ -106,11 +100,11 @@ class SystemSettings extends Page implements HasForms
 
         $this->dispatch('color-theme-updated', color: $color);
 
-        Notification::make()
-            ->title('Color Theme Updated')
-            ->body("Primary color changed to {$color}.")
-            ->success()
-            ->send();
+        // Notification::make()
+        //     ->title('Color Theme Updated')
+        //     ->body("Primary color changed to {$color}.")
+        //     ->success()
+        //     ->send();
     }
 
     protected function applyColorChange(string $colorName): void
@@ -125,11 +119,11 @@ class SystemSettings extends Page implements HasForms
         $this->updateNavigationStyle($this->data['navigation_style']);
         $this->updateColorTheme($this->data['panel_color']);
 
-        Notification::make()
-            ->title('Settings Saved Successfully')
-            ->body('Preferences saved. Reloading to apply layout...')
-            ->success()
-            ->send();
+        // Notification::make()
+        //     ->title('Settings Saved Successfully')
+        //     ->body('Preferences saved. Reloading to apply layout...')
+        //     ->success()
+        //     ->send();
 
         $this->dispatch('settings-saved');
     }

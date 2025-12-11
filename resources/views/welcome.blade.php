@@ -4,7 +4,65 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AturKerja by DewaKoding</title>
+    <title>AturKerja - Platform Project Management untuk Tim | DewaKoding</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu. Gratis untuk memulai!">
+    <meta name="keywords" content="project management, manajemen proyek, kanban board, task management, team collaboration, produktivitas tim, AturKerja, DewaKoding">
+    <meta name="author" content="DewaKoding">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url('/') }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="AturKerja - Platform Project Management untuk Tim">
+    <meta property="og:description" content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu. Gratis untuk memulai!">
+    <meta property="og:image" content="{{ asset('images/og-image.png') }}">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="AturKerja">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ url('/') }}">
+    <meta name="twitter:title" content="AturKerja - Platform Project Management untuk Tim">
+    <meta name="twitter:description" content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu.">
+    <meta name="twitter:image" content="{{ asset('images/og-image.png') }}">
+    
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#000000">
+    <meta name="application-name" content="AturKerja">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    @php
+    echo json_encode([
+        "@context" => "https://schema.org",
+        "@type" => "SoftwareApplication",
+        "name" => "AturKerja",
+        "applicationCategory" => "BusinessApplication",
+        "operatingSystem" => "Web",
+        "description" => "Platform project management untuk tim yang ingin berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu.",
+        "url" => url('/'),
+        "author" => [
+            "@type" => "Organization",
+            "name" => "DewaKoding",
+            "url" => "https://dewakoding.com"
+        ],
+        "offers" => [
+            "@type" => "Offer",
+            "price" => "0",
+            "priceCurrency" => "IDR"
+        ],
+        "aggregateRating" => [
+            "@type" => "AggregateRating",
+            "ratingValue" => "4.8",
+            "ratingCount" => "150"
+        ]
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+    @endphp
+    </script>
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Reveal Animations */

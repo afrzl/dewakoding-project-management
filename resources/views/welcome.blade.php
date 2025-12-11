@@ -105,16 +105,16 @@
 
                 <!-- Desktop Nav -->
                 <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-600">
-                    <a href="#features" class="hover:text-black transition-colors">Features</a>
-                    <a href="#how-it-works" class="hover:text-black transition-colors">How It Works</a>
-                    <a href="#about" class="hover:text-black transition-colors">About</a>
+                    <a href="#features" class="hover:text-black transition-colors">Fitur</a>
+                    <a href="#how-it-works" class="hover:text-black transition-colors">Cara Kerja</a>
+                    <a href="#about" class="hover:text-black transition-colors">Tentang</a>
                 </nav>
 
                 <!-- Actions -->
                 <div class="flex items-center gap-4">
                     <a href="{{ route('filament.admin.auth.login') }}"
-                        class="text-sm font-medium bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">Get
-                        AturKerja free</a>
+                        class="text-sm font-medium bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">Coba
+                        AturKerja gratis</a>
                 </div>
             </div>
         </div>
@@ -124,16 +124,16 @@
     <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
         <h1
             class="reveal text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-[1.1]">
-            Plan, Track, Deliver.<br>
-            Projects Made Simple.
+            Rencanakan, Lacak, Selesaikan.<br>
+            Project Jadi Lebih Mudah.
         </h1>
         <p class="reveal delay-100 text-lg sm:text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
-            AturKerja is the project management platform where teams collaborate, track progress, and deliver on time.
+            AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan tepat waktu.
         </p>
         <div class="reveal delay-200 flex flex-col sm:flex-row justify-center gap-4 mb-10 sm:mb-16">
             <a href="{{ route('filament.admin.auth.login') }}"
-                class="bg-black text-white px-6 py-3 rounded-md font-semibold text-base sm:text-lg hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">Get
-                AturKerja free</a>
+                class="bg-black text-white px-6 py-3 rounded-md font-semibold text-base sm:text-lg hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">Coba
+                AturKerja gratis</a>
         </div>
 
         <!-- Hero Image Placeholder (Kanban Board) -->
@@ -150,9 +150,9 @@
                     <div class="flex gap-2">
                         <button
                             class="bg-red-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-red-700 transition-colors">+
-                            New Ticket</button>
+                            Ticket Baru</button>
                         <button
-                            class="bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded text-sm font-medium hover:bg-yellow-500 transition-colors">Refresh
+                            class="bg-yellow-400 text-yellow-900 px-3 py-1.5 rounded text-sm font-medium hover:bg-yellow-500 transition-colors">Segarkan
                             Board</button>
                     </div>
                 </div>
@@ -173,9 +173,9 @@
                                 <span class="text-xs text-gray-400 font-mono">KDID-842</span>
                                 <div class="w-2 h-2 rounded-full bg-gray-300"></div>
                             </div>
-                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Research new caching strategy</h4>
-                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Investigate Redis vs Memcached for
-                                session storage optimization.</p>
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Riset strategi caching baru</h4>
+                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Investigasi Redis vs Memcached untuk
+                                optimasi session storage.</p>
                             <div class="flex items-center justify-between">
                                 <div class="flex -space-x-2">
                                     <div
@@ -193,7 +193,7 @@
                                 <span class="text-xs text-gray-400 font-mono">KDID-845</span>
                                 <div class="w-2 h-2 rounded-full bg-red-400"></div>
                             </div>
-                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Fix mobile navigation glitch</h4>
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Perbaiki bug navigasi mobile</h4>
                             <div class="flex items-center justify-between mt-3">
                                 <div class="flex -space-x-2">
                                     <div
@@ -211,8 +211,8 @@
                                 <span class="text-xs text-gray-400 font-mono">KDID-850</span>
                                 <div class="w-2 h-2 rounded-full bg-gray-300"></div>
                             </div>
-                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Update dependency packages</h4>
-                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Laravel 11 upgrade preparation.</p>
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Update package dependency</h4>
+                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Persiapan upgrade Laravel 11.</p>
                             <div class="flex items-center justify-between">
                                 <div class="flex -space-x-2">
                                     <div
@@ -238,9 +238,9 @@
                                 <span class="text-xs text-gray-400 font-mono">KDID-901</span>
                                 <div class="w-2 h-2 rounded-full bg-orange-400"></div>
                             </div>
-                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Design System Implementation</h4>
-                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Create base components for buttons,
-                                inputs, and cards.</p>
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Implementasi Design System</h4>
+                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Buat komponen dasar untuk button,
+                                input, dan card.</p>
                             <div class="flex items-center justify-between">
                                 <div class="flex -space-x-2">
                                     <div
@@ -279,8 +279,8 @@
                                 <span class="text-xs text-gray-400 font-mono">KDID-912</span>
                                 <div class="w-2 h-2 rounded-full bg-orange-400"></div>
                             </div>
-                            <h4 class="font-bold text-gray-800 mb-2 text-sm">User Profile Page</h4>
-                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Implement view and edit functionality.
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Halaman Profil User</h4>
+                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Implementasi fitur lihat dan edit profil.
                             </p>
                             <div class="flex items-center justify-between">
                                 <div class="flex -space-x-2">
@@ -307,8 +307,8 @@
                                 <span class="text-xs text-gray-400 font-mono">KDID-880</span>
                                 <div class="w-2 h-2 rounded-full bg-blue-500"></div>
                             </div>
-                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Landing Page Refactor</h4>
-                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Implementing new Notion-style design with
+                            <h4 class="font-bold text-gray-800 mb-2 text-sm">Refactor Landing Page</h4>
+                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Implementasi desain baru bergaya Notion dengan
                                 Tailwind CSS.</p>
                             <div class="flex items-center justify-between">
                                 <div class="flex -space-x-2">
@@ -351,7 +351,7 @@
                 <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
                     <span class="text-sm font-bold text-gray-800">Project Board</span>
                     <div class="flex gap-1">
-                        <span class="bg-red-600 text-white px-2 py-1 rounded text-xs font-medium">+ New</span>
+                        <span class="bg-red-600 text-white px-2 py-1 rounded text-xs font-medium">+ Baru</span>
                     </div>
                 </div>
                 <!-- Simple Kanban Preview -->
@@ -367,7 +367,7 @@
                     <div class="grid grid-cols-3 gap-2">
                         <div class="bg-white p-2 rounded border border-gray-200 shadow-sm">
                             <div class="text-[10px] text-gray-400 font-mono mb-1">KDID-842</div>
-                            <div class="text-xs font-medium text-gray-800 line-clamp-2">Research caching</div>
+                            <div class="text-xs font-medium text-gray-800 line-clamp-2">Riset caching</div>
                         </div>
                         <div class="bg-white p-2 rounded border border-gray-200 shadow-sm">
                             <div class="text-[10px] text-gray-400 font-mono mb-1">KDID-901</div>
@@ -386,7 +386,7 @@
     <!-- Clients Section -->
     <section class="py-16 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="reveal-fade text-sm font-medium text-gray-500 mb-8">TRUSTED BY TEAMS AT</p>
+            <p class="reveal-fade text-sm font-medium text-gray-500 mb-8">DIPERCAYA OLEH TIM DI</p>
             <div class="reveal-fade delay-200 flex flex-wrap justify-center gap-8 md:gap-16 grayscale opacity-60">
                 <!-- Simple text placeholders for logos to keep it clean -->
                 <span class="text-xl font-bold font-serif">FIGMA</span>
@@ -407,14 +407,14 @@
                 <div class="reveal-left text-left md:w-1/2">
                     <h2 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-gray-900 leading-tight">
                         Project Management <br />
-                        <span class="text-gray-400">Simplified.</span>
+                        <span class="text-gray-400">Lebih Simpel.</span>
                     </h2>
                     <p class="text-xl text-gray-600 mb-8 font-medium leading-relaxed">
-                        Streamline your workflow with our intuitive and collaborative project management tool.
+                        Sederhanakan alur kerja Anda dengan tools project management yang intuitif dan kolaboratif.
                     </p>
                     <a href="#"
                         class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1 group">
-                        Explore all features
+                        Jelajahi semua fitur
                         <span class="group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                 </div>
@@ -470,7 +470,7 @@
                         <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Create, assign, and track tasks with ease.
+                        Buat, tugaskan, dan lacak task dengan mudah.
                     </p>
                 </div>
 
@@ -492,7 +492,7 @@
                         <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Foster teamwork with real-time updates.
+                        Tingkatkan kerjasama tim dengan update real-time.
                     </p>
                 </div>
 
@@ -514,7 +514,7 @@
                         <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Visualize project progress with intuitive boards.
+                        Visualisasi progres project dengan board yang intuitif.
                     </p>
                 </div>
 
@@ -529,11 +529,11 @@
                         </svg>
                     </div>
                     <h3 class="text-lg font-bold mb-2 flex items-center gap-2">
-                        Fast & Efficient
+                        Cepat & Efisien
                         <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Optimized for speed and performance.
+                        Dioptimalkan untuk kecepatan dan performa.
                     </p>
                 </div>
             </div>
@@ -544,7 +544,7 @@
     <section id="how-it-works" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="reveal text-4xl md:text-5xl font-bold mb-16 max-w-3xl">
-                Millions run on AturKerja every day
+                Jutaan orang menggunakan AturKerja setiap hari
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -561,8 +561,8 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Project Board</h3>
-                    <p class="text-gray-600 mb-8 leading-relaxed">Visualize work with Kanban boards. Move tickets from
-                        Backlog to Done with ease.</p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Visualisasi pekerjaan dengan Kanban board. Pindahkan ticket dari
+                        Backlog ke Done dengan mudah.</p>
                     <div
                         class="bg-white rounded-lg shadow-sm p-3 border border-gray-200 group-hover:shadow-md transition-shadow flex-1 relative overflow-hidden">
                         <!-- Skeleton (Default) -->
@@ -679,8 +679,8 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Timeline View</h3>
-                    <p class="text-gray-600 mb-8 leading-relaxed">Plan projects on a timeline. See deadlines,
-                        dependencies, and progress at a glance.</p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Rencanakan project di timeline. Lihat deadline,
+                        dependensi, dan progres dalam sekali pandang.</p>
                     <div
                         class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 group-hover:shadow-md transition-shadow overflow-hidden flex-1 flex flex-col justify-center relative">
 
@@ -779,7 +779,7 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Leaderboard</h3>
-                    <p class="text-gray-600 mb-8 leading-relaxed">Gamify productivity with contribution tracking.</p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Gamifikasi produktivitas dengan pelacakan kontribusi.</p>
 
                     <!-- Leaderboard Mockup -->
                     <div
@@ -924,9 +924,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center gap-16">
                 <div class="reveal-left flex-1">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Powerful building blocks</h2>
-                    <p class="text-xl text-gray-600 mb-8">Customize AturKerja to work the way you do. Drag and drop to
-                        craft the dashboard, website, or system you need.</p>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Building block yang powerful</h2>
+                    <p class="text-xl text-gray-600 mb-8">Sesuaikan AturKerja untuk bekerja seperti cara Anda. Drag and drop untuk
+                        membuat dashboard, website, atau sistem yang Anda butuhkan.</p>
                 </div>
                 <div class="reveal-right flex-1 w-full">
                     <div
@@ -936,16 +936,16 @@
                                 <div class="font-bold text-orange-800 mb-2">To Do</div>
                                 <div class="space-y-2">
                                     <div class="bg-white p-2 rounded border border-orange-100 shadow-sm text-sm">
-                                        Research competitors</div>
-                                    <div class="bg-white p-2 rounded border border-orange-100 shadow-sm text-sm">Draft
-                                        copy</div>
+                                        Riset kompetitor</div>
+                                    <div class="bg-white p-2 rounded border border-orange-100 shadow-sm text-sm">Buat
+                                        draft copy</div>
                                 </div>
                             </div>
                             <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
                                 <div class="font-bold text-blue-800 mb-2">Doing</div>
                                 <div class="space-y-2">
                                     <div class="bg-white p-2 rounded border border-blue-100 shadow-sm text-sm">Design
-                                        mockups</div>
+                                        mockup</div>
                                 </div>
                             </div>
                         </div>
@@ -967,13 +967,13 @@
                         </svg>
                         <span class="font-semibold">AturKerja</span>
                     </div>
-                    <p class="text-gray-500 text-sm mb-4">Project management platform by DewaKoding</p>
-                    <p class="text-gray-500 text-sm">Manage your team projects with ease. Track progress, collaborate,
-                        and deliver on time.</p>
+                    <p class="text-gray-500 text-sm mb-4">Platform project management oleh DewaKoding</p>
+                    <p class="text-gray-500 text-sm">Kelola project tim Anda dengan mudah. Lacak progres, berkolaborasi,
+                        dan selesaikan tepat waktu.</p>
                 </div>
 
                 <div>
-                    <h4 class="font-bold mb-4">Features</h4>
+                    <h4 class="font-bold mb-4">Fitur</h4>
                     <ul class="space-y-2 text-gray-500 text-sm">
                         <li><a href="#features" class="hover:text-blue-600 hover:underline">Kanban Board</a></li>
                         <li><a href="#features" class="hover:text-blue-600 hover:underline">Timeline View</a></li>
@@ -983,11 +983,11 @@
                 </div>
 
                 <div>
-                    <h4 class="font-bold mb-4">Contact</h4>
+                    <h4 class="font-bold mb-4">Kontak</h4>
                     <ul class="space-y-2 text-gray-500 text-sm">
                         <li>Email: dev.dewakoding@gmail.com</li>
-                        <li>Phone: +62 858-1346-5023</li>
-                        <li>Location: Bekasi - Purwokerto - Remote</li>
+                        <li>Telepon: +62 858-1346-5023</li>
+                        <li>Lokasi: Bekasi - Purwokerto - Remote</li>
                     </ul>
                     <div class="flex gap-4 mt-4">
                         <a href="https://instagram.com/dewakoding" target="_blank"
@@ -1016,11 +1016,11 @@
             </div>
             <div
                 class="border-t border-gray-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-                <div>&copy; 2025 AturKerja by DewaKoding. All rights reserved.</div>
+                <div>&copy; 2025 AturKerja by DewaKoding. Hak cipta dilindungi.</div>
                 <div class="flex gap-6">
-                    <a href="#" class="hover:text-black">Privacy</a>
-                    <a href="#" class="hover:text-black">Terms</a>
-                    <a href="#" class="hover:text-black">Cookie settings</a>
+                    <a href="#" class="hover:text-black">Privasi</a>
+                    <a href="#" class="hover:text-black">Ketentuan</a>
+                    <a href="#" class="hover:text-black">Pengaturan Cookie</a>
                 </div>
             </div>
         </div>

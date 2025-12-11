@@ -71,7 +71,7 @@ class AdminPanelProvider extends PanelProvider
             ->tenantRegistration(RegisterTeam::class)
             ->tenantMenuItems([
                 'register' => \Filament\Navigation\MenuItem::make()
-                    ->label('Join another team')
+                    ->label('Join another workspace')
                     ->icon('heroicon-o-user-plus')
                     ->url(fn() => route('filament.admin.tenant.join')),
             ])

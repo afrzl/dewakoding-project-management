@@ -3,19 +3,19 @@
         <x-slot name="heading">
             <div class="flex items-center gap-2">
                 <x-heroicon-o-user-group class="h-5 w-5 text-primary-500" />
-                <span>Team Information</span>
+                <span>Workspace Information</span>
             </div>
         </x-slot>
 
         <x-slot name="description">
-            Invite others to join your team
+            Invite others to join your workspace
         </x-slot>
 
         <div class="space-y-4">
             {{-- Team Stats --}}
             <div class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700/50 rounded-lg">
                 <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">Team Name</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">Workspace Name</p>
                     <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ $this->getTeamName() }}</p>
                 </div>
                 <div class="text-right">
@@ -58,16 +58,23 @@
                 </h4>
                 <ol class="space-y-2 text-sm text-gray-600 dark:text-gray-200">
                     <li class="flex items-start gap-2">
-                        <span class="shrink-0 w-5 h-5 flex items-center justify-center bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full text-xs font-medium">1</span>
-                        <span>Share the <strong class="text-gray-900 dark:text-white">Invite Code</strong> above with your team members</span>
+                        <span
+                            class="shrink-0 w-5 h-5 flex items-center justify-center bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full text-xs font-medium">1</span>
+                        <span>Share the <strong class="text-gray-900 dark:text-white">Invite Code</strong> above with
+                            your workspace members</span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="shrink-0 w-5 h-5 flex items-center justify-center bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full text-xs font-medium">2</span>
-                        <span>They need to register or login at <a href="{{ url('/register') }}" class="text-primary-600 dark:text-primary-400 hover:underline">{{ url('/register') }}</a></span>
+                        <span
+                            class="shrink-0 w-5 h-5 flex items-center justify-center bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full text-xs font-medium">2</span>
+                        <span>They need to register or login at <a href="{{ url('/register') }}"
+                                class="text-primary-600 dark:text-primary-400 hover:underline">{{ url('/register') }}</a></span>
                     </li>
                     <li class="flex items-start gap-2">
-                        <span class="shrink-0 w-5 h-5 flex items-center justify-center bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full text-xs font-medium">3</span>
-                        <span>After login, go to <a href="{{ $this->getJoinUrl() }}" class="text-primary-600 dark:text-primary-400 hover:underline">{{ $this->getJoinUrl() }}</a> and enter the code</span>
+                        <span
+                            class="shrink-0 w-5 h-5 flex items-center justify-center bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full text-xs font-medium">3</span>
+                        <span>After login, go to <a href="{{ $this->getJoinUrl() }}"
+                                class="text-primary-600 dark:text-primary-400 hover:underline">{{ $this->getJoinUrl() }}</a>
+                            and enter the code</span>
                     </li>
                 </ol>
             </div>

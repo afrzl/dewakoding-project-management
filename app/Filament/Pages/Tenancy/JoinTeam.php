@@ -30,7 +30,7 @@ class JoinTeam extends SimplePage
 
     public function getTitle(): string
     {
-        return 'Join Team';
+        return 'Join Workspace';
     }
 
     public function mount(): void
@@ -49,7 +49,7 @@ class JoinTeam extends SimplePage
             ->components([
                 TextInput::make('invite_code')
                     ->label('Invite Code')
-                    ->placeholder('Enter your team invite code (e.g. DK000001)')
+                    ->placeholder('Enter your workspace invite code (e.g. DK000001)')
                     ->required()
                     ->autocomplete('off')
                     ->autofocus()

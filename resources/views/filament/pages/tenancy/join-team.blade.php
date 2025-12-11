@@ -1,9 +1,15 @@
 <x-filament-panels::page.simple>
+    <div class="mb-6 text-center">
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+            Enter your invite code to join an existing team workspace.
+        </p>
+    </div>
+
     <form wire:submit="join" class="space-y-6">
         {{ $this->form }}
 
         <x-filament::button type="submit" class="w-full">
-            Join Team
+            Join Workspace
         </x-filament::button>
     </form>
 
@@ -12,7 +18,7 @@
             Don't have an invite code?
             <a href="{{ route('filament.admin.tenant.registration') }}"
                 class="text-primary-600 hover:text-primary-500 font-medium">
-                Register a new team instead
+                Create a new workspace
             </a>
         </p>
 

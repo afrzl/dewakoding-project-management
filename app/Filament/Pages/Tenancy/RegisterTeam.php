@@ -61,7 +61,7 @@ class RegisterTeam extends RegisterTenant
 
     public static function getLabel(): string
     {
-        return 'Register team';
+        return 'Register workspace';
     }
 
     // public function getHeading(): string
@@ -79,7 +79,7 @@ class RegisterTeam extends RegisterTenant
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->label('Team Name')
+                    ->label('Workspace Name')
                     ->required()
                     ->maxLength(255),
             ]);

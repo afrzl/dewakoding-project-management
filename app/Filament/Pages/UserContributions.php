@@ -40,9 +40,16 @@ class UserContributions extends Page implements HasForms
     public function mount(): void
     {
         $currentUser = Auth::user();
+        $currentTeam = \Filament\Facades\Filament::getTenant();
+        
+        if (!$currentTeam) {
+            $this->users = collect([]);
+            return;
+        }
         
         if ($currentUser->hasRole('super_admin')) {
-            $this->users = User::orderBy('name')->get();
+            // Get all users from current team
+            $this->users = $currentTeam->members()->orderBy('name')->get();
             $this->viewMode = 'all';
         } else {
             $this->users = collect([$currentUser]);
@@ -96,6 +103,12 @@ class UserContributions extends Page implements HasForms
         $endDate = Carbon::now(config('app.timezone')); 
         $startDate = $endDate->copy()->subDays($days - 1); 
         
+        $currentTeam = \Filament\Facades\Filament::getTenant();
+        
+        if (!$currentTeam) {
+            return [];
+        }
+        
         $activity = [];
         
         $current = $startDate->copy();
@@ -106,6 +119,7 @@ class UserContributions extends Page implements HasForms
         
         try {
             $ticketCreations = Ticket::where('created_by', $userId)
+                ->where('team_id', $currentTeam->id)
                 ->whereBetween('created_at', [
                     $startDate->startOfDay()->utc(), 
                     $endDate->endOfDay()->utc()
@@ -121,6 +135,9 @@ class UserContributions extends Page implements HasForms
             
             // Count ticket status changes
             $statusChanges = TicketHistory::where('user_id', $userId)
+                ->whereHas('ticket', function($query) use ($currentTeam) {
+                    $query->where('team_id', $currentTeam->id);
+                })
                 ->whereBetween('created_at', [
                     $startDate->startOfDay()->utc(), 
                     $endDate->endOfDay()->utc()
@@ -136,6 +153,9 @@ class UserContributions extends Page implements HasForms
             
             // Count comments
             $comments = TicketComment::where('user_id', $userId)
+                ->whereHas('ticket', function($query) use ($currentTeam) {
+                    $query->where('team_id', $currentTeam->id);
+                })
                 ->whereBetween('created_at', [
                     $startDate->startOfDay()->utc(), 
                     $endDate->endOfDay()->utc()
@@ -200,21 +220,39 @@ class UserContributions extends Page implements HasForms
         $endDate = Carbon::now(config('app.timezone')); 
         $startDate = $endDate->copy()->subDays($days - 1); 
         
+        $currentTeam = \Filament\Facades\Filament::getTenant();
+        
+        if (!$currentTeam) {
+            return [
+                'tickets_created' => 0,
+                'status_changes' => 0,
+                'comments_made' => 0,
+                'active_days' => 0
+            ];
+        }
+        
         try {
             return [
                 'tickets_created' => Ticket::where('created_by', $userId)
+                    ->where('team_id', $currentTeam->id)
                     ->whereBetween('created_at', [
                         $startDate->startOfDay()->utc(), 
                         $endDate->endOfDay()->utc()
                     ])
                     ->count(),
                 'status_changes' => TicketHistory::where('user_id', $userId)
+                    ->whereHas('ticket', function($query) use ($currentTeam) {
+                        $query->where('team_id', $currentTeam->id);
+                    })
                     ->whereBetween('created_at', [
                         $startDate->startOfDay()->utc(), 
                         $endDate->endOfDay()->utc()
                     ])
                     ->count(),
                 'comments_made' => TicketComment::where('user_id', $userId)
+                    ->whereHas('ticket', function($query) use ($currentTeam) {
+                        $query->where('team_id', $currentTeam->id);
+                    })
                     ->whereBetween('created_at', [
                         $startDate->startOfDay()->utc(), 
                         $endDate->endOfDay()->utc()

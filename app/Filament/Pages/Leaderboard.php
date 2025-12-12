@@ -46,7 +46,18 @@ class Leaderboard extends Page implements HasForms
 
     public function getLeaderboardData(): array
     {
-        $users = User::orderBy('name')->get();
+        // Get current team/tenant
+        $currentTeam = \Filament\Facades\Filament::getTenant();
+        
+        if (!$currentTeam) {
+            return [];
+        }
+        
+        // Get only users who are members of current team
+        $users = $currentTeam->members()
+            ->orderBy('name')
+            ->get();
+            
         $leaderboardData = [];
         
         foreach ($users as $user) {
@@ -101,21 +112,40 @@ class Leaderboard extends Page implements HasForms
         $startDate = $dateRange['start'];
         $endDate = $dateRange['end'];
         
+        // Get current team/tenant
+        $currentTeam = \Filament\Facades\Filament::getTenant();
+        
+        if (!$currentTeam) {
+            return [
+                'tickets_created' => 0,
+                'status_changes' => 0,
+                'comments_made' => 0,
+                'active_days' => 0
+            ];
+        }
+        
         try {
             return [
                 'tickets_created' => Ticket::where('created_by', $userId)
+                    ->where('team_id', $currentTeam->id)
                     ->whereBetween('created_at', [
                         $startDate->startOfDay()->utc(), 
                         $endDate->endOfDay()->utc()
                     ])
                     ->count(),
                 'status_changes' => TicketHistory::where('user_id', $userId)
+                    ->whereHas('ticket', function($query) use ($currentTeam) {
+                        $query->where('team_id', $currentTeam->id);
+                    })
                     ->whereBetween('created_at', [
                         $startDate->startOfDay()->utc(), 
                         $endDate->endOfDay()->utc()
                     ])
                     ->count(),
                 'comments_made' => TicketComment::where('user_id', $userId)
+                    ->whereHas('ticket', function($query) use ($currentTeam) {
+                        $query->where('team_id', $currentTeam->id);
+                    })
                     ->whereBetween('created_at', [
                         $startDate->startOfDay()->utc(), 
                         $endDate->endOfDay()->utc()
@@ -140,8 +170,16 @@ class Leaderboard extends Page implements HasForms
         $startDate = $dateRange['start'];
         $endDate = $dateRange['end'];
         
+        // Get current team/tenant
+        $currentTeam = \Filament\Facades\Filament::getTenant();
+        
+        if (!$currentTeam) {
+            return 0;
+        }
+        
         // Get unique dates where user had activity - simplified approach
         $ticketDates = Ticket::where('created_by', $userId)
+            ->where('team_id', $currentTeam->id)
             ->whereBetween('created_at', [
                 $startDate->startOfDay()->utc(), 
                 $endDate->endOfDay()->utc()
@@ -151,6 +189,9 @@ class Leaderboard extends Page implements HasForms
             ->pluck('activity_date');
             
         $historyDates = TicketHistory::where('user_id', $userId)
+            ->whereHas('ticket', function($query) use ($currentTeam) {
+                $query->where('team_id', $currentTeam->id);
+            })
             ->whereBetween('created_at', [
                 $startDate->startOfDay()->utc(), 
                 $endDate->endOfDay()->utc()
@@ -160,6 +201,9 @@ class Leaderboard extends Page implements HasForms
             ->pluck('activity_date');
             
         $commentDates = TicketComment::where('user_id', $userId)
+            ->whereHas('ticket', function($query) use ($currentTeam) {
+                $query->where('team_id', $currentTeam->id);
+            })
             ->whereBetween('created_at', [
                 $startDate->startOfDay()->utc(), 
                 $endDate->endOfDay()->utc()

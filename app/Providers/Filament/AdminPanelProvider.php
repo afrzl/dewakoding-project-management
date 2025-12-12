@@ -39,6 +39,7 @@ class AdminPanelProvider extends PanelProvider
             ->login(Login::class)
             ->registration(Register::class)
             ->tenant(\App\Models\Team::class, ownershipRelationship: 'teams', slugAttribute: 'slug')
+            ->tenantRoutePrefix('')
             ->colors([
                 'primary' => Color::Blue,
             ])

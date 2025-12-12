@@ -190,6 +190,7 @@
 
     @if($selectedProject)
         <div
+            wire:key="project-board-{{ $selectedProject->id }}"
             x-data="{
                 draggingTicket: null,
                 isTouchDevice: false,
@@ -197,9 +198,28 @@
                 touchStartY: 0,
                 scrollStartX: 0,
                 columnScrollPositions: {},
+                isLivewireReady: false,
 
                 moveTicketToStatus(ticketId, statusId) {
-                    $wire.call('moveTicket', parseInt(ticketId), parseInt(statusId));
+                    if (!this.isLivewireReady) {
+                        console.warn('Livewire not ready, reloading page...');
+                        window.location.reload();
+                        return;
+                    }
+                    try {
+                        $wire.call('moveTicket', parseInt(ticketId), parseInt(statusId));
+                    } catch (e) {
+                        console.error('Livewire call failed:', e);
+                        window.location.reload();
+                    }
+                },
+
+                checkLivewireReady() {
+                    try {
+                        return typeof $wire !== 'undefined' && $wire && typeof $wire.call === 'function';
+                    } catch (e) {
+                        return false;
+                    }
                 },
 
                 saveScrollPositions() {
@@ -220,17 +240,35 @@
 
                 init() {
                     this.$nextTick(() => {
-                        this.removeAllEventListeners();
-                        this.attachAllEventListeners();
-                        this.setupTouchScrolling();
-                        this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-                        this.setupPageVisibilityListener();
+                        // Check if Livewire is ready
+                        this.isLivewireReady = this.checkLivewireReady();
+                        
+                        if (!this.isLivewireReady) {
+                            // Retry after a short delay
+                            setTimeout(() => {
+                                this.isLivewireReady = this.checkLivewireReady();
+                                if (this.isLivewireReady) {
+                                    this.initializeBoard();
+                                }
+                            }, 500);
+                        } else {
+                            this.initializeBoard();
+                        }
                     });
+                },
+
+                initializeBoard() {
+                    this.removeAllEventListeners();
+                    this.attachAllEventListeners();
+                    this.setupTouchScrolling();
+                    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                    this.setupPageVisibilityListener();
                 },
 
                 setupPageVisibilityListener() {
                     document.addEventListener('visibilitychange', () => {
                         if (!document.hidden) {
+                            this.isLivewireReady = this.checkLivewireReady();
                             this.saveScrollPositions();
                             setTimeout(() => {
                                 this.removeAllEventListeners();
@@ -241,6 +279,7 @@
                     });
 
                     window.addEventListener('focus', () => {
+                        this.isLivewireReady = this.checkLivewireReady();
                         this.saveScrollPositions();
                         setTimeout(() => {
                             this.removeAllEventListeners();
@@ -250,8 +289,10 @@
                     });
 
                     window.addEventListener('popstate', () => {
+                        this.isLivewireReady = this.checkLivewireReady();
                         this.saveScrollPositions();
                         setTimeout(() => {
+                            this.isLivewireReady = this.checkLivewireReady();
                             this.removeAllEventListeners();
                             this.attachAllEventListeners();
                             this.restoreScrollPositions();
@@ -259,15 +300,20 @@
                     });
 
                     document.addEventListener('livewire:navigated', () => {
-                        this.saveScrollPositions();
+                        // Re-check Livewire readiness after navigation
                         setTimeout(() => {
-                            this.removeAllEventListeners();
-                            this.attachAllEventListeners();
-                            this.restoreScrollPositions();
+                            this.isLivewireReady = this.checkLivewireReady();
+                            if (this.isLivewireReady) {
+                                this.saveScrollPositions();
+                                this.removeAllEventListeners();
+                                this.attachAllEventListeners();
+                                this.restoreScrollPositions();
+                            }
                         }, 300);
                     });
 
-                    document.addEventListener('livewire:load', () => {
+                    document.addEventListener('livewire:init', () => {
+                        this.isLivewireReady = true;
                         this.saveScrollPositions();
                         setTimeout(() => {
                             this.removeAllEventListeners();
@@ -277,6 +323,7 @@
                     });
 
                     document.addEventListener('livewire:updated', () => {
+                        this.isLivewireReady = this.checkLivewireReady();
                         this.saveScrollPositions();
                         setTimeout(() => {
                             this.removeAllEventListeners();
@@ -286,6 +333,7 @@
                     });
 
                     window.addEventListener('ticket-updated', () => {
+                        this.isLivewireReady = this.checkLivewireReady();
                         this.saveScrollPositions();
                         setTimeout(() => {
                             this.removeAllEventListeners();
@@ -296,6 +344,7 @@
 
                     setInterval(() => {
                         if (document.visibilityState === 'visible') {
+                            this.isLivewireReady = this.checkLivewireReady();
                             this.saveScrollPositions();
                             this.ensureDragDropInitialized();
                             this.restoreScrollPositions();
@@ -304,6 +353,10 @@
                 },
 
                 ensureDragDropInitialized() {
+                    if (!this.isLivewireReady) {
+                        this.isLivewireReady = this.checkLivewireReady();
+                    }
+                    
                     const tickets = document.querySelectorAll('.ticket-card');
                     let needsReinitialization = false;
 

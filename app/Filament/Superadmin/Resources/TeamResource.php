@@ -23,71 +23,73 @@ class TeamResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationLabel = 'Teams';
+    protected static ?string $navigationLabel = 'Workspaces';
 
-    protected static ?string $pluralLabel = 'Teams';
-    
+    protected static ?string $modelLabel = 'Workspace';
+
+    protected static ?string $pluralLabel = 'Workspaces';
+
     protected static ?int $navigationSort = 2;
-    
+
     // Set policy to null to completely disable policy checks
     protected static ?string $modelPolicy = null;
-    
+
     // Disable policy authorization for superadmin panel
     public static function canViewAny(): bool
     {
         return true;
     }
-    
+
     public static function canView($record): bool
     {
         return true;
     }
-    
+
     public static function canCreate(): bool
     {
         return true;
     }
-    
+
     public static function canEdit($record): bool
     {
         return true;
     }
-    
+
     public static function canDelete($record): bool
     {
         return true;
     }
-    
+
     public static function canDeleteAny(): bool
     {
         return true;
     }
-    
+
     public static function canForceDelete($record): bool
     {
         return true;
     }
-    
+
     public static function canForceDeleteAny(): bool
     {
         return true;
     }
-    
+
     public static function canRestore($record): bool
     {
         return true;
     }
-    
+
     public static function canRestoreAny(): bool
     {
         return true;
     }
-    
+
     public static function canReplicate($record): bool
     {
         return true;
     }
-    
+
     public static function canReorder(): bool
     {
         return true;

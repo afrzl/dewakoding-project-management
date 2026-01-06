@@ -75,17 +75,15 @@ class TeamObserver
         // Member: hanya view permissions dan update ticket
         $memberPermissions = Permission::where(function ($q) {
             $q->whereIn('name', [
-                'View:Project',
-                'ViewAny:Project',
-                'View:Ticket',
-                'ViewAny:Ticket',
-                'Update:Ticket',
-                'View:TicketPriority',
-                'ViewAny:TicketPriority',
-                'View:TicketComment',
-                'ViewAny:TicketComment',
-                'View:Notification',
-                'ViewAny:Notification',
+                'view_project',
+                'view_any_project',
+                'view_ticket',
+                'view_any_ticket',
+                'update_ticket',
+                'view_ticket::priority',
+                'view_any_ticket::priority',
+                'view_ticket::comment',
+                'view_any_ticket::comment',
             ]);
         })->get();
         $member->syncPermissions($memberPermissions);

@@ -27,12 +27,13 @@ class RoleSeeder extends Seeder
             'Role',
         ];
 
-        $actions = ['View', 'ViewAny', 'Create', 'Update', 'Delete', 'Restore', 'ForceDelete', 'ForceDeleteAny', 'RestoreAny', 'Replicate', 'Reorder'];
+        $actions = ['view', 'view_any', 'create', 'update', 'delete', 'restore', 'force_delete', 'force_delete_any', 'restore_any', 'replicate', 'reorder'];
 
         // Buat permission granular untuk setiap resource PERTAMA
         foreach ($resources as $resource) {
             foreach ($actions as $action) {
-                $permissionName = $action . ':' . $resource;
+                $resourceSnake = strtolower(str_replace('\\', '::', $resource));
+                $permissionName = $action . '_' . strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $resource));
                 Permission::firstOrCreate(
                     ['name' => $permissionName, 'guard_name' => 'web']
                 );
@@ -51,7 +52,7 @@ class RoleSeeder extends Seeder
 
         foreach ($pages as $page) {
             Permission::firstOrCreate([
-                'name' => 'View:' . $page,
+                'name' => 'page_' . $page,
                 'guard_name' => 'web'
             ]);
         }
@@ -69,7 +70,7 @@ class RoleSeeder extends Seeder
 
         foreach ($widgets as $widget) {
             Permission::firstOrCreate([
-                'name' => 'View:' . $widget,
+                'name' => 'widget_' . $widget,
                 'guard_name' => 'web'
             ]);
         }
@@ -108,17 +109,15 @@ class RoleSeeder extends Seeder
         // member: hanya view/view_any project, ticket, ticket_priority, ticket_comment, notification, dan update ticket (untuk drag & drop)
         $memberPermissions = Permission::where(function ($q) {
             $q->whereIn('name', [
-                'View:Project',
-                'ViewAny:Project',
-                'View:Ticket',
-                'ViewAny:Ticket',
-                'Update:Ticket',
-                'View:TicketPriority',
-                'ViewAny:TicketPriority',
-                'View:TicketComment',
-                'ViewAny:TicketComment',
-                'View:Notification',
-                'ViewAny:Notification',
+                'view_project',
+                'view_any_project',
+                'view_ticket',
+                'view_any_ticket',
+                'update_ticket',
+                'view_ticket::priority',
+                'view_any_ticket::priority',
+                'view_ticket::comment',
+                'view_any_ticket::comment',
             ]);
         })->get();
         $member->syncPermissions($memberPermissions);

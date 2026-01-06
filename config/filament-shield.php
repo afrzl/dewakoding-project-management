@@ -100,8 +100,8 @@ return [
     */
 
     'permissions' => [
-        'separator' => ':',
-        'case' => 'pascal',
+        'separator' => '_',
+        'case' => 'snake',
         'generate' => true,
     ],
 
@@ -190,7 +190,7 @@ return [
 
     'pages' => [
         'subject' => 'class',
-        'prefix' => 'view',
+        'prefix' => 'page',
         'exclude' => [
             \Filament\Pages\Dashboard::class,
         ],
@@ -209,7 +209,7 @@ return [
 
     'widgets' => [
         'subject' => 'class',
-        'prefix' => 'view',
+        'prefix' => 'widget',
         'exclude' => [
             \Filament\Widgets\AccountWidget::class,
             \Filament\Widgets\FilamentInfoWidget::class,

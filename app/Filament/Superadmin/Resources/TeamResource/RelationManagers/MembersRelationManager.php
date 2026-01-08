@@ -91,6 +91,7 @@ class MembersRelationManager extends RelationManager
             ->headerActions([
                 AttachAction::make()
                     ->preloadRecordSelect()
+                    ->recordTitle(fn ($record): string => $record->name . ' (' . $record->email . ')')
                     ->recordSelectOptionsQuery(function ($query) {
                         // Exclude users with global super_admin role (team_id = null)
                         return $query->whereNotExists(function ($subQuery) {
@@ -102,7 +103,28 @@ class MembersRelationManager extends RelationManager
                         });
                     })
                     ->form(fn(AttachAction $action): array => [
-                        $action->getRecordSelect(),
+                        $action->getRecordSelect()
+                            ->searchable(['name', 'email'])
+                            ->getSearchResultsUsing(function (string $search) {
+                                return \App\Models\User::where(function ($query) use ($search) {
+                                    $query->where('name', 'like', "%{$search}%")
+                                        ->orWhere('email', 'like', "%{$search}%");
+                                })
+                                ->whereNotExists(function ($subQuery) {
+                                    $subQuery->select(\DB::raw(1))
+                                        ->from('model_has_roles')
+                                        ->whereColumn('model_has_roles.model_id', 'users.id')
+                                        ->where('model_has_roles.model_type', \App\Models\User::class)
+                                        ->whereNull('model_has_roles.team_id');
+                                })
+                                ->limit(50)
+                                ->get()
+                                ->mapWithKeys(fn ($user) => [$user->id => $user->name . ' (' . $user->email . ')']);
+                            })
+                            ->getOptionLabelUsing(function ($value) {
+                                $user = \App\Models\User::find($value);
+                                return $user ? $user->name . ' (' . $user->email . ')' : $value;
+                            }),
                         Select::make('roles')
                             ->label('Roles')
                             ->options(function () {

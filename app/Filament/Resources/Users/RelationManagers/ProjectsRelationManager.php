@@ -73,7 +73,10 @@ class ProjectsRelationManager extends RelationManager
             ])
             ->recordActions([
                 ViewAction::make()
-                    ->url(fn ($record) => route('filament.admin.resources.projects.edit', $record)),
+                    ->url(fn ($record) => route('filament.admin.resources.projects.edit', [
+                        'tenant' => \Filament\Facades\Filament::getTenant(),
+                        'record' => $record,
+                    ])),
                 DetachAction::make(),
             ])
             ->toolbarActions([

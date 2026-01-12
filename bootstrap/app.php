@@ -17,7 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         
         // Trust all proxies for signed URLs to work correctly
-        $middleware->trustProxies(at: '*');
+        $middleware->trustProxies(
+            at: '*',
+            headers: Illuminate\Http\Request::HEADER_X_FORWARDED_FOR |
+                     Illuminate\Http\Request::HEADER_X_FORWARDED_PROTO |
+                     Illuminate\Http\Request::HEADER_X_FORWARDED_PORT
+        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

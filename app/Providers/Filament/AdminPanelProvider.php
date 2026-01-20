@@ -14,6 +14,7 @@ use App\Filament\Pages\Auth\Register;
 use App\Http\Middleware\SyncShieldTenant;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Pages\Tenancy\JoinTeam;
+use App\Filament\Pages\Tenancy\EditTeam;
 use App\Http\Middleware\FilamentUserSettings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -70,6 +71,7 @@ class AdminPanelProvider extends PanelProvider
                     ->tenantRelationshipName('teams'),
             ])
             ->tenantRegistration(JoinTeam::class)
+            ->tenantProfile(EditTeam::class)
             ->tenantMenuItems([
                 'register' => \Filament\Navigation\MenuItem::make()
                     ->label('Join another workspace')

@@ -20,6 +20,23 @@ class EditTeam extends EditTenantProfile
         return 'Workspace settings';
     }
 
+    public static function canView(\Illuminate\Database\Eloquent\Model $tenant): bool
+    {
+        $user = auth()->user();
+        
+        // Allow global super_admin OR workspace super_admin
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+        
+        // Check if user has super_admin role in this specific team
+        setPermissionsTeamId($tenant->id);
+        $hasRole = $user->hasRole('super_admin');
+        setPermissionsTeamId(null);
+        
+        return $hasRole;
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -66,7 +83,15 @@ class EditTeam extends EditTenantProfile
                     $team = $this->tenant;
                     
                     // Check if user is global super_admin OR workspace super_admin
-                    return $user->isSuperAdmin() || $user->hasRole('super_admin', $team);
+                    if ($user->isSuperAdmin()) {
+                        return true;
+                    }
+                    
+                    setPermissionsTeamId($team->id);
+                    $hasRole = $user->hasRole('super_admin');
+                    setPermissionsTeamId(null);
+                    
+                    return $hasRole;
                 }),
         ];
     }
@@ -77,13 +102,19 @@ class EditTeam extends EditTenantProfile
         $user = auth()->user();
 
         // Verify user is global super_admin OR workspace super_admin
-        if (!$user->isSuperAdmin() && !$user->hasRole('super_admin', $team)) {
-            Notification::make()
-                ->title('Unauthorized')
-                ->body('Only workspace super admins can delete the workspace.')
-                ->danger()
-                ->send();
-            return;
+        if (!$user->isSuperAdmin()) {
+            setPermissionsTeamId($team->id);
+            $hasRole = $user->hasRole('super_admin');
+            setPermissionsTeamId(null);
+            
+            if (!$hasRole) {
+                Notification::make()
+                    ->title('Unauthorized')
+                    ->body('Only workspace super admins can delete the workspace.')
+                    ->danger()
+                    ->send();
+                return;
+            }
         }
 
         try {

@@ -73,6 +73,24 @@ class AdminPanelProvider extends PanelProvider
             ->tenantRegistration(JoinTeam::class)
             ->tenantProfile(EditTeam::class)
             ->tenantMenuItems([
+                'profile' => \Filament\Navigation\MenuItem::make()
+                    ->label('Workspace settings')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->url(fn (): string => \Filament\Pages\Tenancy\EditTenantProfile::getUrl())
+                    ->visible(function (): bool {
+                        $user = auth()->user();
+                        $team = \Filament\Facades\Filament::getTenant();
+                        
+                        if ($user->isSuperAdmin()) {
+                            return true;
+                        }
+                        
+                        setPermissionsTeamId($team->id);
+                        $hasRole = $user->hasRole('super_admin');
+                        setPermissionsTeamId(null);
+                        
+                        return $hasRole;
+                    }),
                 'register' => \Filament\Navigation\MenuItem::make()
                     ->label('Join another workspace')
                     ->icon('heroicon-o-user-plus')

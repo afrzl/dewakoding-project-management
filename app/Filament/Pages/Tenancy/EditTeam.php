@@ -141,8 +141,16 @@ class EditTeam extends EditTenantProfile
                 ->success()
                 ->send();
 
-            // Redirect to join/register page
-            $this->redirect(route('filament.admin.tenant.registration'));
+            // Check if user has other teams
+            $otherTeams = $user->teams()->where('teams.id', '!=', $team->id)->first();
+            
+            if ($otherTeams) {
+                // Redirect to another team
+                $this->redirect(route('filament.admin.pages.dashboard', ['tenant' => $otherTeams->slug]));
+            } else {
+                // No other teams, redirect to join/register page
+                $this->redirect(route('filament.admin.tenant.registration'));
+            }
 
         } catch (\Exception $e) {
             DB::rollBack();

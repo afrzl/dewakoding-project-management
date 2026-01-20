@@ -13,7 +13,7 @@ use Filament\Support\Colors\Color;
 use App\Filament\Pages\Auth\Register;
 use App\Http\Middleware\SyncShieldTenant;
 use Filament\Http\Middleware\Authenticate;
-use App\Filament\Pages\Tenancy\RegisterTeam;
+use App\Filament\Pages\Tenancy\JoinTeam;
 use App\Http\Middleware\FilamentUserSettings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -69,17 +69,13 @@ class AdminPanelProvider extends PanelProvider
                     ->scopeToTenant(true)
                     ->tenantRelationshipName('teams'),
             ])
-            ->tenantRegistration(RegisterTeam::class)
+            ->tenantRegistration(JoinTeam::class)
             ->tenantMenuItems([
                 'register' => \Filament\Navigation\MenuItem::make()
                     ->label('Join another workspace')
                     ->icon('heroicon-o-user-plus')
-                    ->url(fn() => route('filament.admin.tenant.join')),
+                    ->url(fn() => route('filament.admin.tenant.registration')),
             ])
-            ->routes(function () {
-                \Illuminate\Support\Facades\Route::get('/join', \App\Filament\Pages\Tenancy\JoinTeam::class)
-                    ->name('tenant.join');
-            })
             ->tenantMiddleware([
                 SyncShieldTenant::class,
             ], isPersistent: true)

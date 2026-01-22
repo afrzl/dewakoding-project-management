@@ -1,4 +1,6 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';

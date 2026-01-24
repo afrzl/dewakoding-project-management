@@ -5,64 +5,68 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AturKerja - Platform Project Management untuk Tim | DewaKoding</title>
-    
+
     <!-- SEO Meta Tags -->
-    <meta name="description" content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu. Gratis untuk memulai!">
-    <meta name="keywords" content="project management, manajemen proyek, kanban board, task management, team collaboration, produktivitas tim, AturKerja, DewaKoding">
+    <meta name="description"
+        content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu. Gratis untuk memulai!">
+    <meta name="keywords"
+        content="project management, manajemen proyek, kanban board, task management, team collaboration, produktivitas tim, AturKerja, DewaKoding">
     <meta name="author" content="DewaKoding">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url('/') }}">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
     <meta property="og:title" content="AturKerja - Platform Project Management untuk Tim">
-    <meta property="og:description" content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu. Gratis untuk memulai!">
+    <meta property="og:description"
+        content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu. Gratis untuk memulai!">
     <meta property="og:image" content="{{ asset('images/og-image.png') }}">
     <meta property="og:locale" content="id_ID">
     <meta property="og:site_name" content="AturKerja">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url('/') }}">
     <meta name="twitter:title" content="AturKerja - Platform Project Management untuk Tim">
-    <meta name="twitter:description" content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu.">
+    <meta name="twitter:description"
+        content="AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu.">
     <meta name="twitter:image" content="{{ asset('images/og-image.png') }}">
-    
+
     <!-- Additional SEO -->
     <meta name="theme-color" content="#000000">
     <meta name="application-name" content="AturKerja">
-    
+
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     @php
-    echo json_encode([
-        "@context" => "https://schema.org",
-        "@type" => "SoftwareApplication",
-        "name" => "AturKerja",
-        "applicationCategory" => "BusinessApplication",
-        "operatingSystem" => "Web",
-        "description" => "Platform project management untuk tim yang ingin berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu.",
-        "url" => url('/'),
-        "author" => [
-            "@type" => "Organization",
-            "name" => "DewaKoding",
-            "url" => "https://dewakoding.com"
-        ],
-        "offers" => [
-            "@type" => "Offer",
-            "price" => "0",
-            "priceCurrency" => "IDR"
-        ],
-        "aggregateRating" => [
-            "@type" => "AggregateRating",
-            "ratingValue" => "4.8",
-            "ratingCount" => "150"
-        ]
-    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        echo json_encode([
+            "@context" => "https://schema.org",
+            "@type" => "SoftwareApplication",
+            "name" => "AturKerja",
+            "applicationCategory" => "BusinessApplication",
+            "operatingSystem" => "Web",
+            "description" => "Platform project management untuk tim yang ingin berkolaborasi, melacak progres, dan menyelesaikan project tepat waktu.",
+            "url" => url('/'),
+            "author" => [
+                "@type" => "Organization",
+                "name" => "DewaKoding",
+                "url" => "https://dewakoding.com"
+            ],
+            "offers" => [
+                "@type" => "Offer",
+                "price" => "0",
+                "priceCurrency" => "IDR"
+            ],
+            "aggregateRating" => [
+                "@type" => "AggregateRating",
+                "ratingValue" => "4.8",
+                "ratingCount" => "150"
+            ]
+        ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     @endphp
     </script>
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Reveal Animations */
@@ -163,35 +167,47 @@
 
                 <!-- Desktop Nav -->
                 <nav class="hidden md:flex gap-8 text-sm font-medium text-gray-600">
-                    <a href="#features" class="hover:text-black transition-colors">Fitur</a>
-                    <a href="#how-it-works" class="hover:text-black transition-colors">Cara Kerja</a>
+                    <a href="#hero" class="hover:text-black transition-colors">Fitur Utama</a>
+                    <a href="#features" class="hover:text-black transition-colors">Kelebihan</a>
                     <a href="#about" class="hover:text-black transition-colors">Tentang</a>
                 </nav>
 
                 <!-- Actions -->
                 <div class="flex items-center gap-4">
                     <a href="{{ route('filament.admin.auth.login') }}"
-                        class="text-sm font-medium bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">Coba
-                        AturKerja gratis</a>
+                        class="text-sm font-medium text-gray-600 hover:text-black transition-colors">Masuk</a>
+                    <a href="{{ route('filament.admin.auth.login') }}"
+
+
+
+
+
+
+
+                                                                                                                                                                    class="text-sm font-medium bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors">Pakai Gratis</a>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+    <section id="hero" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
         <h1
             class="reveal text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-[1.1]">
             Rencanakan, Lacak, Selesaikan.<br>
             Project Jadi Lebih Mudah.
         </h1>
         <p class="reveal delay-100 text-lg sm:text-xl md:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
-            AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan tepat waktu.
+
+                                             AturKerja adalah platform project management di mana tim berkolaborasi, melacak progres, dan menyelesaikan tepat waktu.
         </p>
         <div class="reveal delay-200 flex flex-col sm:flex-row justify-center gap-4 mb-10 sm:mb-16">
             <a href="{{ route('filament.admin.auth.login') }}"
-                class="bg-black text-white px-6 py-3 rounded-md font-semibold text-base sm:text-lg hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">Coba
-                AturKerja gratis</a>
+
+
+
+
+                                                                            class="bg-black text-white px-6 py-3 rounded-md font-semibold text-base sm:text-lg hover:bg-gray-800 transition-all transform hover:-translate-y-0.5">Yuk Pakai Gratis!</a>
         </div>
 
         <!-- Hero Image Placeholder (Kanban Board) -->
@@ -366,7 +382,9 @@
                                 <div class="w-2 h-2 rounded-full bg-blue-500"></div>
                             </div>
                             <h4 class="font-bold text-gray-800 mb-2 text-sm">Refactor Landing Page</h4>
-                            <p class="text-xs text-gray-500 mb-3 line-clamp-2">Implementasi desain baru bergaya Notion dengan
+
+
+                                                                                                                                                                                                                                  <p class="text-xs text-gray-500 mb-3 line-clamp-2">Implementasi desain baru bergaya Notion dengan
                                 Tailwind CSS.</p>
                             <div class="flex items-center justify-between">
                                 <div class="flex -space-x-2">
@@ -468,7 +486,8 @@
                         <span class="text-gray-400">Lebih Simpel.</span>
                     </h2>
                     <p class="text-xl text-gray-600 mb-8 font-medium leading-relaxed">
-                        Sederhanakan alur kerja Anda dengan tools project management yang intuitif dan kolaboratif.
+
+                                                       AturKerja memberikan dampak nyata berupa kemudahan, kenyamanan,efisiensi, dan optimalisasi dalam mengatur kerjamu dan tim-mu. Apapun itu tugas dan projectmu, bisa dihandle oleh AturKerja!
                     </p>
                     <a href="#"
                         class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1 group">
@@ -576,22 +595,118 @@
                     </p>
                 </div>
 
-                <!-- Feature 4 (Added to balance grid) -->
+                <!-- Feature 4 -->
                 <div
                     class="reveal delay-400 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
                     <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-zap">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                            class
+=                               "lucide lucide-paperclip">
+                            <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                         </svg>
                     </div>
                     <h3 class="text-lg font-bold mb-2 flex items-center gap-2">
-                        Cepat & Efisien
+                        File & Link Attachments
                         <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
                     </h3>
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Dioptimalkan untuk kecepatan dan performa.
+                        Lampirkan berbagai jenis file dan link ke setiap task.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div
+                    class="reveal delay-100 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                    <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-globe">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                            <path d="M2 12h20" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 flex items-center gap-2">
+                        No Download Required
+                        <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Tidak perlu install aplikasi apapun, buka langsung dari browser device mu!
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div
+                    class="reveal delay-200 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                    <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-bell-ring">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                            <path d="M4 2C2.8 3.7 2 5.7 2 8" />
+                            <path d="M22 8c0-2.3-.8-4.3-2-6" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 flex items-center gap-2">
+                        Notifikasi Realtime
+                        <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Tim yang kamu assign bisa dapat notifikasi realtime, anti lupa atau kelewat!
+                    </p>
+                </div>
+
+                <!-- Feature 7 -->
+                <div
+                    class="reveal delay-300 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                    <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-building-2">
+                            <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z" />
+                            <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" />
+                            <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2" />
+                            <path d="M10 6h4" />
+                            <path d="M10 10h4" />
+                            <path d="M10 14h4" />
+                            <path d="M10 18h4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 flex items-center gap-2">
+                        Multiple Workspace
+                        <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Kelola banyak workspace sekaligus dan undang tim dengan mudah!
+                    </p>
+                </div>
+
+                <!-- Feature 8 -->
+                <div
+                    class="reveal delay-400 bg-white p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                    <div class="text-gray-400 mb-4 text-2xl group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-sliders-horizontal">
+                            <line x1="21" x2="14" y1="4" y2="4" />
+                            <line x1="10" x2="3" y1="4" y2="4" />
+                            <line x1="21" x2="12" y1="12" y2="12" />
+                            <line x1="8" x2="3" y1="12" y2="12" />
+                            <line x1="21" x2="16" y1="20" y2="20" />
+                            <line x1="12" x2="3" y1="20" y2="20" />
+                            <line x1="14" x2="14" y1="2" y2="6" />
+                            <line x1="8" x2="8" y1="10" y2="14" />
+                            <line x1="16" x2="16" y1="18" y2="22" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 flex items-center gap-2">
+                        Flexibility at its Best
+                        <span class="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400">→</span>
+                    </h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        Kamu bisa atur tampilan project management sesuai keinginanmu.
                     </p>
                 </div>
             </div>
@@ -599,13 +714,16 @@
     </section>
 
     <!-- Feature Grid (Bento Style) -->
-    <section id="how-it-works" class="py-24 bg-white">
+    <section id="about" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="reveal text-4xl md:text-5xl font-bold mb-16 max-w-3xl">
-                Jutaan orang menggunakan AturKerja setiap hari
+            <h2 class="reveal text-4xl md:text-5xl font-bold mb-6 max-w-4xl">
+                Semua Fitur Manajemen Tugas dan Project yang On-Point!
             </h2>
+            <p class="reveal text-xl text-gray-600 mb-16 max-w-4xl">
+                Aturkerja menyediakan fitur-fitur yang memang terbukti berdampak langsung dalam menyederhanakan dan mengefisiensikan manajemen tugas dan project kamu! Sebab, Aturkerja dibuat oleh praktisi-praktisi yang sudah senantiasa berkecimpung dalam dunia project management.
+            </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Card 1: Project Board -->
                 <div
                     class="reveal delay-100 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
@@ -619,7 +737,10 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Project Board</h3>
-                    <p class="text-gray-600 mb-8 leading-relaxed">Visualisasi pekerjaan dengan Kanban board. Pindahkan ticket dari
+
+
+
+                                                                                                                                                              <p class="text-gray-600 mb-8 leading-relaxed">Visualisasi pekerjaan dengan Kanban board. Pindahkan ticket dari
                         Backlog ke Done dengan mudah.</p>
                     <div
                         class="bg-white rounded-lg shadow-sm p-3 border border-gray-200 group-hover:shadow-md transition-shadow flex-1 relative overflow-hidden">
@@ -822,7 +943,7 @@
                     </div>
                 </div>
 
-                <!-- Analytics Card -->
+                <!-- Card 3: Leaderboard -->
                 <div
                     class="reveal delay-300 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
                     <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
@@ -837,7 +958,10 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold mb-3">Leaderboard</h3>
-                    <p class="text-gray-600 mb-8 leading-relaxed">Gamifikasi produktivitas dengan pelacakan kontribusi.</p>
+
+
+
+                                                                                                                                                                <p class="text-gray-600 mb-8 leading-relaxed">Gamifikasi produktivitas dengan pelacakan kontribusi.</p>
 
                     <!-- Leaderboard Mockup -->
                     <div
@@ -973,6 +1097,379 @@
 
                     </div>
                 </div>
+
+                <!-- Card 4: External Dashboard -->
+                <div
+                    class="reveal delay-400 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
+                    <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                            <polyline points="10 17 15 12 10 7" />
+                            <line x1="15" x2="3" y1="12" y2="12" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">External Dashboard</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Bagikan progress project ke client atau stakeholder external dengan dashboard khusus.</p>
+                    <div
+                        class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 group-hover:shadow-md transition-shadow flex-1 relative overflow-hidden">
+                        <!-- Skeleton (Default) -->
+                        <div class="absolute inset-4 flex flex-col gap-3 transition-opacity duration-300 opacity-100 group-hover:opacity-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-8 h-8 bg-gray-200 rounded-full"></div>
+                                <div class="flex-1">
+                                    <div class="h-2 bg-gray-300 rounded w-24 mb-1"></div>
+                                    <div class="h-1.5 bg-gray-200 rounded w-16"></div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="flex-1 bg-gray-100 rounded-lg p-2 border border-gray-200">
+                                    <div class="h-1.5 bg-gray-300 rounded w-12 mb-2"></div>
+                                    <div class="h-6 bg-gray-200 rounded"></div>
+                                </div>
+                                <div class="flex-1 bg-gray-100 rounded-lg p-2 border border-gray-200">
+                                    <div class="h-1.5 bg-gray-300 rounded w-12 mb-2"></div>
+                                    <div class="h-6 bg-gray-200 rounded"></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-100 rounded-lg p-2 border border-gray-200">
+                                <div class="h-1.5 bg-gray-300 rounded w-16 mb-2"></div>
+                                <div class="h-3 bg-gray-200 rounded-full w-3/4"></div>
+                            </div>
+                        </div>
+
+                        <!-- Real Content (Hover) -->
+                        <div class="absolute inset-4 flex flex-col gap-3 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="text-[9px] font-bold text-blue-600">CL</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-800">Client View</div>
+                                    <div class="text-[8px] text-gray-500">Read-only access</div>
+                                </div>
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="flex-1 bg-green-50 rounded-lg p-2 border border-green-100">
+                                    <div class="text-[8px] text-green-600 font-medium mb-1">Completed</div>
+                                    <div class="text-[14px] font-bold text-green-700">12</div>
+                                </div>
+                                <div class="flex-1 bg-blue-50 rounded-lg p-2 border border-blue-100">
+                                    <div class="text-[8px] text-blue-600 font-medium mb-1">In Progress</div>
+                                    <div class="text-[14px] font-bold text-blue-700">5</div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-2 border border-gray-200">
+                                <div class="text-[8px] text-gray-600 font-medium mb-1">Overall Progress</div>
+                                <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                    <div class="h-full w-3/4 bg-gradient-to-r from-blue-500 to-green-500 rounded-full"></div>
+                                </div>
+                                <div class="text-[8px] text-gray-500 mt-1 text-right">75%</div>
+                            </div>
+                        </div>
+
+                        <!-- Spacer -->
+                        <div class="invisible flex flex-col gap-3">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-8 h-8"></div>
+                                <div class="flex-1"><div class="h-2 mb-1"></div><div class="h-1.5"></div></div>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="flex-1 p-2"><div class="h-1.5 mb-2"></div><div class="h-6"></div></div>
+                                <div class="flex-1 p-2"><div class="h-1.5 mb-2"></div><div class="h-6"></div></div>
+                            </div>
+                            <div class="p-2"><div class="h-1.5 mb-2"></div><div class="h-3"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: More Feature Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
+                <!-- Card 5: Email Notification -->
+                <div
+                    class="reveal delay-100 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
+                    <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="16" x="2" y="4" rx="2" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Email Notification</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Dapatkan notifikasi email otomatis untuk setiap update penting di project.</p>
+                    <div
+                        class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 group-hover:shadow-md transition-shadow flex-1 relative overflow-hidden">
+                        <!-- Skeleton (Default) -->
+                        <div class="absolute inset-4 flex flex-col gap-2 transition-opacity duration-300 opacity-100 group-hover:opacity-0">
+                            <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-4 h-4 bg-gray-300 rounded"></div>
+                                    <div class="h-2 bg-gray-300 rounded w-24"></div>
+                                </div>
+                                <div class="h-1.5 bg-gray-200 rounded w-full mb-1"></div>
+                                <div class="h-1.5 bg-gray-200 rounded w-3/4"></div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-3 border border-gray-200 opacity-70">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-4 h-4 bg-gray-200 rounded"></div>
+                                    <div class="h-2 bg-gray-200 rounded w-20"></div>
+                                </div>
+                                <div class="h-1.5 bg-gray-200 rounded w-full mb-1"></div>
+                                <div class="h-1.5 bg-gray-200 rounded w-2/3"></div>
+                            </div>
+                        </div>
+
+                        <!-- Real Content (Hover) -->
+                        <div class="absolute inset-4 flex flex-col gap-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                            <div class="bg-blue-50 rounded-lg p-3 border border-blue-100 shadow-sm">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-4 h-4 bg-blue-500 rounded flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="white">
+                                            <path d="M22 7.535V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7.535a2 2 0 0 1 .887-1.664l8-5.333a2 2 0 0 1 2.226 0l8 5.333A2 2 0 0 1 22 7.535Z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="text-[9px] font-bold text-blue-800">New Task Assigned</div>
+                                    <div class="text-[7px] text-blue-500 ml-auto">2m ago</div>
+                                </div>
+                                <div class="text-[8px] text-blue-700 leading-relaxed">You've been assigned to "API Integration" by John D.</div>
+                            </div>
+                            <div class="bg-green-50 rounded-lg p-3 border border-green-100 shadow-sm">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-4 h-4 bg-green-500 rounded flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12"/>
+                                        </svg>
+                                    </div>
+                                    <div class="text-[9px] font-bold text-green-800">Task Completed</div>
+                                    <div class="text-[7px] text-green-500 ml-auto">1h ago</div>
+                                </div>
+                                <div class="text-[8px] text-green-700 leading-relaxed">"Landing Page Design" marked as done.</div>
+                            </div>
+                        </div>
+
+                        <!-- Spacer -->
+                        <div class="invisible flex flex-col gap-2">
+                            <div class="p-3"><div class="flex gap-2 mb-2"><div class="w-4 h-4"></div><div class="h-2 w-24"></div></div><div class="h-1.5 mb-1"></div><div class="h-1.5"></div></div>
+                            <div class="p-3"><div class="flex gap-2 mb-2"><div class="w-4 h-4"></div><div class="h-2 w-20"></div></div><div class="h-1.5 mb-1"></div><div class="h-1.5"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6: Team Contribution -->
+                <div
+                    class="reveal delay-300 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
+                    <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Team Contribution</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Pantau kontribusi setiap anggota tim dengan analytics yang detail.</p>
+                    <div
+                        class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 group-hover:shadow-md transition-shadow flex-1 relative overflow-hidden">
+                        <!-- Skeleton (Default) -->
+                        <div class="absolute inset-4 flex flex-col gap-2 transition-opacity duration-300 opacity-100 group-hover:opacity-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-gray-300"></div>
+                                <div class="flex-1 h-3 bg-gray-200 rounded-full"><div class="h-full w-4/5 bg-gray-400 rounded-full"></div></div>
+                                <div class="w-6 h-2 bg-gray-200 rounded"></div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-gray-200"></div>
+                                <div class="flex-1 h-3 bg-gray-200 rounded-full"><div class="h-full w-3/5 bg-gray-300 rounded-full"></div></div>
+                                <div class="w-6 h-2 bg-gray-200 rounded"></div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-gray-200"></div>
+                                <div class="flex-1 h-3 bg-gray-200 rounded-full"><div class="h-full w-2/5 bg-gray-300 rounded-full"></div></div>
+                                <div class="w-6 h-2 bg-gray-200 rounded"></div>
+                            </div>
+                        </div>
+
+                        <!-- Real Content (Hover) -->
+                        <div class="absolute inset-4 flex flex-col gap-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-[8px] font-bold text-purple-600 border border-purple-200">AF</div>
+                                <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full w-[85%] bg-gradient-to-r from-purple-400 to-purple-600 rounded-full"></div></div>
+                                <div class="text-[9px] font-bold text-gray-700">24</div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-[8px] font-bold text-blue-600 border border-blue-200">JD</div>
+                                <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full w-[65%] bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div></div>
+                                <div class="text-[9px] font-bold text-gray-700">18</div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-[8px] font-bold text-green-600 border border-green-200">MK</div>
+                                <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full w-[45%] bg-gradient-to-r from-green-400 to-green-600 rounded-full"></div></div>
+                                <div class="text-[9px] font-bold text-gray-700">12</div>
+                            </div>
+                            <div class="mt-1 pt-2 border-t border-gray-100">
+                                <div class="text-[8px] text-gray-500 text-center">Tasks completed this week</div>
+                            </div>
+                        </div>
+
+                        <!-- Spacer -->
+                        <div class="invisible flex flex-col gap-2">
+                            <div class="flex items-center gap-2"><div class="w-6 h-6"></div><div class="flex-1 h-3"></div><div class="w-6 h-2"></div></div>
+                            <div class="flex items-center gap-2"><div class="w-6 h-6"></div><div class="flex-1 h-3"></div><div class="w-6 h-2"></div></div>
+                            <div class="flex items-center gap-2"><div class="w-6 h-6"></div><div class="flex-1 h-3"></div><div class="w-6 h-2"></div></div>
+                            <div class="mt-1 pt-2"><div class="h-2"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7: Set Ticket Priorities -->
+                <div
+                    class="reveal delay-100 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
+                    <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                            <line x1="4" x2="4" y1="22" y2="15" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Set Ticket Priorities</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Atur prioritas ticket dari Low hingga Critical untuk fokus pada yang paling penting.</p>
+                    <div
+                        class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 group-hover:shadow-md transition-shadow flex-1 relative overflow-hidden">
+                        <!-- Skeleton (Default) -->
+                        <div class="absolute inset-4 flex flex-col gap-2 transition-opacity duration-300 opacity-100 group-hover:opacity-0">
+                            <div class="flex items-center gap-2 p-2 bg-gray-50 rounded border border-gray-200">
+                                <div class="w-3 h-3 rounded-full bg-gray-300"></div>
+                                <div class="flex-1 h-2 bg-gray-300 rounded w-32"></div>
+                                <div class="w-12 h-4 bg-gray-200 rounded"></div>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 bg-gray-50 rounded border border-gray-200">
+                                <div class="w-3 h-3 rounded-full bg-gray-200"></div>
+                                <div class="flex-1 h-2 bg-gray-200 rounded w-28"></div>
+                                <div class="w-12 h-4 bg-gray-200 rounded"></div>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 bg-gray-50 rounded border border-gray-200">
+                                <div class="w-3 h-3 rounded-full bg-gray-200"></div>
+                                <div class="flex-1 h-2 bg-gray-200 rounded w-24"></div>
+                                <div class="w-12 h-4 bg-gray-200 rounded"></div>
+                            </div>
+                        </div>
+
+                        <!-- Real Content (Hover) -->
+                        <div class="absolute inset-4 flex flex-col gap-2 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                            <div class="flex items-center gap-2 p-2 bg-red-50 rounded border border-red-200 shadow-sm">
+                                <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+                                <div class="flex-1 text-[9px] font-medium text-gray-800">Fix payment gateway bug</div>
+                                <div class="px-2 py-0.5 bg-red-500 text-white text-[7px] font-bold rounded">CRITICAL</div>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 bg-orange-50 rounded border border-orange-200 shadow-sm">
+                                <div class="w-3 h-3 rounded-full bg-orange-500"></div>
+                                <div class="flex-1 text-[9px] font-medium text-gray-800">Update user dashboard</div>
+                                <div class="px-2 py-0.5 bg-orange-500 text-white text-[7px] font-bold rounded">HIGH</div>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 bg-blue-50 rounded border border-blue-200 shadow-sm">
+                                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                                <div class="flex-1 text-[9px] font-medium text-gray-800">Add dark mode toggle</div>
+                                <div class="px-2 py-0.5 bg-blue-500 text-white text-[7px] font-bold rounded">MEDIUM</div>
+                            </div>
+                            <div class="flex items-center gap-2 p-2 bg-gray-50 rounded border border-gray-200 shadow-sm">
+                                <div class="w-3 h-3 rounded-full bg-gray-400"></div>
+                                <div class="flex-1 text-[9px] font-medium text-gray-800">Refactor old components</div>
+                                <div class="px-2 py-0.5 bg-gray-400 text-white text-[7px] font-bold rounded">LOW</div>
+                            </div>
+                        </div>
+
+                        <!-- Spacer -->
+                        <div class="invisible flex flex-col gap-2">
+                            <div class="flex items-center gap-2 p-2"><div class="w-3 h-3"></div><div class="flex-1 h-2"></div><div class="w-12 h-4"></div></div>
+                            <div class="flex items-center gap-2 p-2"><div class="w-3 h-3"></div><div class="flex-1 h-2"></div><div class="w-12 h-4"></div></div>
+                            <div class="flex items-center gap-2 p-2"><div class="w-3 h-3"></div><div class="flex-1 h-2"></div><div class="w-12 h-4"></div></div>
+                            <div class="flex items-center gap-2 p-2"><div class="w-3 h-3"></div><div class="flex-1 h-2"></div><div class="w-12 h-4"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 8: Set Epics/Milestone -->
+                <div
+                    class="reveal delay-200 bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-gray-300 transition-colors duration-300 group flex flex-col">
+                    <div class="mb-6 text-gray-400 group-hover:text-black transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v4" />
+                            <path d="m16.2 7.8 2.9-2.9" />
+                            <path d="M18 12h4" />
+                            <path d="m16.2 16.2 2.9 2.9" />
+                            <path d="M12 18v4" />
+                            <path d="m4.9 19.1 2.9-2.9" />
+                            <path d="M2 12h4" />
+                            <path d="m4.9 4.9 2.9 2.9" />
+                            <circle cx="12" cy="12" r="4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Set Epics / Milestone</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Kelompokkan tickets ke dalam Epics atau Milestone untuk tracking goals yang lebih besar.</p>
+                    <div
+                        class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 group-hover:shadow-md transition-shadow flex-1 relative overflow-hidden">
+                        <!-- Skeleton (Default) -->
+                        <div class="absolute inset-4 flex flex-col gap-3 transition-opacity duration-300 opacity-100 group-hover:opacity-0">
+                            <div class="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-4 h-4 bg-gray-300 rounded"></div>
+                                    <div class="h-2 bg-gray-300 rounded w-20"></div>
+                                </div>
+                                <div class="h-2 bg-gray-200 rounded-full w-full"><div class="h-full w-1/2 bg-gray-400 rounded-full"></div></div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-3 border border-gray-200 opacity-70">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-4 h-4 bg-gray-200 rounded"></div>
+                                    <div class="h-2 bg-gray-200 rounded w-24"></div>
+                                </div>
+                                <div class="h-2 bg-gray-200 rounded-full w-full"><div class="h-full w-1/4 bg-gray-300 rounded-full"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Real Content (Hover) -->
+                        <div class="absolute inset-4 flex flex-col gap-3 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                            <div class="bg-purple-50 rounded-lg p-3 border border-purple-200 shadow-sm">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-4 h-4 bg-purple-500 rounded flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="white">
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="text-[9px] font-bold text-purple-800">Epic: V2.0 Launch</div>
+                                    <div class="text-[7px] text-purple-500 ml-auto">8/12 tasks</div>
+                                </div>
+                                <div class="h-2 bg-purple-100 rounded-full overflow-hidden">
+                                    <div class="h-full w-2/3 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full"></div>
+                                </div>
+                            </div>
+                            <div class="bg-indigo-50 rounded-lg p-3 border border-indigo-200 shadow-sm">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <div class="w-4 h-4 bg-indigo-500 rounded flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                                            <line x1="4" x2="4" y1="22" y2="15"/>
+                                        </svg>
+                                    </div>
+                                    <div class="text-[9px] font-bold text-indigo-800">Milestone: Q1 Goals</div>
+                                    <div class="text-[7px] text-indigo-500 ml-auto">3/10 tasks</div>
+                                </div>
+                                <div class="h-2 bg-indigo-100 rounded-full overflow-hidden">
+                                    <div class="h-full w-[30%] bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Spacer -->
+                        <div class="invisible flex flex-col gap-3">
+                            <div class="p-3"><div class="flex gap-2 mb-2"><div class="w-4 h-4"></div><div class="h-2 w-20"></div></div><div class="h-2"></div></div>
+                            <div class="p-3"><div class="flex gap-2 mb-2"><div class="w-4 h-4"></div><div class="h-2 w-24"></div></div><div class="h-2"></div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -983,7 +1480,8 @@
             <div class="flex flex-col md:flex-row items-center gap-16">
                 <div class="reveal-left flex-1">
                     <h2 class="text-4xl md:text-5xl font-bold mb-6">Building block yang powerful</h2>
-                    <p class="text-xl text-gray-600 mb-8">Sesuaikan AturKerja untuk bekerja seperti cara Anda. Drag and drop untuk
+
+                                                                                                                                                                                     <p class="text-xl text-gray-600 mb-8">Sesuaikan AturKerja untuk bekerja seperti cara Anda. Drag and drop untuk
                         membuat dashboard, website, atau sistem yang Anda butuhkan.</p>
                 </div>
                 <div class="reveal-right flex-1 w-full">

@@ -312,7 +312,7 @@
                                             <div class="font-medium">{{ $ticket->name }}</div>
                                             @if ($ticket->description)
                                                 <div class="text-gray-500 text-xs mt-1 truncate max-w-xs">
-                                                    {{ Str::limit($ticket->description, 100) }}
+                                                    {{ Str::limit(strip_tags($ticket->description), 100) }}
                                                 </div>
                                             @endif
                                         </td>
@@ -380,7 +380,7 @@
                                         <!-- Description -->
                                         @if ($ticket->description)
                                             <p class="text-sm text-gray-600 line-clamp-2">
-                                                {{ Str::limit($ticket->description, 120) }}
+                                                {{ Str::limit(strip_tags($ticket->description), 120) }}
                                             </p>
                                         @endif
 

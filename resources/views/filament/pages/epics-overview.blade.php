@@ -250,7 +250,7 @@
                                 <div class="w-full">
                                     <div class="flex justify-between items-center mb-2">
                                         <h4 class="text-sm font-medium text-gray-900 dark:text-gray-300">Tickets</h4>
-                                        <a href="{{ route('filament.admin.resources.tickets.create', ['epic_id' => $epic->id]) }}" class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300">
+                                        <a href="{{ route('filament.admin.resources.tickets.create', ['tenant' => \Filament\Facades\Filament::getTenant()->slug, 'epic_id' => $epic->id]) }}" class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300">
                                             <x-heroicon-s-plus class="w-4 h-4 inline-block mr-1" />
                                             Add Ticket
                                         </a>
@@ -330,7 +330,7 @@
                                                             </td>
                                                             <td class="px-3 py-2 whitespace-nowrap text-right text-xs font-medium">
 
-                                                                <a href="{{ route('filament.admin.resources.tickets.view', ['record' => $ticket->id]) }}" target="_blank" class="text-primary-600 dark:text-primary-400 hover:text-primary-900 dark:hover:text-primary-300">
+                                                                <a href="{{ route('filament.admin.resources.tickets.view', ['tenant' => \Filament\Facades\Filament::getTenant()->slug, 'record' => $ticket->id]) }}" target="_blank" class="text-primary-600 dark:text-primary-400 hover:text-primary-900 dark:hover:text-primary-300">
                                                                     View
                                                                 </a>
                                                             </td>

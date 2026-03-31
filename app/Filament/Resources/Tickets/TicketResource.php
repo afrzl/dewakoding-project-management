@@ -58,7 +58,7 @@ class TicketResource extends Resource
         }
 
         // Jika superadmin, tampilkan semua tickets di team ini
-        if (auth()->user()->hasRole(['super_admin'])) {
+        if (auth()->user()->isSuperAdmin()) {
             return $query;
         }
 
@@ -76,6 +76,26 @@ class TicketResource extends Resource
         return $query;
     }
 
+    protected static function getAccessibleProjectsQuery(): Builder
+    {
+        $user = auth()->user();
+        $currentTenant = \Filament\Facades\Filament::getTenant();
+
+        $query = Project::query();
+
+        if ($currentTenant) {
+            $query->where('team_id', $currentTenant->id);
+        }
+
+        if (!$user->isSuperAdmin()) {
+            $query->whereHas('members', function (Builder $query) use ($user) {
+                $query->where('user_id', $user->id);
+            });
+        }
+
+        return $query;
+    }
+
     public static function form(Schema $schema): Schema
     {
         $projectId = request()->query('project_id') ?? request()->input('project_id');
@@ -86,11 +106,9 @@ class TicketResource extends Resource
                 Select::make('project_id')
                     ->label('Project')
                     ->options(function () {
-                        if (auth()->user()->hasRole(['super_admin'])) {
-                            return Project::pluck('name', 'id')->toArray();
-                        }
-
-                        return auth()->user()->projects()->pluck('name', 'projects.id')->toArray();
+                        return static::getAccessibleProjectsQuery()
+                            ->pluck('name', 'id')
+                            ->toArray();
                     })
                     ->default($projectId)
                     ->required()
@@ -278,11 +296,9 @@ class TicketResource extends Resource
                 SelectFilter::make('project_id')
                     ->label('Project')
                     ->options(function () {
-                        if (auth()->user()->hasRole(['super_admin'])) {
-                            return Project::pluck('name', 'id')->toArray();
-                        }
-            
-                        return auth()->user()->projects()->pluck('name', 'projects.id')->toArray();
+                        return static::getAccessibleProjectsQuery()
+                            ->pluck('name', 'id')
+                            ->toArray();
                     })
                     ->searchable()
                     ->preload(),
@@ -377,7 +393,7 @@ class TicketResource extends Resource
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->visible(auth()->user()->hasRole(['super_admin'])),
+                        ->visible(auth()->user()->isSuperAdmin()),
                 ]),
             ]);
     }

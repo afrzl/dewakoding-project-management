@@ -53,24 +53,41 @@ class ProjectBoard extends Page
 
     public function mount($project_id = null): void
     {
-        if (auth()->user()->hasRole(['super_admin'])) {
-            $this->projects = Project::orderByRaw('pinned_date IS NULL')
-                ->orderBy('pinned_date', 'desc')
-                ->orderBy('name')
-                ->get();
-        } else {
-            $this->projects = auth()->user()->projects()
-                ->orderByRaw('pinned_date IS NULL')
-                ->orderBy('pinned_date', 'desc')
-                ->orderBy('name')
-                ->get();
+        $user = auth()->user();
+        $currentTenant = \Filament\Facades\Filament::getTenant();
+
+        $projectsQuery = Project::query();
+
+        if ($currentTenant) {
+            $projectsQuery->where('team_id', $currentTenant->id);
         }
 
-        if ($project_id) {
+        if (!$user->isSuperAdmin()) {
+            $projectsQuery->whereHas('members', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            });
+        }
+
+        $this->projects = $projectsQuery
+            ->orderByRaw('pinned_date IS NULL')
+            ->orderBy('pinned_date', 'desc')
+            ->orderBy('name')
+            ->get();
+
+        if ($project_id && $this->projects->contains('id', (int) $project_id)) {
             $this->selectedProjectId = (int) $project_id;
             $this->selectedProject = Project::find($project_id);
             $this->loadProjectUsers();
             $this->loadTicketStatuses();
+        } elseif ($project_id) {
+            Notification::make()
+                ->title('Project Not Found')
+                ->body('The selected project was not found or you do not have access to it.')
+                ->danger()
+                ->send();
+
+            $this->selectedProjectId = null;
+            $this->selectedProject = null;
         } else {
             $this->ticketStatuses = collect();
             $this->projectUsers = collect();
@@ -107,6 +124,16 @@ class ProjectBoard extends Page
 
     public function selectProject(int $projectId): void
     {
+        if (!$this->projects->contains('id', $projectId)) {
+            Notification::make()
+                ->title('Project Not Found')
+                ->body('The selected project was not found or you do not have access to it.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
         $this->selectedTicket = null;
         $this->ticketStatuses = collect();
         $this->selectedProjectId = $projectId;
@@ -318,7 +345,7 @@ class ProjectBoard extends Page
                 ->action('refreshBoard')
                 ->color('warning'),
             ExportTicketsAction::make()
-                ->visible(fn() => $this->selectedProject !== null && auth()->user()->hasRole(['super_admin'])),
+                ->visible(fn() => $this->selectedProject !== null && auth()->user()->isSuperAdmin()),
 
             Action::make('filter_users')
                 ->label('Filter by User')
@@ -369,7 +396,7 @@ class ProjectBoard extends Page
             return false;
         }
 
-        return auth()->user()->hasRole(['super_admin'])
+        return auth()->user()->isSuperAdmin()
             || $ticket->user_id === auth()->id()
             || $ticket->assignees()->where('users.id', auth()->id())->exists();
     }
@@ -389,7 +416,7 @@ class ProjectBoard extends Page
         // 1. Super admin (already covered by permission above)
         // 2. The ticket creator
         // 3. Assigned to the ticket
-        return auth()->user()->hasRole(['super_admin'])
+        return auth()->user()->isSuperAdmin()
             || $ticket->user_id === auth()->id()
             || $ticket->assignees()->where('users.id', auth()->id())->exists();
     }
@@ -402,7 +429,7 @@ class ProjectBoard extends Page
         if (!auth()->user()->can('update_ticket')) {
             return false;
         }
-        return auth()->user()->hasRole(['super_admin'])
+        return auth()->user()->isSuperAdmin()
             || $ticket->user_id === auth()->id()
             || $ticket->assignees()->where('users.id', auth()->id())->exists();
     }

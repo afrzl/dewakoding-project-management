@@ -57,19 +57,25 @@ class EpicsOverview extends Page
     public function loadAvailableProjects(): void
     {
         $user = auth()->user();
+        $currentTenant = \Filament\Facades\Filament::getTenant();
 
-        if ($user->hasRole('super_admin')) {
-            $this->availableProjects = Project::orderByRaw('pinned_date IS NULL')
-                ->orderBy('pinned_date', 'desc')
-                ->orderBy('name')
-                ->get();
-        } else {
-            $this->availableProjects = $user->projects()
-                ->orderByRaw('pinned_date IS NULL')
-                ->orderBy('pinned_date', 'desc')
-                ->orderBy('name')
-                ->get();
+        $projectsQuery = Project::query();
+
+        if ($currentTenant) {
+            $projectsQuery->where('team_id', $currentTenant->id);
         }
+
+        if (!$user->isSuperAdmin()) {
+            $projectsQuery->whereHas('members', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            });
+        }
+
+        $this->availableProjects = $projectsQuery
+            ->orderByRaw('pinned_date IS NULL')
+            ->orderBy('pinned_date', 'desc')
+            ->orderBy('name')
+            ->get();
     }
 
     public function getFilteredProjectsProperty(): Collection
@@ -93,6 +99,8 @@ class EpicsOverview extends Page
             },
         ])
             ->orderBy('start_date', 'asc');
+
+        $query->whereIn('project_id', $this->availableProjects->pluck('id'));
 
         if ($this->selectedProjectId) {
             $query->where('project_id', $this->selectedProjectId);

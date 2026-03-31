@@ -44,19 +44,25 @@ class TicketTimeline extends Page implements HasForms
     {
         try {
             $user = Auth::user();
+            $currentTenant = \Filament\Facades\Filament::getTenant();
 
-            if ($user->hasRole('super_admin')) {
-                $this->projects = Project::orderByRaw('pinned_date IS NULL')
-                    ->orderBy('pinned_date', 'desc')
-                    ->orderBy('name')
-                    ->get();
-            } else {
-                $this->projects = $user->projects()
-                    ->orderByRaw('pinned_date IS NULL')
-                    ->orderBy('pinned_date', 'desc')
-                    ->orderBy('name')
-                    ->get();
+            $projectsQuery = Project::query();
+
+            if ($currentTenant) {
+                $projectsQuery->where('team_id', $currentTenant->id);
             }
+
+            if (!$user->isSuperAdmin()) {
+                $projectsQuery->whereHas('members', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                });
+            }
+
+            $this->projects = $projectsQuery
+                ->orderByRaw('pinned_date IS NULL')
+                ->orderBy('pinned_date', 'desc')
+                ->orderBy('name')
+                ->get();
 
             if ($project_id && $this->projects->contains('id', $project_id)) {
                 $this->projectId = (string) $project_id;

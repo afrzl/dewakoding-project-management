@@ -32,15 +32,18 @@ class ProjectTimeline extends Page
     
     public function getProjects()
     {
+        $currentTenant = \Filament\Facades\Filament::getTenant();
+
         $query = Project::query()
             ->whereNotNull('start_date')
             ->whereNotNull('end_date')
             ->orderBy('start_date');
+
+        if ($currentTenant) {
+            $query->where('team_id', $currentTenant->id);
+        }
         
-        $userIsSuperAdmin = auth()->user() && (
-            (method_exists(auth()->user(), 'hasRole') && auth()->user()->hasRole('super_admin'))
-            || (isset(auth()->user()->role) && auth()->user()->role === 'super_admin')
-        );
+        $userIsSuperAdmin = auth()->user()?->isSuperAdmin() ?? false;
 
         if (!$userIsSuperAdmin) {
             $query->whereHas('members', function ($query) {
@@ -109,15 +112,18 @@ class ProjectTimeline extends Page
     
     public function getViewData(): array
     {
+        $currentTenant = \Filament\Facades\Filament::getTenant();
+
         $allQuery = Project::query()
             ->whereNotNull('start_date')
             ->whereNotNull('end_date');
+
+        if ($currentTenant) {
+            $allQuery->where('team_id', $currentTenant->id);
+        }
         
         // Apply role-based filtering
-        $userIsSuperAdmin = auth()->user() && (
-            (method_exists(auth()->user(), 'hasRole') && auth()->user()->hasRole('super_admin'))
-            || (isset(auth()->user()->role) && auth()->user()->role === 'super_admin')
-        );
+        $userIsSuperAdmin = auth()->user()?->isSuperAdmin() ?? false;
 
         if (!$userIsSuperAdmin) {
             $allQuery->whereHas('members', function ($query) {

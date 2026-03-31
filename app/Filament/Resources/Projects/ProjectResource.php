@@ -224,7 +224,7 @@ class ProjectResource extends Resource
         }
 
         // Jika superadmin, tampilkan semua projects di team ini (tidak perlu filter member)
-        if (auth()->check() && auth()->user()->isSuperAdmin()) {
+        if (auth()->check() && (auth()->user()->isSuperAdmin() || auth()->user()->hasRole('super_admin'))) {
             return $query;
         }
 

@@ -351,7 +351,7 @@ class ProjectBoard extends Page
                 ->action('refreshBoard')
                 ->color('warning'),
             ExportTicketsAction::make()
-                ->visible(fn() => $this->selectedProject !== null && auth()->user()->isSuperAdmin()),
+                ->visible(fn() => $this->selectedProject !== null && (auth()->user()->isSuperAdmin() || auth()->user()->hasRole('super_admin'))),
 
             Action::make('filter_users')
                 ->label('Filter by User')
@@ -402,7 +402,7 @@ class ProjectBoard extends Page
             return false;
         }
 
-        return auth()->user()->isSuperAdmin()
+        return (auth()->user()->isSuperAdmin() || auth()->user()->hasRole('super_admin'))
             || $ticket->user_id === auth()->id()
             || $ticket->assignees()->where('users.id', auth()->id())->exists();
     }
@@ -422,7 +422,7 @@ class ProjectBoard extends Page
         // 1. Super admin (already covered by permission above)
         // 2. The ticket creator
         // 3. Assigned to the ticket
-        return auth()->user()->isSuperAdmin()
+        return (auth()->user()->isSuperAdmin() || auth()->user()->hasRole('super_admin'))
             || $ticket->user_id === auth()->id()
             || $ticket->assignees()->where('users.id', auth()->id())->exists();
     }
@@ -435,7 +435,7 @@ class ProjectBoard extends Page
         if (!auth()->user()->can('update_ticket')) {
             return false;
         }
-        return auth()->user()->isSuperAdmin()
+        return (auth()->user()->isSuperAdmin() || auth()->user()->hasRole('super_admin'))
             || $ticket->user_id === auth()->id()
             || $ticket->assignees()->where('users.id', auth()->id())->exists();
     }

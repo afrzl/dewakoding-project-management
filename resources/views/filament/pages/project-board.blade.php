@@ -289,6 +289,19 @@
                     });
 
                     window.addEventListener('popstate', () => {
+                        const hasProjectInUrl = /\/project-board\/\d+$/.test(window.location.pathname);
+
+                        if (!hasProjectInUrl && this.isLivewireReady) {
+                            this.saveScrollPositions();
+                            try {
+                                $wire.call('clearProjectSelection');
+                            } catch (e) {
+                                console.error('Failed to clear project selection on popstate:', e);
+                                window.location.reload();
+                            }
+                            return;
+                        }
+
                         this.isLivewireReady = this.checkLivewireReady();
                         this.saveScrollPositions();
                         setTimeout(() => {
@@ -300,6 +313,18 @@
                     });
 
                     document.addEventListener('livewire:navigated', () => {
+                        const hasProjectInUrl = /\/project-board\/\d+$/.test(window.location.pathname);
+
+                        if (!hasProjectInUrl && this.isLivewireReady) {
+                            try {
+                                $wire.call('clearProjectSelection');
+                            } catch (e) {
+                                console.error('Failed to clear project selection after navigation:', e);
+                                window.location.reload();
+                            }
+                            return;
+                        }
+
                         // Re-check Livewire readiness after navigation
                         setTimeout(() => {
                             this.isLivewireReady = this.checkLivewireReady();

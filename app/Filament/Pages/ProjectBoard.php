@@ -89,9 +89,18 @@ class ProjectBoard extends Page
             $this->selectedProjectId = null;
             $this->selectedProject = null;
         } else {
-            $this->ticketStatuses = collect();
-            $this->projectUsers = collect();
+            $this->clearProjectSelection();
         }
+    }
+
+    public function clearProjectSelection(): void
+    {
+        $this->selectedProjectId = null;
+        $this->selectedProject = null;
+        $this->selectedTicket = null;
+        $this->ticketStatuses = collect();
+        $this->projectUsers = collect();
+        $this->selectedUserIds = [];
     }
 
     public function getFilteredProjectsProperty(): Collection
@@ -111,10 +120,7 @@ class ProjectBoard extends Page
         if ($value) {
             $this->selectProject($value);
         } else {
-            $this->selectedProject = null;
-            $this->ticketStatuses = collect();
-            $this->projectUsers = collect();
-            $this->selectedUserIds = [];
+            $this->clearProjectSelection();
 
             // Use wire:navigate for SPA-like navigation
             $url = static::getUrl();

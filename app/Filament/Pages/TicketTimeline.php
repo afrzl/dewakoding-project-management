@@ -67,6 +67,16 @@ class TicketTimeline extends Page implements HasForms
             if ($project_id && $this->projects->contains('id', $project_id)) {
                 $this->projectId = (string) $project_id;
                 $this->selectedProject = Project::find($project_id);
+            } elseif ($project_id) {
+                Notification::make()
+                    ->title('Project Not Found')
+                    ->body('The selected project was not found or you do not have access to it.')
+                    ->danger()
+                    ->send();
+
+                $this->clearProjectSelection();
+            } else {
+                $this->clearProjectSelection();
             }
         } catch (Exception $e) {
             Log::error('Error in TicketTimeline mount: ' . $e->getMessage());
@@ -76,6 +86,12 @@ class TicketTimeline extends Page implements HasForms
                 ->danger()
                 ->send();
         }
+    }
+
+    public function clearProjectSelection(): void
+    {
+        $this->selectedProject = null;
+        $this->projectId = null;
     }
 
     public function getFilteredProjectsProperty(): Collection
@@ -97,8 +113,7 @@ class TicketTimeline extends Page implements HasForms
             // Dispatch event untuk refresh gantt chart
             $this->dispatch('refreshGanttChart');
         } else {
-            $this->selectedProject = null;
-            $this->projectId = null;
+            $this->clearProjectSelection();
 
             // Use wire:navigate for SPA-like navigation
             $url = static::getUrl();
@@ -108,6 +123,17 @@ class TicketTimeline extends Page implements HasForms
 
     public function selectProject($projectId): void
     {
+        if (!$this->projects->contains('id', (int) $projectId)) {
+            Notification::make()
+                ->title('Project Not Found')
+                ->danger()
+                ->send();
+
+            $this->clearProjectSelection();
+
+            return;
+        }
+
         $this->projectId = (string) $projectId;
         $this->selectedProject = Project::find($projectId);
 
@@ -121,8 +147,7 @@ class TicketTimeline extends Page implements HasForms
                 ->danger()
                 ->send();
 
-            $this->selectedProject = null;
-            $this->projectId = null;
+            $this->clearProjectSelection();
         }
     }
 

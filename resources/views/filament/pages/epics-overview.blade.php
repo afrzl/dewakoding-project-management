@@ -359,4 +359,22 @@
             </p>
         </div>
     @endif
+
+    @push('scripts')
+        <script>
+            if (!window.epicsOverviewBackHandlerRegistered) {
+                const clearEpicsSelectionIfNeeded = () => {
+                    const isBaseEpicsOverviewUrl = /\/epics-overview\/?$/.test(window.location.pathname);
+
+                    if (isBaseEpicsOverviewUrl) {
+                        window.location.reload();
+                    }
+                };
+
+                window.addEventListener('popstate', clearEpicsSelectionIfNeeded);
+
+                window.epicsOverviewBackHandlerRegistered = true;
+            }
+        </script>
+    @endpush
 </x-filament-panels::page>

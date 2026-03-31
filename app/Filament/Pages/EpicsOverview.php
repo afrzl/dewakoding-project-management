@@ -54,6 +54,13 @@ class EpicsOverview extends Page
         $this->expandedEpics = $this->epics->pluck('id')->toArray();
     }
 
+    public function clearProjectSelection(): void
+    {
+        $this->selectedProjectId = null;
+        $this->loadEpics();
+        $this->expandedEpics = $this->epics->pluck('id')->toArray();
+    }
+
     public function loadAvailableProjects(): void
     {
         $user = auth()->user();
@@ -111,7 +118,17 @@ class EpicsOverview extends Page
 
     public function updatedSelectedProjectId($value): void
     {
-        $this->selectedProjectId = $value ? (int) $value : null;
+        if ($value && !$this->availableProjects->contains('id', (int) $value)) {
+            Notification::make()
+                ->title('Project Not Found')
+                ->body('The selected project was not found or you do not have access to it.')
+                ->danger()
+                ->send();
+
+            $this->selectedProjectId = null;
+        } else {
+            $this->selectedProjectId = $value ? (int) $value : null;
+        }
 
         if ($this->selectedProjectId) {
             $url = static::getUrl(['project_id' => $this->selectedProjectId]);

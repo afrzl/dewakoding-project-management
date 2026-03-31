@@ -252,6 +252,20 @@
     @push('scripts')
         <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
         <script>
+            if (!window.ticketTimelineBackHandlerRegistered) {
+                const clearTicketTimelineSelectionIfNeeded = () => {
+                    const isBaseTicketTimelineUrl = /\/ticket-timeline\/?$/.test(window.location.pathname);
+
+                    if (isBaseTicketTimelineUrl) {
+                        window.location.reload();
+                    }
+                };
+
+                window.addEventListener('popstate', clearTicketTimelineSelectionIfNeeded);
+
+                window.ticketTimelineBackHandlerRegistered = true;
+            }
+
             window.ganttState = window.ganttState || {
                 initialized: false,
                 currentProjectId: '{{ $projectId }}'

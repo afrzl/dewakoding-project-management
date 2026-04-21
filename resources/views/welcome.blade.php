@@ -460,7 +460,7 @@
     </section>
 
     <!-- Clients Section -->
-    <section class="py-16 border-b border-gray-100">
+    {{-- <section class="py-16 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="reveal-fade text-sm font-medium text-gray-500 mb-8">DIPERCAYA OLEH TIM DI</p>
             <div class="reveal-fade delay-200 flex flex-wrap justify-center gap-8 md:gap-16 grayscale opacity-60">
@@ -473,7 +473,7 @@
                 <span class="text-xl font-bold">PINTEREST</span>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- Features Simplified Section -->
     <section id="features" class="py-24 bg-white border-b border-gray-100">
